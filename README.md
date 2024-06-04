@@ -76,9 +76,9 @@ By default, requests time out after 60 seconds. You can configure this with a
 timeout option at the client or request level.
 
 ```python
-from credal.client import CredalAPI
+from credal.client import CredalApi
 
-client = CredalAPI(
+client = CredalApi(
     ...,
     # All timeouts are 20 seconds
     timeout=20.0,
