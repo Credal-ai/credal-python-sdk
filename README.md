@@ -118,9 +118,9 @@ include support for proxies and transports.
 ```python
 import httpx
 
-from credal.client import CredalAPI
+from credal.client import CredalApi
 
-client = CredalAPI(...,
+client = CredalApi(...,
     http_client=httpx.Client(
         proxies="http://my.test.proxy.example.com",
         transport=httpx.HTTPTransport(local_address="0.0.0.0"),
