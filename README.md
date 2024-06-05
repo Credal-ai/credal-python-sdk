@@ -76,9 +76,9 @@ By default, requests time out after 60 seconds. You can configure this with a
 timeout option at the client or request level.
 
 ```python
-from credal.client import GPUDeploy
+from credal.client import CredalApi
 
-client = GPUDeploy(
+client = CredalApi(
     ...,
     # All timeouts are 20 seconds
     timeout=20.0,
@@ -118,9 +118,9 @@ include support for proxies and transports.
 ```python
 import httpx
 
-from credal.client import GPUDeploy
+from credal.client import CredalApi
 
-client = GPUDeploy(...,
+client = CredalApi(...,
     http_client=httpx.Client(
         proxies="http://my.test.proxy.example.com",
         transport=httpx.HTTPTransport(local_address="0.0.0.0"),
