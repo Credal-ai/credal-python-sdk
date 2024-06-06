@@ -42,6 +42,15 @@ client.copilots.send_message(
 )
 ```
 
+## Self Hosted
+
+```python
+client = CredalApi(
+    api_key="YOUR_API_KEY",
+    base_url="https://<custom-domain>/api",
+)
+```
+
 ## Async Client
 
 ```python
