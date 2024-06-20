@@ -10,6 +10,7 @@ from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 from .inserted_audit_log import InsertedAuditLog
 from .policy_trigger import PolicyTrigger
+from .referenced_source import ReferencedSource
 from .response_chunk import ResponseChunk
 
 
@@ -20,6 +21,8 @@ class SendMessageResponse_AiResponseResult(pydantic_v1.BaseModel):
     warnings: typing.List[str]
     activity_source_ids_for_audit: typing.List[str] = pydantic_v1.Field(alias="activitySourceIdsForAudit")
     inserted_audit_log: InsertedAuditLog
+    referenced_sources: typing.List[ReferencedSource] = pydantic_v1.Field(alias="referencedSources")
+    message_id: uuid.UUID = pydantic_v1.Field(alias="messageId")
     type: typing.Literal["ai_response_result"] = "ai_response_result"
 
     def json(self, **kwargs: typing.Any) -> str:

@@ -2,10 +2,13 @@
 
 from .types import (
     CreateConversationResponse,
+    FeedbackEnum,
     InsertedAuditLog,
     MessageBlocked,
+    MessageFeedback,
     MessageReply,
     PolicyTrigger,
+    ReferencedSource,
     ResponseChunk,
     SendAgentMessageResponse,
     SendMessageResponse,
@@ -15,10 +18,13 @@ from .types import (
 
 __all__ = [
     "CreateConversationResponse",
+    "FeedbackEnum",
     "InsertedAuditLog",
     "MessageBlocked",
+    "MessageFeedback",
     "MessageReply",
     "PolicyTrigger",
+    "ReferencedSource",
     "ResponseChunk",
     "SendAgentMessageResponse",
     "SendMessageResponse",

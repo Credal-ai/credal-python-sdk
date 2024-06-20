@@ -2,25 +2,17 @@
 
 import datetime as dt
 import typing
-import uuid
 
+from ...common.types.external_resource_id import ExternalResourceId
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
-from .inserted_audit_log import InsertedAuditLog
-from .policy_trigger import PolicyTrigger
-from .referenced_source import ReferencedSource
-from .response_chunk import ResponseChunk
 
 
-class MessageReply(pydantic_v1.BaseModel):
-    policy_triggers: typing.List[PolicyTrigger]
-    conversation_id: uuid.UUID = pydantic_v1.Field(alias="conversationId")
-    response: ResponseChunk
-    warnings: typing.List[str]
-    activity_source_ids_for_audit: typing.List[str] = pydantic_v1.Field(alias="activitySourceIdsForAudit")
-    inserted_audit_log: InsertedAuditLog
-    referenced_sources: typing.List[ReferencedSource] = pydantic_v1.Field(alias="referencedSources")
-    message_id: uuid.UUID = pydantic_v1.Field(alias="messageId")
+class ReferencedSource(pydantic_v1.BaseModel):
+    id: str
+    external_resource_id: ExternalResourceId = pydantic_v1.Field(alias="externalResourceId")
+    name: str
+    url: typing.Optional[str] = None
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
