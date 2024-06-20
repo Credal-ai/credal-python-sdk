@@ -13,6 +13,7 @@ from ..core.query_encoder import encode_query
 from ..core.remove_none_from_dict import remove_none_from_dict
 from ..core.request_options import RequestOptions
 from .types.create_conversation_response import CreateConversationResponse
+from .types.message_feedback import MessageFeedback
 from .types.send_agent_message_response import SendAgentMessageResponse
 
 # this is used as the default value for optional parameters
@@ -83,6 +84,97 @@ class CopilotsClient:
         )
         if 200 <= _response.status_code < 300:
             return pydantic_v1.parse_obj_as(CreateConversationResponse, _response.json())  # type: ignore
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def provide_message_feedback(
+        self,
+        *,
+        user_email: str,
+        message_id: uuid.UUID,
+        message_feedback: MessageFeedback,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
+        """
+        Parameters
+        ----------
+        user_email : str
+            The user profile you want to use when providing feedback.
+
+
+        message_id : uuid.UUID
+            The message ID for which feedback is being provided.
+
+
+        message_feedback : MessageFeedback
+            The feedback provided by the user.
+
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import uuid
+
+        from credal import MessageFeedback
+        from credal.client import CredalApi
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.copilots.provide_message_feedback(
+            user_email="ravin@credal.ai",
+            message_id=uuid.UUID(
+                "dd721cd8-4bf2-4b94-9869-258df3dab9dc",
+            ),
+            message_feedback=MessageFeedback(
+                feedback="NEGATIVE",
+                suggested_answer="Yes, Credal is SOC 2 compliant.",
+            ),
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            method="POST",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "v0/copilots/provideMessageFeedback"),
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
+            ),
+            json=jsonable_encoder(
+                {"userEmail": user_email, "messageId": message_id, "messageFeedback": message_feedback}
+            )
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(
+                    {"userEmail": user_email, "messageId": message_id, "messageFeedback": message_feedback}
+                ),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else self._client_wrapper.get_timeout(),
+            retries=0,
+            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+        )
+        if 200 <= _response.status_code < 300:
+            return
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -235,6 +327,97 @@ class AsyncCopilotsClient:
         )
         if 200 <= _response.status_code < 300:
             return pydantic_v1.parse_obj_as(CreateConversationResponse, _response.json())  # type: ignore
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def provide_message_feedback(
+        self,
+        *,
+        user_email: str,
+        message_id: uuid.UUID,
+        message_feedback: MessageFeedback,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
+        """
+        Parameters
+        ----------
+        user_email : str
+            The user profile you want to use when providing feedback.
+
+
+        message_id : uuid.UUID
+            The message ID for which feedback is being provided.
+
+
+        message_feedback : MessageFeedback
+            The feedback provided by the user.
+
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import uuid
+
+        from credal import MessageFeedback
+        from credal.client import AsyncCredalApi
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        await client.copilots.provide_message_feedback(
+            user_email="ravin@credal.ai",
+            message_id=uuid.UUID(
+                "dd721cd8-4bf2-4b94-9869-258df3dab9dc",
+            ),
+            message_feedback=MessageFeedback(
+                feedback="NEGATIVE",
+                suggested_answer="Yes, Credal is SOC 2 compliant.",
+            ),
+        )
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            method="POST",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "v0/copilots/provideMessageFeedback"),
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
+            ),
+            json=jsonable_encoder(
+                {"userEmail": user_email, "messageId": message_id, "messageFeedback": message_feedback}
+            )
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(
+                    {"userEmail": user_email, "messageId": message_id, "messageFeedback": message_feedback}
+                ),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else self._client_wrapper.get_timeout(),
+            retries=0,
+            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+        )
+        if 200 <= _response.status_code < 300:
+            return
         try:
             _response_json = _response.json()
         except JSONDecodeError:
