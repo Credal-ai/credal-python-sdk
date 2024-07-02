@@ -30,7 +30,7 @@ class SearchClient:
         document_collection_id: uuid.UUID,
         search_query: str,
         user_email: str,
-        structured_query_filters: typing.Sequence[SingleFieldFilter],
+        structured_query_filters: typing.Optional[typing.Sequence[SingleFieldFilter]] = OMIT,
         search_options: typing.Optional[DocumentCollectionSearchOptions] = OMIT,
         metadata_filter_expression: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -48,7 +48,7 @@ class SearchClient:
             The email of the user making the search request for permissions reduction.
 
 
-        structured_query_filters : typing.Sequence[SingleFieldFilter]
+        structured_query_filters : typing.Optional[typing.Sequence[SingleFieldFilter]]
             The structured query filters to apply to the search query.
 
 
@@ -102,8 +102,9 @@ class SearchClient:
             "documentCollectionId": document_collection_id,
             "searchQuery": search_query,
             "userEmail": user_email,
-            "structuredQueryFilters": structured_query_filters,
         }
+        if structured_query_filters is not OMIT:
+            _request["structuredQueryFilters"] = structured_query_filters
         if search_options is not OMIT:
             _request["searchOptions"] = search_options
         if metadata_filter_expression is not OMIT:
@@ -155,7 +156,7 @@ class AsyncSearchClient:
         document_collection_id: uuid.UUID,
         search_query: str,
         user_email: str,
-        structured_query_filters: typing.Sequence[SingleFieldFilter],
+        structured_query_filters: typing.Optional[typing.Sequence[SingleFieldFilter]] = OMIT,
         search_options: typing.Optional[DocumentCollectionSearchOptions] = OMIT,
         metadata_filter_expression: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -173,7 +174,7 @@ class AsyncSearchClient:
             The email of the user making the search request for permissions reduction.
 
 
-        structured_query_filters : typing.Sequence[SingleFieldFilter]
+        structured_query_filters : typing.Optional[typing.Sequence[SingleFieldFilter]]
             The structured query filters to apply to the search query.
 
 
@@ -227,8 +228,9 @@ class AsyncSearchClient:
             "documentCollectionId": document_collection_id,
             "searchQuery": search_query,
             "userEmail": user_email,
-            "structuredQueryFilters": structured_query_filters,
         }
+        if structured_query_filters is not OMIT:
+            _request["structuredQueryFilters"] = structured_query_filters
         if search_options is not OMIT:
             _request["searchOptions"] = search_options
         if metadata_filter_expression is not OMIT:
