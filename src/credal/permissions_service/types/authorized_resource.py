@@ -2,14 +2,16 @@
 
 import datetime as dt
 import typing
+import uuid
 
-from ...common.types.resource_identifier import ResourceIdentifier
+from ...common.types.external_resource_id import ExternalResourceId
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 
 
-class ResourceListPage(pydantic_v1.BaseModel):
-    resources: typing.List[ResourceIdentifier]
+class AuthorizedResource(pydantic_v1.BaseModel):
+    credal_id: uuid.UUID = pydantic_v1.Field(alias="credalId")
+    external_id: ExternalResourceId = pydantic_v1.Field(alias="externalId")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
@@ -26,5 +28,7 @@ class ResourceListPage(pydantic_v1.BaseModel):
     class Config:
         frozen = True
         smart_union = True
+        allow_population_by_field_name = True
+        populate_by_name = True
         extra = pydantic_v1.Extra.allow
         json_encoders = {dt.datetime: serialize_datetime}

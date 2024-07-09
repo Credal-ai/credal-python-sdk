@@ -2,6 +2,8 @@
 
 from .types import (
     Action,
+    AuthorizedResource,
+    AuthorizedResourceListPage,
     CheckBulkResourcesAuthorizationResponse,
     CheckResourceAuthorizationResponse,
     Group,
@@ -10,12 +12,13 @@ from .types import (
     Principal_Group,
     Principal_User,
     ResourceAuthorizationResult,
-    ResourceListPage,
     User,
 )
 
 __all__ = [
     "Action",
+    "AuthorizedResource",
+    "AuthorizedResourceListPage",
     "CheckBulkResourcesAuthorizationResponse",
     "CheckResourceAuthorizationResponse",
     "Group",
@@ -24,6 +27,5 @@ __all__ = [
     "Principal_Group",
     "Principal_User",
     "ResourceAuthorizationResult",
-    "ResourceListPage",
     "User",
 ]

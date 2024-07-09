@@ -28,6 +28,8 @@ from .document_catalog import DocumentMetadataPatch, DocumentMetadataPatchReques
 from .environment import CredalApiEnvironment
 from .permissions_service import (
     Action,
+    AuthorizedResource,
+    AuthorizedResourceListPage,
     CheckBulkResourcesAuthorizationResponse,
     CheckResourceAuthorizationResponse,
     Group,
@@ -36,7 +38,6 @@ from .permissions_service import (
     Principal_Group,
     Principal_User,
     ResourceAuthorizationResult,
-    ResourceListPage,
     User,
 )
 from .search import (
@@ -52,6 +53,8 @@ from .version import __version__
 
 __all__ = [
     "Action",
+    "AuthorizedResource",
+    "AuthorizedResourceListPage",
     "CheckBulkResourcesAuthorizationResponse",
     "CheckResourceAuthorizationResponse",
     "CreateConversationResponse",
@@ -78,7 +81,6 @@ __all__ = [
     "ResourceIdentifier",
     "ResourceIdentifier_ExternalResourceId",
     "ResourceIdentifier_Url",
-    "ResourceListPage",
     "ResourceType",
     "ResponseChunk",
     "SearchDocumentCollectionResponse",

@@ -13,9 +13,9 @@ from ..core.pydantic_utilities import pydantic_v1
 from ..core.query_encoder import encode_query
 from ..core.remove_none_from_dict import remove_none_from_dict
 from ..core.request_options import RequestOptions
+from .types.authorized_resource_list_page import AuthorizedResourceListPage
 from .types.check_bulk_resources_authorization_response import CheckBulkResourcesAuthorizationResponse
 from .types.check_resource_authorization_response import CheckResourceAuthorizationResponse
-from .types.resource_list_page import ResourceListPage
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -148,7 +148,7 @@ class PermissionsServiceClient:
 
         Examples
         --------
-        from credal import ResourceIdentifier_ExternalResourceId
+        from credal import ResourceIdentifier_ExternalResourceId, ResourceIdentifier_Url
         from credal.client import CredalApi
 
         client = CredalApi(
@@ -156,9 +156,8 @@ class PermissionsServiceClient:
         )
         client.permissions_service.check_bulk_resources_authorization_for_user(
             resource_identifiers=[
-                ResourceIdentifier_ExternalResourceId(
-                    external_resource_id="170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr",
-                    resource_type="GOOGLE_DRIVE_ITEM",
+                ResourceIdentifier_Url(
+                    url="https://docs.google.com/document/d/170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr/edit",
                 ),
                 ResourceIdentifier_ExternalResourceId(
                     external_resource_id="sfsdfvr54UvyslPVWkQFOA0dfsdfsdflgNycFmdZJQr",
@@ -217,7 +216,7 @@ class PermissionsServiceClient:
         limit: typing.Optional[int] = OMIT,
         offset: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> ResourceListPage:
+    ) -> AuthorizedResourceListPage:
         """
         Admin endpoint to list all resources that the specified user is authorized to read. Note this endpoint returns cached results and may not be up-to-date. You can use the checkResourceAuthorizationForUser endpoint with disableCache set to true to get the most up-to-date results.
 
@@ -244,7 +243,7 @@ class PermissionsServiceClient:
 
         Returns
         -------
-        ResourceListPage
+        AuthorizedResourceListPage
 
         Examples
         --------
@@ -295,7 +294,7 @@ class PermissionsServiceClient:
             max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
         )
         if 200 <= _response.status_code < 300:
-            return pydantic_v1.parse_obj_as(ResourceListPage, _response.json())  # type: ignore
+            return pydantic_v1.parse_obj_as(AuthorizedResourceListPage, _response.json())  # type: ignore
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -430,7 +429,7 @@ class AsyncPermissionsServiceClient:
 
         Examples
         --------
-        from credal import ResourceIdentifier_ExternalResourceId
+        from credal import ResourceIdentifier_ExternalResourceId, ResourceIdentifier_Url
         from credal.client import AsyncCredalApi
 
         client = AsyncCredalApi(
@@ -438,9 +437,8 @@ class AsyncPermissionsServiceClient:
         )
         await client.permissions_service.check_bulk_resources_authorization_for_user(
             resource_identifiers=[
-                ResourceIdentifier_ExternalResourceId(
-                    external_resource_id="170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr",
-                    resource_type="GOOGLE_DRIVE_ITEM",
+                ResourceIdentifier_Url(
+                    url="https://docs.google.com/document/d/170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr/edit",
                 ),
                 ResourceIdentifier_ExternalResourceId(
                     external_resource_id="sfsdfvr54UvyslPVWkQFOA0dfsdfsdflgNycFmdZJQr",
@@ -499,7 +497,7 @@ class AsyncPermissionsServiceClient:
         limit: typing.Optional[int] = OMIT,
         offset: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> ResourceListPage:
+    ) -> AuthorizedResourceListPage:
         """
         Admin endpoint to list all resources that the specified user is authorized to read. Note this endpoint returns cached results and may not be up-to-date. You can use the checkResourceAuthorizationForUser endpoint with disableCache set to true to get the most up-to-date results.
 
@@ -526,7 +524,7 @@ class AsyncPermissionsServiceClient:
 
         Returns
         -------
-        ResourceListPage
+        AuthorizedResourceListPage
 
         Examples
         --------
@@ -577,7 +575,7 @@ class AsyncPermissionsServiceClient:
             max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
         )
         if 200 <= _response.status_code < 300:
-            return pydantic_v1.parse_obj_as(ResourceListPage, _response.json())  # type: ignore
+            return pydantic_v1.parse_obj_as(AuthorizedResourceListPage, _response.json())  # type: ignore
         try:
             _response_json = _response.json()
         except JSONDecodeError:

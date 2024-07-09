@@ -3,13 +3,14 @@
 import datetime as dt
 import typing
 
-from ...common.types.resource_identifier import ResourceIdentifier
+from ...common.types.external_resource_id import ExternalResourceId
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 
 
 class ResourceAuthorizationResult(pydantic_v1.BaseModel):
-    resource_identifier: ResourceIdentifier = pydantic_v1.Field(alias="resourceIdentifier")
+    external_resource_id: ExternalResourceId = pydantic_v1.Field(alias="externalResourceId")
+    input_url: typing.Optional[str] = pydantic_v1.Field(alias="inputUrl", default=None)
     authorized: bool
 
     def json(self, **kwargs: typing.Any) -> str:
