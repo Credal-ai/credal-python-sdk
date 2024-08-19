@@ -22,6 +22,7 @@ class SendMessageResponse_AiResponseResult(pydantic_v1.BaseModel):
     activity_source_ids_for_audit: typing.List[str] = pydantic_v1.Field(alias="activitySourceIdsForAudit")
     inserted_audit_log: InsertedAuditLog
     referenced_sources: typing.List[ReferencedSource] = pydantic_v1.Field(alias="referencedSources")
+    sources_in_data_context: typing.List[ReferencedSource] = pydantic_v1.Field(alias="sourcesInDataContext")
     message_id: uuid.UUID = pydantic_v1.Field(alias="messageId")
     type: typing.Literal["ai_response_result"] = "ai_response_result"
 
