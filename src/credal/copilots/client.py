@@ -25,7 +25,11 @@ class CopilotsClient:
         self._client_wrapper = client_wrapper
 
     def create_conversation(
-        self, *, user_email: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        user_email: str,
+        agent_id: typing.Optional[uuid.UUID] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateConversationResponse:
         """
         OPTIONAL. Create a new conversation with the Copilot. The conversation ID can be used in the sendMessage endpoint. The sendMessage endpoint automatically creates new conversations upon first request, but calling this endpoint can simplify certain use cases where it is helpful for the application to have the conversation ID before the first message is sent.
@@ -34,6 +38,10 @@ class CopilotsClient:
         ----------
         user_email : str
             End-user for the conversation.
+
+
+        agent_id : typing.Optional[uuid.UUID]
+            Credal-generated agent ID to specify which agent to route the request to. This is required for all new API keys going forward.
 
 
         request_options : typing.Optional[RequestOptions]
@@ -45,15 +53,23 @@ class CopilotsClient:
 
         Examples
         --------
+        import uuid
+
         from credal.client import CredalApi
 
         client = CredalApi(
             api_key="YOUR_API_KEY",
         )
         client.copilots.create_conversation(
+            agent_id=uuid.UUID(
+                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+            ),
             user_email="ravin@credal.ai",
         )
         """
+        _request: typing.Dict[str, typing.Any] = {"userEmail": user_email}
+        if agent_id is not OMIT:
+            _request["agentId"] = agent_id
         _response = self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "v0/copilots/createConversation"),
@@ -62,10 +78,10 @@ class CopilotsClient:
                     request_options.get("additional_query_parameters") if request_options is not None else None
                 )
             ),
-            json=jsonable_encoder({"userEmail": user_email})
+            json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder({"userEmail": user_email}),
+                **jsonable_encoder(_request),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(
@@ -96,6 +112,7 @@ class CopilotsClient:
         user_email: str,
         message_id: uuid.UUID,
         message_feedback: MessageFeedback,
+        agent_id: typing.Optional[uuid.UUID] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
@@ -111,6 +128,10 @@ class CopilotsClient:
 
         message_feedback : MessageFeedback
             The feedback provided by the user.
+
+
+        agent_id : typing.Optional[uuid.UUID]
+            Credal-generated agent ID to specify which agent to route the request to. This is required for all new API keys going forward.
 
 
         request_options : typing.Optional[RequestOptions]
@@ -135,12 +156,22 @@ class CopilotsClient:
             message_id=uuid.UUID(
                 "dd721cd8-4bf2-4b94-9869-258df3dab9dc",
             ),
+            agent_id=uuid.UUID(
+                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+            ),
             message_feedback=MessageFeedback(
                 feedback="NEGATIVE",
                 suggested_answer="Yes, Credal is SOC 2 compliant.",
             ),
         )
         """
+        _request: typing.Dict[str, typing.Any] = {
+            "userEmail": user_email,
+            "messageId": message_id,
+            "messageFeedback": message_feedback,
+        }
+        if agent_id is not OMIT:
+            _request["agentId"] = agent_id
         _response = self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "v0/copilots/provideMessageFeedback"),
@@ -149,14 +180,10 @@ class CopilotsClient:
                     request_options.get("additional_query_parameters") if request_options is not None else None
                 )
             ),
-            json=jsonable_encoder(
-                {"userEmail": user_email, "messageId": message_id, "messageFeedback": message_feedback}
-            )
+            json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder(
-                    {"userEmail": user_email, "messageId": message_id, "messageFeedback": message_feedback}
-                ),
+                **jsonable_encoder(_request),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(
@@ -186,6 +213,7 @@ class CopilotsClient:
         *,
         message: str,
         user_email: str,
+        agent_id: typing.Optional[uuid.UUID] = OMIT,
         conversation_id: typing.Optional[uuid.UUID] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SendAgentMessageResponse:
@@ -198,6 +226,10 @@ class CopilotsClient:
 
         user_email : str
             The user profile you want to use when sending the message.
+
+
+        agent_id : typing.Optional[uuid.UUID]
+            Credal-generated agent ID to specify which agent to route the request to. This is required for all new API keys going forward.
 
 
         conversation_id : typing.Optional[uuid.UUID]
@@ -213,17 +245,24 @@ class CopilotsClient:
 
         Examples
         --------
+        import uuid
+
         from credal.client import CredalApi
 
         client = CredalApi(
             api_key="YOUR_API_KEY",
         )
         client.copilots.send_message(
+            agent_id=uuid.UUID(
+                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+            ),
             message="Is Credal SOC 2 compliant?",
             user_email="ravin@credal.ai",
         )
         """
         _request: typing.Dict[str, typing.Any] = {"message": message, "userEmail": user_email}
+        if agent_id is not OMIT:
+            _request["agentId"] = agent_id
         if conversation_id is not OMIT:
             _request["conversationId"] = conversation_id
         _response = self._client_wrapper.httpx_client.request(
@@ -268,7 +307,11 @@ class AsyncCopilotsClient:
         self._client_wrapper = client_wrapper
 
     async def create_conversation(
-        self, *, user_email: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        user_email: str,
+        agent_id: typing.Optional[uuid.UUID] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateConversationResponse:
         """
         OPTIONAL. Create a new conversation with the Copilot. The conversation ID can be used in the sendMessage endpoint. The sendMessage endpoint automatically creates new conversations upon first request, but calling this endpoint can simplify certain use cases where it is helpful for the application to have the conversation ID before the first message is sent.
@@ -277,6 +320,10 @@ class AsyncCopilotsClient:
         ----------
         user_email : str
             End-user for the conversation.
+
+
+        agent_id : typing.Optional[uuid.UUID]
+            Credal-generated agent ID to specify which agent to route the request to. This is required for all new API keys going forward.
 
 
         request_options : typing.Optional[RequestOptions]
@@ -288,15 +335,23 @@ class AsyncCopilotsClient:
 
         Examples
         --------
+        import uuid
+
         from credal.client import AsyncCredalApi
 
         client = AsyncCredalApi(
             api_key="YOUR_API_KEY",
         )
         await client.copilots.create_conversation(
+            agent_id=uuid.UUID(
+                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+            ),
             user_email="ravin@credal.ai",
         )
         """
+        _request: typing.Dict[str, typing.Any] = {"userEmail": user_email}
+        if agent_id is not OMIT:
+            _request["agentId"] = agent_id
         _response = await self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "v0/copilots/createConversation"),
@@ -305,10 +360,10 @@ class AsyncCopilotsClient:
                     request_options.get("additional_query_parameters") if request_options is not None else None
                 )
             ),
-            json=jsonable_encoder({"userEmail": user_email})
+            json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder({"userEmail": user_email}),
+                **jsonable_encoder(_request),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(
@@ -339,6 +394,7 @@ class AsyncCopilotsClient:
         user_email: str,
         message_id: uuid.UUID,
         message_feedback: MessageFeedback,
+        agent_id: typing.Optional[uuid.UUID] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
@@ -354,6 +410,10 @@ class AsyncCopilotsClient:
 
         message_feedback : MessageFeedback
             The feedback provided by the user.
+
+
+        agent_id : typing.Optional[uuid.UUID]
+            Credal-generated agent ID to specify which agent to route the request to. This is required for all new API keys going forward.
 
 
         request_options : typing.Optional[RequestOptions]
@@ -378,12 +438,22 @@ class AsyncCopilotsClient:
             message_id=uuid.UUID(
                 "dd721cd8-4bf2-4b94-9869-258df3dab9dc",
             ),
+            agent_id=uuid.UUID(
+                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+            ),
             message_feedback=MessageFeedback(
                 feedback="NEGATIVE",
                 suggested_answer="Yes, Credal is SOC 2 compliant.",
             ),
         )
         """
+        _request: typing.Dict[str, typing.Any] = {
+            "userEmail": user_email,
+            "messageId": message_id,
+            "messageFeedback": message_feedback,
+        }
+        if agent_id is not OMIT:
+            _request["agentId"] = agent_id
         _response = await self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "v0/copilots/provideMessageFeedback"),
@@ -392,14 +462,10 @@ class AsyncCopilotsClient:
                     request_options.get("additional_query_parameters") if request_options is not None else None
                 )
             ),
-            json=jsonable_encoder(
-                {"userEmail": user_email, "messageId": message_id, "messageFeedback": message_feedback}
-            )
+            json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder(
-                    {"userEmail": user_email, "messageId": message_id, "messageFeedback": message_feedback}
-                ),
+                **jsonable_encoder(_request),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(
@@ -429,6 +495,7 @@ class AsyncCopilotsClient:
         *,
         message: str,
         user_email: str,
+        agent_id: typing.Optional[uuid.UUID] = OMIT,
         conversation_id: typing.Optional[uuid.UUID] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SendAgentMessageResponse:
@@ -441,6 +508,10 @@ class AsyncCopilotsClient:
 
         user_email : str
             The user profile you want to use when sending the message.
+
+
+        agent_id : typing.Optional[uuid.UUID]
+            Credal-generated agent ID to specify which agent to route the request to. This is required for all new API keys going forward.
 
 
         conversation_id : typing.Optional[uuid.UUID]
@@ -456,17 +527,24 @@ class AsyncCopilotsClient:
 
         Examples
         --------
+        import uuid
+
         from credal.client import AsyncCredalApi
 
         client = AsyncCredalApi(
             api_key="YOUR_API_KEY",
         )
         await client.copilots.send_message(
+            agent_id=uuid.UUID(
+                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+            ),
             message="Is Credal SOC 2 compliant?",
             user_email="ravin@credal.ai",
         )
         """
         _request: typing.Dict[str, typing.Any] = {"message": message, "userEmail": user_email}
+        if agent_id is not OMIT:
+            _request["agentId"] = agent_id
         if conversation_id is not OMIT:
             _request["conversationId"] = conversation_id
         _response = await self._client_wrapper.httpx_client.request(
