@@ -27,9 +27,9 @@ class SearchClient:
     def search_document_collection(
         self,
         *,
+        collection_id: uuid.UUID,
         search_query: str,
         user_email: str,
-        collection_id: typing.Optional[uuid.UUID] = OMIT,
         structured_query_filters: typing.Optional[typing.Sequence[SingleFieldFilter]] = OMIT,
         search_options: typing.Optional[DocumentCollectionSearchOptions] = OMIT,
         metadata_filter_expression: typing.Optional[str] = OMIT,
@@ -40,13 +40,13 @@ class SearchClient:
 
         Parameters
         ----------
+        collection_id : uuid.UUID
+
         search_query : str
 
         user_email : str
             The email of the user making the search request for permissions reduction.
 
-
-        collection_id : typing.Optional[uuid.UUID]
 
         structured_query_filters : typing.Optional[typing.Sequence[SingleFieldFilter]]
             The structured query filters to apply to the search query.
@@ -98,9 +98,11 @@ class SearchClient:
             ),
         )
         """
-        _request: typing.Dict[str, typing.Any] = {"searchQuery": search_query, "userEmail": user_email}
-        if collection_id is not OMIT:
-            _request["collectionId"] = collection_id
+        _request: typing.Dict[str, typing.Any] = {
+            "collectionId": collection_id,
+            "searchQuery": search_query,
+            "userEmail": user_email,
+        }
         if structured_query_filters is not OMIT:
             _request["structuredQueryFilters"] = structured_query_filters
         if search_options is not OMIT:
@@ -151,9 +153,9 @@ class AsyncSearchClient:
     async def search_document_collection(
         self,
         *,
+        collection_id: uuid.UUID,
         search_query: str,
         user_email: str,
-        collection_id: typing.Optional[uuid.UUID] = OMIT,
         structured_query_filters: typing.Optional[typing.Sequence[SingleFieldFilter]] = OMIT,
         search_options: typing.Optional[DocumentCollectionSearchOptions] = OMIT,
         metadata_filter_expression: typing.Optional[str] = OMIT,
@@ -164,13 +166,13 @@ class AsyncSearchClient:
 
         Parameters
         ----------
+        collection_id : uuid.UUID
+
         search_query : str
 
         user_email : str
             The email of the user making the search request for permissions reduction.
 
-
-        collection_id : typing.Optional[uuid.UUID]
 
         structured_query_filters : typing.Optional[typing.Sequence[SingleFieldFilter]]
             The structured query filters to apply to the search query.
@@ -222,9 +224,11 @@ class AsyncSearchClient:
             ),
         )
         """
-        _request: typing.Dict[str, typing.Any] = {"searchQuery": search_query, "userEmail": user_email}
-        if collection_id is not OMIT:
-            _request["collectionId"] = collection_id
+        _request: typing.Dict[str, typing.Any] = {
+            "collectionId": collection_id,
+            "searchQuery": search_query,
+            "userEmail": user_email,
+        }
         if structured_query_filters is not OMIT:
             _request["structuredQueryFilters"] = structured_query_filters
         if search_options is not OMIT:
