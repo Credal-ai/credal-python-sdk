@@ -2,15 +2,21 @@
 
 from . import common, copilots, document_catalog, document_collections, permissions_service, search, users
 from .common import (
+    Collaborator,
     ExternalResourceId,
     ResourceIdentifier,
     ResourceIdentifier_ExternalResourceId,
     ResourceIdentifier_Url,
     ResourceType,
+    Role,
     Url,
 )
 from .copilots import (
+    AiEndpointConfiguration,
+    Configuration,
     CreateConversationResponse,
+    CreateCopilotResponse,
+    DeleteCopilotResponse,
     FeedbackEnum,
     InsertedAuditLog,
     MessageBlocked,
@@ -25,6 +31,7 @@ from .copilots import (
     SendMessageResponse_BlockedResult,
 )
 from .document_catalog import DocumentMetadataPatch, DocumentMetadataPatchRequest, UploadDocumentResponse
+from .document_collections import CreateCollectionResponse, DeleteCollectionResponse
 from .environment import CredalApiEnvironment
 from .permissions_service import (
     Action,
@@ -53,12 +60,19 @@ from .version import __version__
 
 __all__ = [
     "Action",
+    "AiEndpointConfiguration",
     "AuthorizedResource",
     "AuthorizedResourceListPage",
     "CheckBulkResourcesAuthorizationResponse",
     "CheckResourceAuthorizationResponse",
+    "Collaborator",
+    "Configuration",
+    "CreateCollectionResponse",
     "CreateConversationResponse",
+    "CreateCopilotResponse",
     "CredalApiEnvironment",
+    "DeleteCollectionResponse",
+    "DeleteCopilotResponse",
     "DocumentCollectionSearchOptions",
     "DocumentCollectionSearchResult",
     "DocumentMetadataPatch",
@@ -83,6 +97,7 @@ __all__ = [
     "ResourceIdentifier_Url",
     "ResourceType",
     "ResponseChunk",
+    "Role",
     "SearchDocumentCollectionResponse",
     "SearchResultChunk",
     "SendAgentMessageResponse",

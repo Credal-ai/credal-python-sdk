@@ -5,6 +5,7 @@ import urllib.parse
 import uuid
 from json.decoder import JSONDecodeError
 
+from ..common.types.collaborator import Collaborator
 from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.jsonable_encoder import jsonable_encoder
@@ -12,7 +13,10 @@ from ..core.pydantic_utilities import pydantic_v1
 from ..core.query_encoder import encode_query
 from ..core.remove_none_from_dict import remove_none_from_dict
 from ..core.request_options import RequestOptions
+from .types.configuration import Configuration
 from .types.create_conversation_response import CreateConversationResponse
+from .types.create_copilot_response import CreateCopilotResponse
+from .types.delete_copilot_response import DeleteCopilotResponse
 from .types.message_feedback import MessageFeedback
 from .types.send_agent_message_response import SendAgentMessageResponse
 
@@ -24,16 +28,103 @@ class CopilotsClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
+    def create_copilot(
+        self,
+        *,
+        name: str,
+        description: str,
+        collaborators: typing.Sequence[Collaborator],
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CreateCopilotResponse:
+        """
+        Create a new copilot. The API key used will be added to the copilot for future Requests
+
+        Parameters
+        ----------
+        name : str
+            A descriptive name for the copilot.
+
+
+        description : str
+            An in depth name for the copilot's function. Useful for routing requests to the right copilot.
+
+
+        collaborators : typing.Sequence[Collaborator]
+            A list of collaborator emails and roles that will have access to the copilot.
+
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreateCopilotResponse
+
+        Examples
+        --------
+        from credal import Collaborator
+        from credal.client import CredalApi
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.copilots.create_copilot(
+            name="Customer Copilot",
+            description="This copilot is used to answer customer requests based on internal documentation.",
+            collaborators=[
+                Collaborator(
+                    email="test@gmail.com",
+                    role="editor",
+                )
+            ],
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            method="POST",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "v0/copilots/createCopilot"),
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
+            ),
+            json=jsonable_encoder({"name": name, "description": description, "collaborators": collaborators})
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder({"name": name, "description": description, "collaborators": collaborators}),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else self._client_wrapper.get_timeout(),
+            retries=0,
+            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+        )
+        if 200 <= _response.status_code < 300:
+            return pydantic_v1.parse_obj_as(CreateCopilotResponse, _response.json())  # type: ignore
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
     def create_conversation(
         self, *, agent_id: uuid.UUID, user_email: str, request_options: typing.Optional[RequestOptions] = None
     ) -> CreateConversationResponse:
         """
-        OPTIONAL. Create a new conversation with the Copilot. The conversation ID can be used in the sendMessage endpoint. The sendMessage endpoint automatically creates new conversations upon first request, but calling this endpoint can simplify certain use cases where it is helpful for the application to have the conversation ID before the first message is sent.
+        OPTIONAL. Create a new conversation with the Copilot. The conversation ID can be used in the `sendMessage` endpoint. The `sendMessage` endpoint automatically creates new conversations upon first request, but calling this endpoint can simplify certain use cases where it is helpful for the application to have the conversation ID before the first message is sent.
 
         Parameters
         ----------
         agent_id : uuid.UUID
-            Credal-generated agent ID to specify which agent to route the request to. This is required for all new API keys going forward.
+            Credal-generated Copilot ID to specify which agent to route the request to.
 
 
         user_email : str
@@ -112,7 +203,7 @@ class CopilotsClient:
         Parameters
         ----------
         agent_id : uuid.UUID
-            Credal-generated agent ID to specify which agent to route the request to. This is required for all new API keys going forward.
+            Credal-generated Copilot ID to specify which agent to route the request to.
 
 
         user_email : str
@@ -221,7 +312,7 @@ class CopilotsClient:
         Parameters
         ----------
         agent_id : uuid.UUID
-            Credal-generated agent ID to specify which agent to route the request to. This is required for all new API keys going forward.
+            Credal-generated Copilot ID to specify which agent to route the request to.
 
 
         message : str
@@ -299,21 +390,425 @@ class CopilotsClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
+    def add_collection_to_copilot(
+        self,
+        *,
+        copilot_id: uuid.UUID,
+        collection_id: uuid.UUID,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
+        """
+        Link a collection with a copilot. The API Key used must be added to both the collection and the copilot beforehand.
+
+        Parameters
+        ----------
+        copilot_id : uuid.UUID
+            Credal-generated copilot ID to add the collection to.
+
+
+        collection_id : uuid.UUID
+            Credal-generated collection ID to add.
+
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import uuid
+
+        from credal.client import CredalApi
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.copilots.add_collection_to_copilot(
+            copilot_id=uuid.UUID(
+                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+            ),
+            collection_id=uuid.UUID(
+                "def1055f-83c5-43d6-b558-f7a38e7b299e",
+            ),
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            method="POST",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "v0/copilots/addCollectionToCopilot"),
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
+            ),
+            json=jsonable_encoder({"copilotId": copilot_id, "collectionId": collection_id})
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder({"copilotId": copilot_id, "collectionId": collection_id}),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else self._client_wrapper.get_timeout(),
+            retries=0,
+            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+        )
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def remove_collection_from_copilot(
+        self,
+        *,
+        copilot_id: uuid.UUID,
+        collection_id: uuid.UUID,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
+        """
+        Unlink a collection with a copilot. The API Key used must be added to both the collection and the copilot beforehand.
+
+        Parameters
+        ----------
+        copilot_id : uuid.UUID
+            Credal-generated copilot ID to add the collection to.
+
+
+        collection_id : uuid.UUID
+            Credal-generated collection ID to add.
+
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import uuid
+
+        from credal.client import CredalApi
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.copilots.remove_collection_from_copilot(
+            copilot_id=uuid.UUID(
+                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+            ),
+            collection_id=uuid.UUID(
+                "def1055f-83c5-43d6-b558-f7a38e7b299e",
+            ),
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            method="POST",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", "v0/copilots/removeCollectionFromCopilot"
+            ),
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
+            ),
+            json=jsonable_encoder({"copilotId": copilot_id, "collectionId": collection_id})
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder({"copilotId": copilot_id, "collectionId": collection_id}),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else self._client_wrapper.get_timeout(),
+            retries=0,
+            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+        )
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def update_configuration(
+        self,
+        *,
+        copilot_id: uuid.UUID,
+        configuration: Configuration,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
+        """
+        Update the configuration for a copilot
+
+        Parameters
+        ----------
+        copilot_id : uuid.UUID
+            Credal-generated copilot ID to add the collection to.
+
+
+        configuration : Configuration
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import uuid
+
+        from credal import AiEndpointConfiguration, Configuration
+        from credal.client import CredalApi
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.copilots.update_configuration(
+            copilot_id=uuid.UUID(
+                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+            ),
+            configuration=Configuration(
+                name="Customer Copilot",
+                description="This copilot is used to answer customer requests based on internal documentation.",
+                prompt="You are a polite, helpful assistant used to answer customer requests.",
+                ai_endpoint_configuration=AiEndpointConfiguration(
+                    base_url="https://api.openai.com/v1/",
+                    api_key="<YOUR_API_KEY_HERE>",
+                ),
+            ),
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            method="POST",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "v0/copilots/updateConfiguration"),
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
+            ),
+            json=jsonable_encoder({"copilotId": copilot_id, "configuration": configuration})
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder({"copilotId": copilot_id, "configuration": configuration}),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else self._client_wrapper.get_timeout(),
+            retries=0,
+            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+        )
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def delete_copilot(
+        self, *, id: uuid.UUID, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteCopilotResponse:
+        """
+        Parameters
+        ----------
+        id : uuid.UUID
+            Copilot ID
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteCopilotResponse
+
+        Examples
+        --------
+        import uuid
+
+        from credal.client import CredalApi
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.copilots.delete_copilot(
+            id=uuid.UUID(
+                "ac20e6ba-0bae-11ef-b25a-efca73df4c3a",
+            ),
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            method="DELETE",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "v0/copilots/deleteCopilot"),
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
+            ),
+            json=jsonable_encoder({"id": id})
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder({"id": id}),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else self._client_wrapper.get_timeout(),
+            retries=0,
+            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+        )
+        if 200 <= _response.status_code < 300:
+            return pydantic_v1.parse_obj_as(DeleteCopilotResponse, _response.json())  # type: ignore
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
 
 class AsyncCopilotsClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
+    async def create_copilot(
+        self,
+        *,
+        name: str,
+        description: str,
+        collaborators: typing.Sequence[Collaborator],
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CreateCopilotResponse:
+        """
+        Create a new copilot. The API key used will be added to the copilot for future Requests
+
+        Parameters
+        ----------
+        name : str
+            A descriptive name for the copilot.
+
+
+        description : str
+            An in depth name for the copilot's function. Useful for routing requests to the right copilot.
+
+
+        collaborators : typing.Sequence[Collaborator]
+            A list of collaborator emails and roles that will have access to the copilot.
+
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreateCopilotResponse
+
+        Examples
+        --------
+        from credal import Collaborator
+        from credal.client import AsyncCredalApi
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        await client.copilots.create_copilot(
+            name="Customer Copilot",
+            description="This copilot is used to answer customer requests based on internal documentation.",
+            collaborators=[
+                Collaborator(
+                    email="test@gmail.com",
+                    role="editor",
+                )
+            ],
+        )
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            method="POST",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "v0/copilots/createCopilot"),
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
+            ),
+            json=jsonable_encoder({"name": name, "description": description, "collaborators": collaborators})
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder({"name": name, "description": description, "collaborators": collaborators}),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else self._client_wrapper.get_timeout(),
+            retries=0,
+            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+        )
+        if 200 <= _response.status_code < 300:
+            return pydantic_v1.parse_obj_as(CreateCopilotResponse, _response.json())  # type: ignore
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
     async def create_conversation(
         self, *, agent_id: uuid.UUID, user_email: str, request_options: typing.Optional[RequestOptions] = None
     ) -> CreateConversationResponse:
         """
-        OPTIONAL. Create a new conversation with the Copilot. The conversation ID can be used in the sendMessage endpoint. The sendMessage endpoint automatically creates new conversations upon first request, but calling this endpoint can simplify certain use cases where it is helpful for the application to have the conversation ID before the first message is sent.
+        OPTIONAL. Create a new conversation with the Copilot. The conversation ID can be used in the `sendMessage` endpoint. The `sendMessage` endpoint automatically creates new conversations upon first request, but calling this endpoint can simplify certain use cases where it is helpful for the application to have the conversation ID before the first message is sent.
 
         Parameters
         ----------
         agent_id : uuid.UUID
-            Credal-generated agent ID to specify which agent to route the request to. This is required for all new API keys going forward.
+            Credal-generated Copilot ID to specify which agent to route the request to.
 
 
         user_email : str
@@ -392,7 +887,7 @@ class AsyncCopilotsClient:
         Parameters
         ----------
         agent_id : uuid.UUID
-            Credal-generated agent ID to specify which agent to route the request to. This is required for all new API keys going forward.
+            Credal-generated Copilot ID to specify which agent to route the request to.
 
 
         user_email : str
@@ -501,7 +996,7 @@ class AsyncCopilotsClient:
         Parameters
         ----------
         agent_id : uuid.UUID
-            Credal-generated agent ID to specify which agent to route the request to. This is required for all new API keys going forward.
+            Credal-generated Copilot ID to specify which agent to route the request to.
 
 
         message : str
@@ -573,6 +1068,323 @@ class AsyncCopilotsClient:
         )
         if 200 <= _response.status_code < 300:
             return pydantic_v1.parse_obj_as(SendAgentMessageResponse, _response.json())  # type: ignore
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def add_collection_to_copilot(
+        self,
+        *,
+        copilot_id: uuid.UUID,
+        collection_id: uuid.UUID,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
+        """
+        Link a collection with a copilot. The API Key used must be added to both the collection and the copilot beforehand.
+
+        Parameters
+        ----------
+        copilot_id : uuid.UUID
+            Credal-generated copilot ID to add the collection to.
+
+
+        collection_id : uuid.UUID
+            Credal-generated collection ID to add.
+
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import uuid
+
+        from credal.client import AsyncCredalApi
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        await client.copilots.add_collection_to_copilot(
+            copilot_id=uuid.UUID(
+                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+            ),
+            collection_id=uuid.UUID(
+                "def1055f-83c5-43d6-b558-f7a38e7b299e",
+            ),
+        )
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            method="POST",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "v0/copilots/addCollectionToCopilot"),
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
+            ),
+            json=jsonable_encoder({"copilotId": copilot_id, "collectionId": collection_id})
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder({"copilotId": copilot_id, "collectionId": collection_id}),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else self._client_wrapper.get_timeout(),
+            retries=0,
+            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+        )
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def remove_collection_from_copilot(
+        self,
+        *,
+        copilot_id: uuid.UUID,
+        collection_id: uuid.UUID,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
+        """
+        Unlink a collection with a copilot. The API Key used must be added to both the collection and the copilot beforehand.
+
+        Parameters
+        ----------
+        copilot_id : uuid.UUID
+            Credal-generated copilot ID to add the collection to.
+
+
+        collection_id : uuid.UUID
+            Credal-generated collection ID to add.
+
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import uuid
+
+        from credal.client import AsyncCredalApi
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        await client.copilots.remove_collection_from_copilot(
+            copilot_id=uuid.UUID(
+                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+            ),
+            collection_id=uuid.UUID(
+                "def1055f-83c5-43d6-b558-f7a38e7b299e",
+            ),
+        )
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            method="POST",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", "v0/copilots/removeCollectionFromCopilot"
+            ),
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
+            ),
+            json=jsonable_encoder({"copilotId": copilot_id, "collectionId": collection_id})
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder({"copilotId": copilot_id, "collectionId": collection_id}),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else self._client_wrapper.get_timeout(),
+            retries=0,
+            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+        )
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def update_configuration(
+        self,
+        *,
+        copilot_id: uuid.UUID,
+        configuration: Configuration,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
+        """
+        Update the configuration for a copilot
+
+        Parameters
+        ----------
+        copilot_id : uuid.UUID
+            Credal-generated copilot ID to add the collection to.
+
+
+        configuration : Configuration
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import uuid
+
+        from credal import AiEndpointConfiguration, Configuration
+        from credal.client import AsyncCredalApi
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        await client.copilots.update_configuration(
+            copilot_id=uuid.UUID(
+                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+            ),
+            configuration=Configuration(
+                name="Customer Copilot",
+                description="This copilot is used to answer customer requests based on internal documentation.",
+                prompt="You are a polite, helpful assistant used to answer customer requests.",
+                ai_endpoint_configuration=AiEndpointConfiguration(
+                    base_url="https://api.openai.com/v1/",
+                    api_key="<YOUR_API_KEY_HERE>",
+                ),
+            ),
+        )
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            method="POST",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "v0/copilots/updateConfiguration"),
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
+            ),
+            json=jsonable_encoder({"copilotId": copilot_id, "configuration": configuration})
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder({"copilotId": copilot_id, "configuration": configuration}),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else self._client_wrapper.get_timeout(),
+            retries=0,
+            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+        )
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def delete_copilot(
+        self, *, id: uuid.UUID, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteCopilotResponse:
+        """
+        Parameters
+        ----------
+        id : uuid.UUID
+            Copilot ID
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteCopilotResponse
+
+        Examples
+        --------
+        import uuid
+
+        from credal.client import AsyncCredalApi
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        await client.copilots.delete_copilot(
+            id=uuid.UUID(
+                "ac20e6ba-0bae-11ef-b25a-efca73df4c3a",
+            ),
+        )
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            method="DELETE",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "v0/copilots/deleteCopilot"),
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
+            ),
+            json=jsonable_encoder({"id": id})
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder({"id": id}),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else self._client_wrapper.get_timeout(),
+            retries=0,
+            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+        )
+        if 200 <= _response.status_code < 300:
+            return pydantic_v1.parse_obj_as(DeleteCopilotResponse, _response.json())  # type: ignore
         try:
             _response_json = _response.json()
         except JSONDecodeError:
