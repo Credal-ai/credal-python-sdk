@@ -31,7 +31,13 @@ from .copilots import (
     SendMessageResponse_BlockedResult,
 )
 from .document_catalog import DocumentMetadataPatch, DocumentMetadataPatchRequest, UploadDocumentResponse
-from .document_collections import CreateCollectionResponse, DeleteCollectionResponse
+from .document_collections import (
+    CreateCollectionResponse,
+    DeleteCollectionResponse,
+    MongoCollectionSyncConfig,
+    MongoCollectionSyncResponse,
+    MongoSourceFieldsConfig,
+)
 from .environment import CredalApiEnvironment
 from .permissions_service import (
     Action,
@@ -84,6 +90,9 @@ __all__ = [
     "MessageBlocked",
     "MessageFeedback",
     "MessageReply",
+    "MongoCollectionSyncConfig",
+    "MongoCollectionSyncResponse",
+    "MongoSourceFieldsConfig",
     "Operator",
     "PolicyTrigger",
     "Principal",
