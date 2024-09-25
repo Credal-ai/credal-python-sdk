@@ -16,6 +16,8 @@ from ..core.remove_none_from_dict import remove_none_from_dict
 from ..core.request_options import RequestOptions
 from .types.create_collection_response import CreateCollectionResponse
 from .types.delete_collection_response import DeleteCollectionResponse
+from .types.mongo_collection_sync_config import MongoCollectionSyncConfig
+from .types.mongo_collection_sync_response import MongoCollectionSyncResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -364,6 +366,192 @@ class DocumentCollectionsClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
+    def create_mongo_collection_sync(
+        self,
+        *,
+        collection_id: uuid.UUID,
+        mongo_uri: str,
+        config: MongoCollectionSyncConfig,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> MongoCollectionSyncResponse:
+        """
+        Credal lets you easily sync your MongoDB data for use in Collections and Copilots. Create a new sync from a MongoDB collection to a Credal collection.
+
+        Parameters
+        ----------
+        collection_id : uuid.UUID
+
+        mongo_uri : str
+
+        config : MongoCollectionSyncConfig
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        MongoCollectionSyncResponse
+
+        Examples
+        --------
+        import uuid
+
+        from credal import MongoCollectionSyncConfig, MongoSourceFieldsConfig
+        from credal.client import CredalApi
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.document_collections.create_mongo_collection_sync(
+            mongo_uri="mongodb+srv://cluster0.hzwklqn.mongodb.net/Cluster0?retryWrites=true&w=majority",
+            collection_id=uuid.UUID(
+                "ac20e6ba-0bae-11ef-b25a-efca73df4c3a",
+            ),
+            config=MongoCollectionSyncConfig(
+                sync_name="My sales transcripts",
+                collection_name="myCollection",
+                filter_expression={"status": {"$ne": "disabled"}},
+                source_fields=MongoSourceFieldsConfig(
+                    body="body",
+                    source_name="meetingName",
+                    source_system_updated="transcriptDatetime",
+                    source_url="link",
+                ),
+            ),
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            method="POST",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", "v0/documentCollections/mongodb/createMongoSync"
+            ),
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
+            ),
+            json=jsonable_encoder({"collectionId": collection_id, "mongoURI": mongo_uri, "config": config})
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder({"collectionId": collection_id, "mongoURI": mongo_uri, "config": config}),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else self._client_wrapper.get_timeout(),
+            retries=0,
+            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+        )
+        if 200 <= _response.status_code < 300:
+            return pydantic_v1.parse_obj_as(MongoCollectionSyncResponse, _response.json())  # type: ignore
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def update_mongo_collection_sync(
+        self,
+        *,
+        mongo_credential_id: uuid.UUID,
+        mongo_uri: str,
+        config: MongoCollectionSyncConfig,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> MongoCollectionSyncResponse:
+        """
+        Credal lets you easily sync your MongoDB data for use in Collections and Copilots. Update an existing sync from a MongoDB collection to a Credal collection via the `mongoCredentialId`, to disambiguate between multiple potential syncs to a given collection.
+
+        Parameters
+        ----------
+        mongo_credential_id : uuid.UUID
+
+        mongo_uri : str
+
+        config : MongoCollectionSyncConfig
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        MongoCollectionSyncResponse
+
+        Examples
+        --------
+        import uuid
+
+        from credal import MongoCollectionSyncConfig, MongoSourceFieldsConfig
+        from credal.client import CredalApi
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.document_collections.update_mongo_collection_sync(
+            mongo_uri="mongodb+srv://cluster0.hzwklqn.mongodb.net/Cluster0?retryWrites=true&w=majority",
+            mongo_credential_id=uuid.UUID(
+                "5988ed76-6ee1-11ef-97dd-1fca54b7c4bc",
+            ),
+            config=MongoCollectionSyncConfig(
+                sync_name="My recent summarized sales transcripts",
+                collection_name="myCollection",
+                filter_expression={
+                    "transcriptDatetime": {"$gt": "2023-01-01T00:00:00.000Z"}
+                },
+                source_fields=MongoSourceFieldsConfig(
+                    body="transcriptSummary",
+                    source_name="meetingName",
+                    source_system_updated="transcriptDatetime",
+                    source_url="link",
+                ),
+            ),
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            method="POST",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", "v0/documentCollections/mongodb/updateMongoSync"
+            ),
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
+            ),
+            json=jsonable_encoder({"mongoCredentialId": mongo_credential_id, "mongoURI": mongo_uri, "config": config})
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder({"mongoCredentialId": mongo_credential_id, "mongoURI": mongo_uri, "config": config}),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else self._client_wrapper.get_timeout(),
+            retries=0,
+            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+        )
+        if 200 <= _response.status_code < 300:
+            return pydantic_v1.parse_obj_as(MongoCollectionSyncResponse, _response.json())  # type: ignore
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
 
 class AsyncDocumentCollectionsClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
@@ -702,6 +890,192 @@ class AsyncDocumentCollectionsClient:
         )
         if 200 <= _response.status_code < 300:
             return pydantic_v1.parse_obj_as(DeleteCollectionResponse, _response.json())  # type: ignore
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def create_mongo_collection_sync(
+        self,
+        *,
+        collection_id: uuid.UUID,
+        mongo_uri: str,
+        config: MongoCollectionSyncConfig,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> MongoCollectionSyncResponse:
+        """
+        Credal lets you easily sync your MongoDB data for use in Collections and Copilots. Create a new sync from a MongoDB collection to a Credal collection.
+
+        Parameters
+        ----------
+        collection_id : uuid.UUID
+
+        mongo_uri : str
+
+        config : MongoCollectionSyncConfig
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        MongoCollectionSyncResponse
+
+        Examples
+        --------
+        import uuid
+
+        from credal import MongoCollectionSyncConfig, MongoSourceFieldsConfig
+        from credal.client import AsyncCredalApi
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        await client.document_collections.create_mongo_collection_sync(
+            mongo_uri="mongodb+srv://cluster0.hzwklqn.mongodb.net/Cluster0?retryWrites=true&w=majority",
+            collection_id=uuid.UUID(
+                "ac20e6ba-0bae-11ef-b25a-efca73df4c3a",
+            ),
+            config=MongoCollectionSyncConfig(
+                sync_name="My sales transcripts",
+                collection_name="myCollection",
+                filter_expression={"status": {"$ne": "disabled"}},
+                source_fields=MongoSourceFieldsConfig(
+                    body="body",
+                    source_name="meetingName",
+                    source_system_updated="transcriptDatetime",
+                    source_url="link",
+                ),
+            ),
+        )
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            method="POST",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", "v0/documentCollections/mongodb/createMongoSync"
+            ),
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
+            ),
+            json=jsonable_encoder({"collectionId": collection_id, "mongoURI": mongo_uri, "config": config})
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder({"collectionId": collection_id, "mongoURI": mongo_uri, "config": config}),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else self._client_wrapper.get_timeout(),
+            retries=0,
+            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+        )
+        if 200 <= _response.status_code < 300:
+            return pydantic_v1.parse_obj_as(MongoCollectionSyncResponse, _response.json())  # type: ignore
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def update_mongo_collection_sync(
+        self,
+        *,
+        mongo_credential_id: uuid.UUID,
+        mongo_uri: str,
+        config: MongoCollectionSyncConfig,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> MongoCollectionSyncResponse:
+        """
+        Credal lets you easily sync your MongoDB data for use in Collections and Copilots. Update an existing sync from a MongoDB collection to a Credal collection via the `mongoCredentialId`, to disambiguate between multiple potential syncs to a given collection.
+
+        Parameters
+        ----------
+        mongo_credential_id : uuid.UUID
+
+        mongo_uri : str
+
+        config : MongoCollectionSyncConfig
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        MongoCollectionSyncResponse
+
+        Examples
+        --------
+        import uuid
+
+        from credal import MongoCollectionSyncConfig, MongoSourceFieldsConfig
+        from credal.client import AsyncCredalApi
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        await client.document_collections.update_mongo_collection_sync(
+            mongo_uri="mongodb+srv://cluster0.hzwklqn.mongodb.net/Cluster0?retryWrites=true&w=majority",
+            mongo_credential_id=uuid.UUID(
+                "5988ed76-6ee1-11ef-97dd-1fca54b7c4bc",
+            ),
+            config=MongoCollectionSyncConfig(
+                sync_name="My recent summarized sales transcripts",
+                collection_name="myCollection",
+                filter_expression={
+                    "transcriptDatetime": {"$gt": "2023-01-01T00:00:00.000Z"}
+                },
+                source_fields=MongoSourceFieldsConfig(
+                    body="transcriptSummary",
+                    source_name="meetingName",
+                    source_system_updated="transcriptDatetime",
+                    source_url="link",
+                ),
+            ),
+        )
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            method="POST",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", "v0/documentCollections/mongodb/updateMongoSync"
+            ),
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
+            ),
+            json=jsonable_encoder({"mongoCredentialId": mongo_credential_id, "mongoURI": mongo_uri, "config": config})
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder({"mongoCredentialId": mongo_credential_id, "mongoURI": mongo_uri, "config": config}),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else self._client_wrapper.get_timeout(),
+            retries=0,
+            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+        )
+        if 200 <= _response.status_code < 300:
+            return pydantic_v1.parse_obj_as(MongoCollectionSyncResponse, _response.json())  # type: ignore
         try:
             _response_json = _response.json()
         except JSONDecodeError:
