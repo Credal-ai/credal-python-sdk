@@ -12,6 +12,7 @@ from .inserted_audit_log import InsertedAuditLog
 from .policy_trigger import PolicyTrigger
 from .referenced_source import ReferencedSource
 from .response_chunk import ResponseChunk
+from .web_search_result import WebSearchResult
 
 
 class SendMessageResponse_AiResponseResult(pydantic_v1.BaseModel):
@@ -22,6 +23,7 @@ class SendMessageResponse_AiResponseResult(pydantic_v1.BaseModel):
     inserted_audit_log: InsertedAuditLog
     referenced_sources: typing.List[ReferencedSource] = pydantic_v1.Field(alias="referencedSources")
     sources_in_data_context: typing.List[ReferencedSource] = pydantic_v1.Field(alias="sourcesInDataContext")
+    web_search_results: typing.List[WebSearchResult] = pydantic_v1.Field(alias="webSearchResults")
     message_id: uuid.UUID = pydantic_v1.Field(alias="messageId")
     type: typing.Literal["ai_response_result"] = "ai_response_result"
 

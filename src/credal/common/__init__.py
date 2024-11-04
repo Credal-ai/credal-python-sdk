@@ -3,6 +3,7 @@
 from .types import (
     Collaborator,
     ExternalResourceId,
+    Operator,
     ResourceIdentifier,
     ResourceIdentifier_ExternalResourceId,
     ResourceIdentifier_Url,
@@ -14,6 +15,7 @@ from .types import (
 __all__ = [
     "Collaborator",
     "ExternalResourceId",
+    "Operator",
     "ResourceIdentifier",
     "ResourceIdentifier_ExternalResourceId",
     "ResourceIdentifier_Url",
