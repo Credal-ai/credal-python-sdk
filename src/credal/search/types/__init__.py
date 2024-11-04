@@ -2,7 +2,6 @@
 
 from .document_collection_search_options import DocumentCollectionSearchOptions
 from .document_collection_search_result import DocumentCollectionSearchResult
-from .operator import Operator
 from .search_document_collection_response import SearchDocumentCollectionResponse
 from .search_result_chunk import SearchResultChunk
 from .single_field_filter import SingleFieldFilter
@@ -10,7 +9,6 @@ from .single_field_filter import SingleFieldFilter
 __all__ = [
     "DocumentCollectionSearchOptions",
     "DocumentCollectionSearchResult",
-    "Operator",
     "SearchDocumentCollectionResponse",
     "SearchResultChunk",
     "SingleFieldFilter",

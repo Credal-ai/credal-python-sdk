@@ -8,10 +8,10 @@ from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 
 
-class SingleFieldFilter(pydantic_v1.BaseModel):
+class NumberFieldSchema(pydantic_v1.BaseModel):
     field: str
     operator: Operator
-    value: str
+    value: int
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

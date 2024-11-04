@@ -3,7 +3,6 @@
 from .types import (
     DocumentCollectionSearchOptions,
     DocumentCollectionSearchResult,
-    Operator,
     SearchDocumentCollectionResponse,
     SearchResultChunk,
     SingleFieldFilter,
@@ -12,7 +11,6 @@ from .types import (
 __all__ = [
     "DocumentCollectionSearchOptions",
     "DocumentCollectionSearchResult",
-    "Operator",
     "SearchDocumentCollectionResponse",
     "SearchResultChunk",
     "SingleFieldFilter",

@@ -2,16 +2,18 @@
 
 import datetime as dt
 import typing
+import uuid
 
-from ...common.types.operator import Operator
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
+from .policy_trigger import PolicyTrigger
 
 
-class SingleFieldFilter(pydantic_v1.BaseModel):
-    field: str
-    operator: Operator
-    value: str
+class BlockedChunk(pydantic_v1.BaseModel):
+    conversation_id: uuid.UUID = pydantic_v1.Field(alias="conversationId")
+    warnings: typing.List[str]
+    blocks: typing.List[str]
+    policy_triggers: typing.List[PolicyTrigger] = pydantic_v1.Field(alias="policyTriggers")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
@@ -28,5 +30,7 @@ class SingleFieldFilter(pydantic_v1.BaseModel):
     class Config:
         frozen = True
         smart_union = True
+        allow_population_by_field_name = True
+        populate_by_name = True
         extra = pydantic_v1.Extra.allow
         json_encoders = {dt.datetime: serialize_datetime}

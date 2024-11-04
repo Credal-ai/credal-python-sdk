@@ -3,15 +3,17 @@
 import datetime as dt
 import typing
 
-from ...common.types.operator import Operator
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
+from .data_filter import DataFilter
+from .web_search_result import WebSearchResult
 
 
-class SingleFieldFilter(pydantic_v1.BaseModel):
-    field: str
-    operator: Operator
-    value: str
+class InitialChunk(pydantic_v1.BaseModel):
+    conversation_id: str = pydantic_v1.Field(alias="conversationId")
+    warnings: typing.List[str]
+    web_search_results: typing.List[WebSearchResult] = pydantic_v1.Field(alias="webSearchResults")
+    data_filters: typing.Optional[DataFilter] = pydantic_v1.Field(alias="dataFilters", default=None)
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
@@ -28,5 +30,7 @@ class SingleFieldFilter(pydantic_v1.BaseModel):
     class Config:
         frozen = True
         smart_union = True
+        allow_population_by_field_name = True
+        populate_by_name = True
         extra = pydantic_v1.Extra.allow
         json_encoders = {dt.datetime: serialize_datetime}
