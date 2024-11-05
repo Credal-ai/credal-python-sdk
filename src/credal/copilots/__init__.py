@@ -34,6 +34,10 @@ from .types import (
     SendMessageResponse_AiResponseResult,
     SendMessageResponse_BlockedResult,
     StreamingChunk,
+    StreamingChunk_Blocked,
+    StreamingChunk_DataChunk,
+    StreamingChunk_FinalChunk,
+    StreamingChunk_Initial,
     StringFieldSchema,
     WebSearchResult,
 )
@@ -72,6 +76,10 @@ __all__ = [
     "SendMessageResponse_AiResponseResult",
     "SendMessageResponse_BlockedResult",
     "StreamingChunk",
+    "StreamingChunk_Blocked",
+    "StreamingChunk_DataChunk",
+    "StreamingChunk_FinalChunk",
+    "StreamingChunk_Initial",
     "StringFieldSchema",
     "WebSearchResult",
 ]
