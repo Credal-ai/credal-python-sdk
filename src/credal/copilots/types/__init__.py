@@ -30,7 +30,13 @@ from .send_message_response import (
     SendMessageResponse_AiResponseResult,
     SendMessageResponse_BlockedResult,
 )
-from .streaming_chunk import StreamingChunk
+from .streaming_chunk import (
+    StreamingChunk,
+    StreamingChunk_Blocked,
+    StreamingChunk_DataChunk,
+    StreamingChunk_FinalChunk,
+    StreamingChunk_Initial,
+)
 from .string_field_schema import StringFieldSchema
 from .web_search_result import WebSearchResult
 
@@ -68,6 +74,10 @@ __all__ = [
     "SendMessageResponse_AiResponseResult",
     "SendMessageResponse_BlockedResult",
     "StreamingChunk",
+    "StreamingChunk_Blocked",
+    "StreamingChunk_DataChunk",
+    "StreamingChunk_FinalChunk",
+    "StreamingChunk_Initial",
     "StringFieldSchema",
     "WebSearchResult",
 ]
