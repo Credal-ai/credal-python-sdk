@@ -27,8 +27,8 @@ Create a new copilot. The API key used will be added to the copilot for future R
 <dd>
 
 ```python
-from credal import Collaborator
-from credal.client import CredalApi
+from credal import CredalApi
+from credal.common import Collaborator
 
 client = CredalApi(
     api_key="YOUR_API_KEY",
@@ -126,7 +126,7 @@ OPTIONAL. Create a new conversation with the Copilot. The conversation ID can be
 ```python
 import uuid
 
-from credal.client import CredalApi
+from credal import CredalApi
 
 client = CredalApi(
     api_key="YOUR_API_KEY",
@@ -197,8 +197,8 @@ client.copilots.create_conversation(
 ```python
 import uuid
 
-from credal import MessageFeedback
-from credal.client import CredalApi
+from credal import CredalApi
+from credal.copilots import MessageFeedback
 
 client = CredalApi(
     api_key="YOUR_API_KEY",
@@ -294,8 +294,8 @@ client.copilots.provide_message_feedback(
 ```python
 import uuid
 
-from credal import InputVariable
-from credal.client import CredalApi
+from credal import CredalApi
+from credal.copilots import InputVariable
 
 client = CredalApi(
     api_key="YOUR_API_KEY",
@@ -421,8 +421,8 @@ This endpoint allows you to send a message to a specific copilot and get the res
 ```python
 import uuid
 
-from credal import InputVariable
-from credal.client import CredalApi
+from credal import CredalApi
+from credal.copilots import InputVariable
 
 client = CredalApi(
     api_key="YOUR_API_KEY",
@@ -550,7 +550,7 @@ Link a collection with a copilot. The API Key used must be added to both the col
 ```python
 import uuid
 
-from credal.client import CredalApi
+from credal import CredalApi
 
 client = CredalApi(
     api_key="YOUR_API_KEY",
@@ -637,7 +637,7 @@ Unlink a collection with a copilot. The API Key used must be added to both the c
 ```python
 import uuid
 
-from credal.client import CredalApi
+from credal import CredalApi
 
 client = CredalApi(
     api_key="YOUR_API_KEY",
@@ -724,8 +724,8 @@ Update the configuration for a copilot
 ```python
 import uuid
 
-from credal import AiEndpointConfiguration, Configuration
-from credal.client import CredalApi
+from credal import CredalApi
+from credal.copilots import AiEndpointConfiguration, Configuration
 
 client = CredalApi(
     api_key="YOUR_API_KEY",
@@ -803,7 +803,7 @@ client.copilots.update_configuration(
 ```python
 import uuid
 
-from credal.client import CredalApi
+from credal import CredalApi
 
 client = CredalApi(
     api_key="YOUR_API_KEY",
@@ -862,7 +862,7 @@ client.copilots.delete_copilot(
 <dd>
 
 ```python
-from credal.client import CredalApi
+from credal import CredalApi
 
 client = CredalApi(
     api_key="YOUR_API_KEY",
@@ -943,7 +943,7 @@ client.document_catalog.upload_document_contents(
 <dl>
 <dd>
 
-**custom_metadata:** `typing.Optional[typing.Any]` — Optional JSON representing any custom metdata for this document
+**custom_metadata:** `typing.Optional[typing.Optional[typing.Any]]` — Optional JSON representing any custom metdata for this document
 
     
 </dd>
@@ -1018,8 +1018,9 @@ Bulk patch metadata for documents, synced natively by Credal or manual API uploa
 <dd>
 
 ```python
-from credal import DocumentMetadataPatch, ResourceIdentifier_ExternalResourceId
-from credal.client import CredalApi
+from credal import CredalApi
+from credal.common import ResourceIdentifier_ExternalResourceId
+from credal.document_catalog import DocumentMetadataPatch
 
 client = CredalApi(
     api_key="YOUR_API_KEY",
@@ -1116,8 +1117,8 @@ Add documents to a document collection. Note that the documents must already exi
 ```python
 import uuid
 
-from credal import ResourceIdentifier_ExternalResourceId
-from credal.client import CredalApi
+from credal import CredalApi
+from credal.common import ResourceIdentifier_ExternalResourceId
 
 client = CredalApi(
     api_key="YOUR_API_KEY",
@@ -1210,8 +1211,8 @@ Remove documents from a collection
 ```python
 import uuid
 
-from credal import ResourceIdentifier_ExternalResourceId
-from credal.client import CredalApi
+from credal import CredalApi
+from credal.common import ResourceIdentifier_ExternalResourceId
 
 client = CredalApi(
     api_key="YOUR_API_KEY",
@@ -1302,8 +1303,8 @@ Create a new copilot. The API key used will be added to the copilot for future R
 <dd>
 
 ```python
-from credal import Collaborator
-from credal.client import CredalApi
+from credal import CredalApi
+from credal.common import Collaborator
 
 client = CredalApi(
     api_key="YOUR_API_KEY",
@@ -1401,7 +1402,7 @@ Delete the collection.
 ```python
 import uuid
 
-from credal.client import CredalApi
+from credal import CredalApi
 
 client = CredalApi(
     api_key="YOUR_API_KEY",
@@ -1475,8 +1476,11 @@ Credal lets you easily sync your MongoDB data for use in Collections and Copilot
 ```python
 import uuid
 
-from credal import MongoCollectionSyncConfig, MongoSourceFieldsConfig
-from credal.client import CredalApi
+from credal import CredalApi
+from credal.document_collections import (
+    MongoCollectionSyncConfig,
+    MongoSourceFieldsConfig,
+)
 
 client = CredalApi(
     api_key="YOUR_API_KEY",
@@ -1578,8 +1582,11 @@ Credal lets you easily sync your MongoDB data for use in Collections and Copilot
 ```python
 import uuid
 
-from credal import MongoCollectionSyncConfig, MongoSourceFieldsConfig
-from credal.client import CredalApi
+from credal import CredalApi
+from credal.document_collections import (
+    MongoCollectionSyncConfig,
+    MongoSourceFieldsConfig,
+)
 
 client = CredalApi(
     api_key="YOUR_API_KEY",
@@ -1682,8 +1689,8 @@ Admin endpoint to check whether the specified user is authorized to read the spe
 <dd>
 
 ```python
-from credal import ResourceIdentifier_ExternalResourceId
-from credal.client import CredalApi
+from credal import CredalApi
+from credal.common import ResourceIdentifier_ExternalResourceId
 
 client = CredalApi(
     api_key="YOUR_API_KEY",
@@ -1776,8 +1783,11 @@ Admin endpoint to check whether the specified user is authorized to read the spe
 <dd>
 
 ```python
-from credal import ResourceIdentifier_ExternalResourceId, ResourceIdentifier_Url
-from credal.client import CredalApi
+from credal import CredalApi
+from credal.common import (
+    ResourceIdentifier_ExternalResourceId,
+    ResourceIdentifier_Url,
+)
 
 client = CredalApi(
     api_key="YOUR_API_KEY",
@@ -1875,7 +1885,7 @@ Admin endpoint to list all resources that the specified user is authorized to re
 <dd>
 
 ```python
-from credal.client import CredalApi
+from credal import CredalApi
 
 client = CredalApi(
     api_key="YOUR_API_KEY",
@@ -1976,8 +1986,8 @@ Search across all documents in a document collection using the document metadata
 ```python
 import uuid
 
-from credal import DocumentCollectionSearchOptions, SingleFieldFilter
-from credal.client import CredalApi
+from credal import CredalApi
+from credal.search import DocumentCollectionSearchOptions, SingleFieldFilter
 
 client = CredalApi(
     api_key="YOUR_API_KEY",
@@ -2110,8 +2120,8 @@ Bulk patch metadata for users
 <dd>
 
 ```python
-from credal import UserMetadataPatch
-from credal.client import CredalApi
+from credal import CredalApi
+from credal.users import UserMetadataPatch
 
 client = CredalApi(
     api_key="YOUR_API_KEY",
