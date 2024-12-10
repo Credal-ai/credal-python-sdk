@@ -310,13 +310,21 @@ class CopilotsClient:
             input_variables=[
                 InputVariable(
                     name="input1",
-                    urls=["https://drive.google.com/file/d/123456/view"],
+                    ids=[
+                        uuid.UUID(
+                            "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+                        )
+                    ],
                 ),
                 InputVariable(
                     name="input2",
-                    urls=[
-                        "https://drive.google.com/file/d/123457/view",
-                        "https://drive.google.com/file/d/123458/view",
+                    ids=[
+                        uuid.UUID(
+                            "82e4b12a-6990-45d4-8ebd-85c00e030c25",
+                        ),
+                        uuid.UUID(
+                            "82e4b12a-6990-45d4-8ebd-85c00e030c26",
+                        ),
                     ],
                 ),
             ],
@@ -414,13 +422,21 @@ class CopilotsClient:
             input_variables=[
                 InputVariable(
                     name="input1",
-                    urls=["https://drive.google.com/file/d/123456/view"],
+                    ids=[
+                        uuid.UUID(
+                            "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+                        )
+                    ],
                 ),
                 InputVariable(
                     name="input2",
-                    urls=[
-                        "https://drive.google.com/file/d/123457/view",
-                        "https://drive.google.com/file/d/123458/view",
+                    ids=[
+                        uuid.UUID(
+                            "82e4b12a-6990-45d4-8ebd-85c00e030c25",
+                        ),
+                        uuid.UUID(
+                            "82e4b12a-6990-45d4-8ebd-85c00e030c26",
+                        ),
                     ],
                 ),
             ],
@@ -1026,13 +1042,21 @@ class AsyncCopilotsClient:
                 input_variables=[
                     InputVariable(
                         name="input1",
-                        urls=["https://drive.google.com/file/d/123456/view"],
+                        ids=[
+                            uuid.UUID(
+                                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+                            )
+                        ],
                     ),
                     InputVariable(
                         name="input2",
-                        urls=[
-                            "https://drive.google.com/file/d/123457/view",
-                            "https://drive.google.com/file/d/123458/view",
+                        ids=[
+                            uuid.UUID(
+                                "82e4b12a-6990-45d4-8ebd-85c00e030c25",
+                            ),
+                            uuid.UUID(
+                                "82e4b12a-6990-45d4-8ebd-85c00e030c26",
+                            ),
                         ],
                     ),
                 ],
@@ -1137,13 +1161,21 @@ class AsyncCopilotsClient:
                 input_variables=[
                     InputVariable(
                         name="input1",
-                        urls=["https://drive.google.com/file/d/123456/view"],
+                        ids=[
+                            uuid.UUID(
+                                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+                            )
+                        ],
                     ),
                     InputVariable(
                         name="input2",
-                        urls=[
-                            "https://drive.google.com/file/d/123457/view",
-                            "https://drive.google.com/file/d/123458/view",
+                        ids=[
+                            uuid.UUID(
+                                "82e4b12a-6990-45d4-8ebd-85c00e030c25",
+                            ),
+                            uuid.UUID(
+                                "82e4b12a-6990-45d4-8ebd-85c00e030c26",
+                            ),
                         ],
                     ),
                 ],

@@ -2,6 +2,14 @@
 
 from .document_metadata_patch import DocumentMetadataPatch
 from .document_metadata_patch_request import DocumentMetadataPatchRequest
+from .sync_source_by_url_request import SyncSourceByUrlRequest
+from .sync_source_by_url_response import SyncSourceByUrlResponse
 from .upload_document_response import UploadDocumentResponse
 
-__all__ = ["DocumentMetadataPatch", "DocumentMetadataPatchRequest", "UploadDocumentResponse"]
+__all__ = [
+    "DocumentMetadataPatch",
+    "DocumentMetadataPatchRequest",
+    "SyncSourceByUrlRequest",
+    "SyncSourceByUrlResponse",
+    "UploadDocumentResponse",
+]
