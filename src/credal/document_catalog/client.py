@@ -7,6 +7,7 @@ from .types.upload_document_response import UploadDocumentResponse
 from ..core.pydantic_utilities import parse_obj_as
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
+from .types.sync_source_by_url_response import SyncSourceByUrlResponse
 from .types.document_metadata_patch import DocumentMetadataPatch
 from ..core.serialization import convert_and_respect_annotation_metadata
 from ..core.client_wrapper import AsyncClientWrapper
@@ -123,6 +124,61 @@ class DocumentCatalogClient:
                     UploadDocumentResponse,
                     parse_obj_as(
                         type_=UploadDocumentResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def sync_source_by_url(
+        self, *, upload_as_user_email: str, source_url: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> SyncSourceByUrlResponse:
+        """
+        Sync a document from a source URL. Does not support recursive web search. Reach out to a Credal representative for access.
+
+        Parameters
+        ----------
+        upload_as_user_email : str
+
+        source_url : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SyncSourceByUrlResponse
+
+        Examples
+        --------
+        from credal import CredalApi
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.document_catalog.sync_source_by_url(
+            source_url="https://drive.google.com/file/d/123456/view",
+            upload_as_user_email="ria@credal.ai",
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "v0/catalog/syncSourceByUrl",
+            method="POST",
+            json={
+                "uploadAsUserEmail": upload_as_user_email,
+                "sourceUrl": source_url,
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    SyncSourceByUrlResponse,
+                    parse_obj_as(
+                        type_=SyncSourceByUrlResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -320,6 +376,69 @@ class AsyncDocumentCatalogClient:
                     UploadDocumentResponse,
                     parse_obj_as(
                         type_=UploadDocumentResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def sync_source_by_url(
+        self, *, upload_as_user_email: str, source_url: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> SyncSourceByUrlResponse:
+        """
+        Sync a document from a source URL. Does not support recursive web search. Reach out to a Credal representative for access.
+
+        Parameters
+        ----------
+        upload_as_user_email : str
+
+        source_url : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SyncSourceByUrlResponse
+
+        Examples
+        --------
+        import asyncio
+
+        from credal import AsyncCredalApi
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.document_catalog.sync_source_by_url(
+                source_url="https://drive.google.com/file/d/123456/view",
+                upload_as_user_email="ria@credal.ai",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "v0/catalog/syncSourceByUrl",
+            method="POST",
+            json={
+                "uploadAsUserEmail": upload_as_user_email,
+                "sourceUrl": source_url,
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    SyncSourceByUrlResponse,
+                    parse_obj_as(
+                        type_=SyncSourceByUrlResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
