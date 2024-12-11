@@ -28,6 +28,7 @@ class ActionsClient:
         human_confirmation_channel: HumanConfirmationChannel,
         justification: str,
         audit_log_id: uuid.UUID,
+        action_inputs: typing.Optional[typing.Any] = OMIT,
         require_human_confirmation: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> InvokeActionResponse:
@@ -54,6 +55,10 @@ class ActionsClient:
             Audit log for the message that called for this action
 
 
+        action_inputs : typing.Optional[typing.Any]
+            The inputs needed to execute the action
+
+
         require_human_confirmation : typing.Optional[bool]
             If true, then before executing the action we will ask for a human confirmation in Slack.  If false, we may still ask for human confirmation if it's required by your organization admin.
 
@@ -70,23 +75,27 @@ class ActionsClient:
         import uuid
 
         from credal import CredalApi
-        from credal.actions import HumanConfirmationChannel_DirectMessage
+        from credal.actions import HumanConfirmationChannel_SlackThread
 
         client = CredalApi(
             api_key="YOUR_API_KEY",
         )
         client.actions.invoke_action(
             action_id=uuid.UUID(
-                "d5e9c84f-c2b2-4bf4-b4b0-7ffd7a9ffc32",
+                "2b5cf2b8-3df3-11ef-9a96-332d4470d189",
             ),
-            user_email="string",
+            action_inputs={
+                "textToAppend": "If you need more help, please contact your direct manager."
+            },
+            user_email="ben@credal.ai",
             require_human_confirmation=True,
-            human_confirmation_channel=HumanConfirmationChannel_DirectMessage(
-                channel_id="string",
+            human_confirmation_channel=HumanConfirmationChannel_SlackThread(
+                channel_id="ABC123",
+                thread_timestamp="123456789",
             ),
-            justification="string",
+            justification="The user directly asked to update the Relocations Confluence document with this text.",
             audit_log_id=uuid.UUID(
-                "d5e9c84f-c2b2-4bf4-b4b0-7ffd7a9ffc32",
+                "3df3f2b8-3df3-11ef-9a96-332d447011ef",
             ),
         )
         """
@@ -95,6 +104,7 @@ class ActionsClient:
             method="POST",
             json={
                 "actionId": action_id,
+                "actionInputs": action_inputs,
                 "userEmail": user_email,
                 "requireHumanConfirmation": require_human_confirmation,
                 "humanConfirmationChannel": convert_and_respect_annotation_metadata(
@@ -133,6 +143,7 @@ class AsyncActionsClient:
         human_confirmation_channel: HumanConfirmationChannel,
         justification: str,
         audit_log_id: uuid.UUID,
+        action_inputs: typing.Optional[typing.Any] = OMIT,
         require_human_confirmation: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> InvokeActionResponse:
@@ -159,6 +170,10 @@ class AsyncActionsClient:
             Audit log for the message that called for this action
 
 
+        action_inputs : typing.Optional[typing.Any]
+            The inputs needed to execute the action
+
+
         require_human_confirmation : typing.Optional[bool]
             If true, then before executing the action we will ask for a human confirmation in Slack.  If false, we may still ask for human confirmation if it's required by your organization admin.
 
@@ -176,7 +191,7 @@ class AsyncActionsClient:
         import uuid
 
         from credal import AsyncCredalApi
-        from credal.actions import HumanConfirmationChannel_DirectMessage
+        from credal.actions import HumanConfirmationChannel_SlackThread
 
         client = AsyncCredalApi(
             api_key="YOUR_API_KEY",
@@ -186,16 +201,20 @@ class AsyncActionsClient:
         async def main() -> None:
             await client.actions.invoke_action(
                 action_id=uuid.UUID(
-                    "d5e9c84f-c2b2-4bf4-b4b0-7ffd7a9ffc32",
+                    "2b5cf2b8-3df3-11ef-9a96-332d4470d189",
                 ),
-                user_email="string",
+                action_inputs={
+                    "textToAppend": "If you need more help, please contact your direct manager."
+                },
+                user_email="ben@credal.ai",
                 require_human_confirmation=True,
-                human_confirmation_channel=HumanConfirmationChannel_DirectMessage(
-                    channel_id="string",
+                human_confirmation_channel=HumanConfirmationChannel_SlackThread(
+                    channel_id="ABC123",
+                    thread_timestamp="123456789",
                 ),
-                justification="string",
+                justification="The user directly asked to update the Relocations Confluence document with this text.",
                 audit_log_id=uuid.UUID(
-                    "d5e9c84f-c2b2-4bf4-b4b0-7ffd7a9ffc32",
+                    "3df3f2b8-3df3-11ef-9a96-332d447011ef",
                 ),
             )
 
@@ -207,6 +226,7 @@ class AsyncActionsClient:
             method="POST",
             json={
                 "actionId": action_id,
+                "actionInputs": action_inputs,
                 "userEmail": user_email,
                 "requireHumanConfirmation": require_human_confirmation,
                 "humanConfirmationChannel": convert_and_respect_annotation_metadata(

@@ -10,7 +10,7 @@ import pydantic
 
 class SlackThread(UniversalBaseModel):
     channel_id: typing_extensions.Annotated[str, FieldMetadata(alias="channelId")]
-    thread_timestamp: typing_extensions.Annotated[int, FieldMetadata(alias="threadTimestamp")]
+    thread_timestamp: typing_extensions.Annotated[str, FieldMetadata(alias="threadTimestamp")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

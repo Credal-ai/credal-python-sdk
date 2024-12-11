@@ -30,23 +30,27 @@ Invoke an action, asking for human confirmation if necessary
 import uuid
 
 from credal import CredalApi
-from credal.actions import HumanConfirmationChannel_DirectMessage
+from credal.actions import HumanConfirmationChannel_SlackThread
 
 client = CredalApi(
     api_key="YOUR_API_KEY",
 )
 client.actions.invoke_action(
     action_id=uuid.UUID(
-        "d5e9c84f-c2b2-4bf4-b4b0-7ffd7a9ffc32",
+        "2b5cf2b8-3df3-11ef-9a96-332d4470d189",
     ),
-    user_email="string",
+    action_inputs={
+        "textToAppend": "If you need more help, please contact your direct manager."
+    },
+    user_email="ben@credal.ai",
     require_human_confirmation=True,
-    human_confirmation_channel=HumanConfirmationChannel_DirectMessage(
-        channel_id="string",
+    human_confirmation_channel=HumanConfirmationChannel_SlackThread(
+        channel_id="ABC123",
+        thread_timestamp="123456789",
     ),
-    justification="string",
+    justification="The user directly asked to update the Relocations Confluence document with this text.",
     audit_log_id=uuid.UUID(
-        "d5e9c84f-c2b2-4bf4-b4b0-7ffd7a9ffc32",
+        "3df3f2b8-3df3-11ef-9a96-332d447011ef",
     ),
 )
 
@@ -100,6 +104,15 @@ client.actions.invoke_action(
 <dd>
 
 **audit_log_id:** `uuid.UUID` — Audit log for the message that called for this action
+
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**action_inputs:** `typing.Optional[typing.Any]` — The inputs needed to execute the action
 
     
 </dd>
