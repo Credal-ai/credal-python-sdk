@@ -5,8 +5,7 @@ import typing
 ActionStatus = typing.Union[
     typing.Literal[
         "PENDING_APPROVAL",
-        "APPROVED_IN_PROGRESS",
-        "NO_APPROVAL_NEEDED_IN_PROGRESS",
+        "IN_PROGRESS",
         "APPROVED_SUCCEEDED",
         "APPROVED_FAILED",
         "NO_APPROVAL_NEEDED_SUCCEEDED",
