@@ -1,9 +1,13 @@
+<div align="center">  
+  <img src="./credal-dark-logo.svg" width="400" />
+</div>
+
 # Credal Python Library
 
 [![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](/?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Fcredal-ai%2Fcredal-python-sdk)
 [![PyPI - Python Version](https://img.shields.io/pypi/v/credal?style=flat&colorA=black&colorB=black)](https://pypi.org/project/credal/)
 
-The Credal Python library provides convenient access to the Square API from Python.
+The Credal Python library provides convenient access to the Credal API from Python.
 
 # Documentation
 
