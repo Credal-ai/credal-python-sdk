@@ -1,21 +1,13 @@
-<div align="center">  
-  <img src="./credal-dark-logo.svg" width="400" />
-  <h1>Credal Python SDK</h1>
+# Credal Python Library
 
-  <p>
-    <strong>The Credal Python Library provides convenient access to the Credal API from applications written in Python.</strong>
-  </p>
+[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](/?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Fcredal-ai%2Fcredal-python-sdk)
+[![PyPI - Python Version](https://img.shields.io/pypi/v/credal?style=flat&colorA=black&colorB=black)](https://pypi.org/project/credal/)
 
-  <br>
-  <div>
-    <a href="https://buildwithfern.com/"><img src="https://img.shields.io/badge/%F0%9F%8C%BF-SDK%20generated%20by%20Fern-brightgreen">     
-  </div>
-  <br>
-</div>
+The Credal Python library provides convenient access to the Square API from Python.
 
 # Documentation
 
-Docs for the API endpoints available through the SDK can be found [here](https://docs.credal.ai/getting-started/overview).
+Docs for the API endpoints available through the SDK can be found [in our API Reference](https://docs.credal.ai).
 
 ## Reference
 
@@ -38,7 +30,7 @@ client = CredalApi(
 
 client.copilots.send_message(
     message="Is Credal SOC 2 compliant?",
-    user_email="ravin@credal.ai",
+    user_email="jack@credal.ai",
 )
 ```
 
@@ -136,9 +128,3 @@ client = CredalApi(...,
     ),
 )
 ```
-
-# Beta Status
-
-This SDK is in beta, and there may be breaking changes between versions without a major 
-version update. Therefore, we recommend pinning the package version to a specific version. 
-This way, you can install the same version each time without breaking changes.
