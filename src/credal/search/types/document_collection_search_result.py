@@ -13,6 +13,8 @@ import pydantic
 class DocumentCollectionSearchResult(UniversalBaseModel):
     document_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="documentId")]
     document_name: typing_extensions.Annotated[str, FieldMetadata(alias="documentName")]
+    document_url: typing_extensions.Annotated[str, FieldMetadata(alias="documentUrl")]
+    document_external_id: typing_extensions.Annotated[str, FieldMetadata(alias="documentExternalId")]
     document_metadata: typing_extensions.Annotated[typing.Dict[str, str], FieldMetadata(alias="documentMetadata")]
     chunks: typing.List[SearchResultChunk]
     merged_contents: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="mergedContents")] = None

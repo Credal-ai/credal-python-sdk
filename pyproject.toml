@@ -1,6 +1,9 @@
+[project]
+name = "credal"
+
 [tool.poetry]
 name = "credal"
-version = "0.0.18"
+version = "0.0.19"
 description = ""
 readme = "README.md"
 authors = []
