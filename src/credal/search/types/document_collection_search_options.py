@@ -25,7 +25,7 @@ class DocumentCollectionSearchOptions(UniversalBaseModel):
 
     threshold: typing.Optional[float] = pydantic.Field(default=None)
     """
-    The similarity threshold between 0 and 1 for the search results. A higher number leads to fewer but more relevant results.
+    The similarity threshold between 0 and 1 for the search results. A higher number leads to fewer but more relevant results. 
     Defaults to 0.45.
     """
 
