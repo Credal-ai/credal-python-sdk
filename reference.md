@@ -357,6 +357,7 @@ client.copilots.provide_message_feedback(
     message_feedback=MessageFeedback(
         feedback="NEGATIVE",
         suggested_answer="Yes, Credal is SOC 2 compliant.",
+        descriptive_feedback="The response should be extremely clear and concise.",
     ),
 )
 
