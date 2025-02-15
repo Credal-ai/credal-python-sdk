@@ -47,6 +47,19 @@ class StreamingChunk_DataChunk(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
+class StreamingChunk_EndOfMessage(UniversalBaseModel):
+    event: typing.Literal["end_of_message"] = "end_of_message"
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow
+
+
 class StreamingChunk_FinalChunk(UniversalBaseModel):
     event: typing.Literal["final_chunk"] = "final_chunk"
     sources: typing.List[ReferencedSource]
@@ -79,5 +92,9 @@ class StreamingChunk_Blocked(UniversalBaseModel):
 
 
 StreamingChunk = typing.Union[
-    StreamingChunk_Initial, StreamingChunk_DataChunk, StreamingChunk_FinalChunk, StreamingChunk_Blocked
+    StreamingChunk_Initial,
+    StreamingChunk_DataChunk,
+    StreamingChunk_EndOfMessage,
+    StreamingChunk_FinalChunk,
+    StreamingChunk_Blocked,
 ]

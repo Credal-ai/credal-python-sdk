@@ -11,6 +11,7 @@ from .data_chunk import DataChunk
 from .data_filter import DataFilter
 from .datetime_field_schema import DatetimeFieldSchema
 from .delete_copilot_response import DeleteCopilotResponse
+from .end_of_message_chunk import EndOfMessageChunk
 from .feedback_enum import FeedbackEnum
 from .filter import Filter, Filter_Boolean, Filter_Datetime, Filter_Number, Filter_String
 from .final_chunk import FinalChunk
@@ -34,6 +35,7 @@ from .streaming_chunk import (
     StreamingChunk,
     StreamingChunk_Blocked,
     StreamingChunk_DataChunk,
+    StreamingChunk_EndOfMessage,
     StreamingChunk_FinalChunk,
     StreamingChunk_Initial,
 )
@@ -52,6 +54,7 @@ __all__ = [
     "DataFilter",
     "DatetimeFieldSchema",
     "DeleteCopilotResponse",
+    "EndOfMessageChunk",
     "FeedbackEnum",
     "Filter",
     "Filter_Boolean",
@@ -76,6 +79,7 @@ __all__ = [
     "StreamingChunk",
     "StreamingChunk_Blocked",
     "StreamingChunk_DataChunk",
+    "StreamingChunk_EndOfMessage",
     "StreamingChunk_FinalChunk",
     "StreamingChunk_Initial",
     "StringFieldSchema",
