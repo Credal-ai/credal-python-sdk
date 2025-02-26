@@ -25,11 +25,11 @@ class ActionsClient:
         *,
         action_id: uuid.UUID,
         user_email: str,
-        human_confirmation_channel: HumanConfirmationChannel,
+        require_human_confirmation: bool,
         justification: str,
         audit_log_id: uuid.UUID,
         action_inputs: typing.Optional[typing.Any] = OMIT,
-        require_human_confirmation: typing.Optional[bool] = OMIT,
+        human_confirmation_channel: typing.Optional[HumanConfirmationChannel] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> InvokeActionResponse:
         """
@@ -43,8 +43,8 @@ class ActionsClient:
             The user who we should take the action on behalf of
 
 
-        human_confirmation_channel : HumanConfirmationChannel
-            Where we should ask for human confirmation if necessary
+        require_human_confirmation : bool
+            If true, then before executing the action we will ask for a human confirmation in Slack.  If false, we may still ask for human confirmation if it's required by your organization admin.
 
 
         justification : str
@@ -59,8 +59,8 @@ class ActionsClient:
             The inputs needed to execute the action
 
 
-        require_human_confirmation : typing.Optional[bool]
-            If true, then before executing the action we will ask for a human confirmation in Slack.  If false, we may still ask for human confirmation if it's required by your organization admin.
+        human_confirmation_channel : typing.Optional[HumanConfirmationChannel]
+            Where we should ask for human confirmation if necessary
 
 
         request_options : typing.Optional[RequestOptions]
@@ -140,11 +140,11 @@ class AsyncActionsClient:
         *,
         action_id: uuid.UUID,
         user_email: str,
-        human_confirmation_channel: HumanConfirmationChannel,
+        require_human_confirmation: bool,
         justification: str,
         audit_log_id: uuid.UUID,
         action_inputs: typing.Optional[typing.Any] = OMIT,
-        require_human_confirmation: typing.Optional[bool] = OMIT,
+        human_confirmation_channel: typing.Optional[HumanConfirmationChannel] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> InvokeActionResponse:
         """
@@ -158,8 +158,8 @@ class AsyncActionsClient:
             The user who we should take the action on behalf of
 
 
-        human_confirmation_channel : HumanConfirmationChannel
-            Where we should ask for human confirmation if necessary
+        require_human_confirmation : bool
+            If true, then before executing the action we will ask for a human confirmation in Slack.  If false, we may still ask for human confirmation if it's required by your organization admin.
 
 
         justification : str
@@ -174,8 +174,8 @@ class AsyncActionsClient:
             The inputs needed to execute the action
 
 
-        require_human_confirmation : typing.Optional[bool]
-            If true, then before executing the action we will ask for a human confirmation in Slack.  If false, we may still ask for human confirmation if it's required by your organization admin.
+        human_confirmation_channel : typing.Optional[HumanConfirmationChannel]
+            Where we should ask for human confirmation if necessary
 
 
         request_options : typing.Optional[RequestOptions]
