@@ -85,7 +85,7 @@ client.actions.invoke_action(
 <dl>
 <dd>
 
-**human_confirmation_channel:** `HumanConfirmationChannel` — Where we should ask for human confirmation if necessary
+**require_human_confirmation:** `bool` — If true, then before executing the action we will ask for a human confirmation in Slack.  If false, we may still ask for human confirmation if it's required by your organization admin.
 
     
 </dd>
@@ -121,7 +121,7 @@ client.actions.invoke_action(
 <dl>
 <dd>
 
-**require_human_confirmation:** `typing.Optional[bool]` — If true, then before executing the action we will ask for a human confirmation in Slack.  If false, we may still ask for human confirmation if it's required by your organization admin.
+**human_confirmation_channel:** `typing.Optional[HumanConfirmationChannel]` — Where we should ask for human confirmation if necessary
 
     
 </dd>
