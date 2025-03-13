@@ -6,7 +6,6 @@ import os
 import httpx
 from .core.api_error import ApiError
 from .core.client_wrapper import SyncClientWrapper
-from .actions.client import ActionsClient
 from .copilots.client import CopilotsClient
 from .document_catalog.client import DocumentCatalogClient
 from .document_collections.client import DocumentCollectionsClient
@@ -14,7 +13,6 @@ from .permissions_service.client import PermissionsServiceClient
 from .search.client import SearchClient
 from .users.client import UsersClient
 from .core.client_wrapper import AsyncClientWrapper
-from .actions.client import AsyncActionsClient
 from .copilots.client import AsyncCopilotsClient
 from .document_catalog.client import AsyncDocumentCatalogClient
 from .document_collections.client import AsyncDocumentCollectionsClient
@@ -85,7 +83,6 @@ class CredalApi:
             else httpx.Client(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
         )
-        self.actions = ActionsClient(client_wrapper=self._client_wrapper)
         self.copilots = CopilotsClient(client_wrapper=self._client_wrapper)
         self.document_catalog = DocumentCatalogClient(client_wrapper=self._client_wrapper)
         self.document_collections = DocumentCollectionsClient(client_wrapper=self._client_wrapper)
@@ -156,7 +153,6 @@ class AsyncCredalApi:
             else httpx.AsyncClient(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
         )
-        self.actions = AsyncActionsClient(client_wrapper=self._client_wrapper)
         self.copilots = AsyncCopilotsClient(client_wrapper=self._client_wrapper)
         self.document_catalog = AsyncDocumentCatalogClient(client_wrapper=self._client_wrapper)
         self.document_collections = AsyncDocumentCollectionsClient(client_wrapper=self._client_wrapper)
