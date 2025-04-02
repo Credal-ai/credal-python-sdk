@@ -45,14 +45,11 @@ class CopilotsClient:
         name : str
             A descriptive name for the copilot.
 
-
         description : str
             An in depth name for the copilot's function. Useful for routing requests to the right copilot.
 
-
         collaborators : typing.Sequence[Collaborator]
             A list of collaborator emails and roles that will have access to the copilot.
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -118,10 +115,8 @@ class CopilotsClient:
         agent_id : uuid.UUID
             Credal-generated Copilot ID to specify which agent to route the request to.
 
-
         user_email : str
             End-user for the conversation.
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -185,18 +180,14 @@ class CopilotsClient:
         agent_id : uuid.UUID
             Credal-generated Copilot ID to specify which agent to route the request to.
 
-
         user_email : str
             The user profile you want to use when providing feedback.
-
 
         message_id : uuid.UUID
             The message ID for which feedback is being provided.
 
-
         message_feedback : MessageFeedback
             The feedback provided by the user.
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -268,22 +259,17 @@ class CopilotsClient:
         agent_id : uuid.UUID
             Credal-generated Copilot ID to specify which agent to route the request to.
 
-
         message : str
             The message you want to send to your copilot.
-
 
         user_email : str
             The user profile you want to use when sending the message.
 
-
         conversation_id : typing.Optional[uuid.UUID]
             Credal-generated conversation ID for sending follow up messages. Conversation ID is returned after initial message. Optional, to be left off for first messages on new conversations.
 
-
         input_variables : typing.Optional[typing.Sequence[InputVariable]]
             Optional input variables to be used in the message. Map the name of the variable to a list of urls.
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -378,22 +364,17 @@ class CopilotsClient:
         copilot_id : uuid.UUID
             Credal-generated Copilot ID to specify which agent to route the request to.
 
-
         message : str
             The message you want to send to your copilot.
-
 
         email : str
             The user profile you want to use when sending the message.
 
-
         conversation_id : typing.Optional[uuid.UUID]
             Credal-generated conversation ID for sending follow up messages. Conversation ID is returned after initial message. Optional, to be left off for first messages on new conversations.
 
-
         input_variables : typing.Optional[typing.Sequence[InputVariable]]
             Optional input variables to be used in the message. Map the name of the variable to a list of urls.
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -402,7 +383,6 @@ class CopilotsClient:
         ------
         typing.Iterator[StreamingChunk]
             This endpoint returns a stream of server sent events. These can be in two formats - one is an initial event, followed by multiple data chunks, followed by a final chunk, or the other format is just one blocked event. See the examples for more details.
-
 
         Examples
         --------
@@ -496,10 +476,8 @@ class CopilotsClient:
         copilot_id : uuid.UUID
             Credal-generated copilot ID to add the collection to.
 
-
         collection_id : uuid.UUID
             Credal-generated collection ID to add.
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -559,10 +537,8 @@ class CopilotsClient:
         copilot_id : uuid.UUID
             Credal-generated copilot ID to add the collection to.
 
-
         collection_id : uuid.UUID
             Credal-generated collection ID to add.
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -621,7 +597,6 @@ class CopilotsClient:
         ----------
         copilot_id : uuid.UUID
             Credal-generated copilot ID to add the collection to.
-
 
         configuration : Configuration
 
@@ -752,14 +727,11 @@ class AsyncCopilotsClient:
         name : str
             A descriptive name for the copilot.
 
-
         description : str
             An in depth name for the copilot's function. Useful for routing requests to the right copilot.
 
-
         collaborators : typing.Sequence[Collaborator]
             A list of collaborator emails and roles that will have access to the copilot.
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -833,10 +805,8 @@ class AsyncCopilotsClient:
         agent_id : uuid.UUID
             Credal-generated Copilot ID to specify which agent to route the request to.
 
-
         user_email : str
             End-user for the conversation.
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -907,18 +877,14 @@ class AsyncCopilotsClient:
         agent_id : uuid.UUID
             Credal-generated Copilot ID to specify which agent to route the request to.
 
-
         user_email : str
             The user profile you want to use when providing feedback.
-
 
         message_id : uuid.UUID
             The message ID for which feedback is being provided.
 
-
         message_feedback : MessageFeedback
             The feedback provided by the user.
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -997,22 +963,17 @@ class AsyncCopilotsClient:
         agent_id : uuid.UUID
             Credal-generated Copilot ID to specify which agent to route the request to.
 
-
         message : str
             The message you want to send to your copilot.
-
 
         user_email : str
             The user profile you want to use when sending the message.
 
-
         conversation_id : typing.Optional[uuid.UUID]
             Credal-generated conversation ID for sending follow up messages. Conversation ID is returned after initial message. Optional, to be left off for first messages on new conversations.
 
-
         input_variables : typing.Optional[typing.Sequence[InputVariable]]
             Optional input variables to be used in the message. Map the name of the variable to a list of urls.
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1114,22 +1075,17 @@ class AsyncCopilotsClient:
         copilot_id : uuid.UUID
             Credal-generated Copilot ID to specify which agent to route the request to.
 
-
         message : str
             The message you want to send to your copilot.
-
 
         email : str
             The user profile you want to use when sending the message.
 
-
         conversation_id : typing.Optional[uuid.UUID]
             Credal-generated conversation ID for sending follow up messages. Conversation ID is returned after initial message. Optional, to be left off for first messages on new conversations.
 
-
         input_variables : typing.Optional[typing.Sequence[InputVariable]]
             Optional input variables to be used in the message. Map the name of the variable to a list of urls.
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1138,7 +1094,6 @@ class AsyncCopilotsClient:
         ------
         typing.AsyncIterator[StreamingChunk]
             This endpoint returns a stream of server sent events. These can be in two formats - one is an initial event, followed by multiple data chunks, followed by a final chunk, or the other format is just one blocked event. See the examples for more details.
-
 
         Examples
         --------
@@ -1239,10 +1194,8 @@ class AsyncCopilotsClient:
         copilot_id : uuid.UUID
             Credal-generated copilot ID to add the collection to.
 
-
         collection_id : uuid.UUID
             Credal-generated collection ID to add.
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1309,10 +1262,8 @@ class AsyncCopilotsClient:
         copilot_id : uuid.UUID
             Credal-generated copilot ID to add the collection to.
 
-
         collection_id : uuid.UUID
             Credal-generated collection ID to add.
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1378,7 +1329,6 @@ class AsyncCopilotsClient:
         ----------
         copilot_id : uuid.UUID
             Credal-generated copilot ID to add the collection to.
-
 
         configuration : Configuration
 
