@@ -42,7 +42,6 @@ class DocumentCollectionsClient:
         resource_identifiers : typing.Sequence[ResourceIdentifier]
             The set of resource identifier for which you want to add to the collection.
 
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -114,7 +113,6 @@ class DocumentCollectionsClient:
         resource_identifiers : typing.Sequence[ResourceIdentifier]
             The set of resource identifier for which you want to remove from the collection
 
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -184,14 +182,11 @@ class DocumentCollectionsClient:
         name : str
             A descriptive name for the collection.
 
-
         description : str
             An in depth name for the copilot's function. Useful for routing requests to the right copilot.
 
-
         collaborators : typing.Sequence[Collaborator]
             A list of collaborator emails and roles that will have access to the copilot.
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -494,7 +489,6 @@ class AsyncDocumentCollectionsClient:
         resource_identifiers : typing.Sequence[ResourceIdentifier]
             The set of resource identifier for which you want to add to the collection.
 
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -573,7 +567,6 @@ class AsyncDocumentCollectionsClient:
         resource_identifiers : typing.Sequence[ResourceIdentifier]
             The set of resource identifier for which you want to remove from the collection
 
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -650,14 +643,11 @@ class AsyncDocumentCollectionsClient:
         name : str
             A descriptive name for the collection.
 
-
         description : str
             An in depth name for the copilot's function. Useful for routing requests to the right copilot.
 
-
         collaborators : typing.Sequence[Collaborator]
             A list of collaborator emails and roles that will have access to the copilot.
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

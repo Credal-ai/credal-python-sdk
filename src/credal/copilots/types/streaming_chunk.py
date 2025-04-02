@@ -12,6 +12,7 @@ import pydantic
 from .referenced_source import ReferencedSource
 import uuid
 from .policy_trigger import PolicyTrigger
+from .error_chunk_data import ErrorChunkData
 
 
 class StreamingChunk_Initial(UniversalBaseModel):
@@ -91,10 +92,25 @@ class StreamingChunk_Blocked(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
+class StreamingChunk_ErrorChunk(UniversalBaseModel):
+    event: typing.Literal["error_chunk"] = "error_chunk"
+    error: ErrorChunkData
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow
+
+
 StreamingChunk = typing.Union[
     StreamingChunk_Initial,
     StreamingChunk_DataChunk,
     StreamingChunk_EndOfMessage,
     StreamingChunk_FinalChunk,
     StreamingChunk_Blocked,
+    StreamingChunk_ErrorChunk,
 ]

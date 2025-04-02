@@ -59,7 +59,6 @@ client.copilots.create_copilot(
 <dd>
 
 **name:** `str` — A descriptive name for the copilot.
-
     
 </dd>
 </dl>
@@ -68,7 +67,6 @@ client.copilots.create_copilot(
 <dd>
 
 **description:** `str` — An in depth name for the copilot's function. Useful for routing requests to the right copilot.
-
     
 </dd>
 </dl>
@@ -77,7 +75,6 @@ client.copilots.create_copilot(
 <dd>
 
 **collaborators:** `typing.Sequence[Collaborator]` — A list of collaborator emails and roles that will have access to the copilot.
-
     
 </dd>
 </dl>
@@ -153,7 +150,6 @@ client.copilots.create_conversation(
 <dd>
 
 **agent_id:** `uuid.UUID` — Credal-generated Copilot ID to specify which agent to route the request to.
-
     
 </dd>
 </dl>
@@ -162,7 +158,6 @@ client.copilots.create_conversation(
 <dd>
 
 **user_email:** `str` — End-user for the conversation.
-
     
 </dd>
 </dl>
@@ -233,7 +228,6 @@ client.copilots.provide_message_feedback(
 <dd>
 
 **agent_id:** `uuid.UUID` — Credal-generated Copilot ID to specify which agent to route the request to.
-
     
 </dd>
 </dl>
@@ -242,7 +236,6 @@ client.copilots.provide_message_feedback(
 <dd>
 
 **user_email:** `str` — The user profile you want to use when providing feedback.
-
     
 </dd>
 </dl>
@@ -251,7 +244,6 @@ client.copilots.provide_message_feedback(
 <dd>
 
 **message_id:** `uuid.UUID` — The message ID for which feedback is being provided.
-
     
 </dd>
 </dl>
@@ -260,7 +252,6 @@ client.copilots.provide_message_feedback(
 <dd>
 
 **message_feedback:** `MessageFeedback` — The feedback provided by the user.
-
     
 </dd>
 </dl>
@@ -345,7 +336,6 @@ client.copilots.send_message(
 <dd>
 
 **agent_id:** `uuid.UUID` — Credal-generated Copilot ID to specify which agent to route the request to.
-
     
 </dd>
 </dl>
@@ -354,7 +344,6 @@ client.copilots.send_message(
 <dd>
 
 **message:** `str` — The message you want to send to your copilot.
-
     
 </dd>
 </dl>
@@ -363,7 +352,6 @@ client.copilots.send_message(
 <dd>
 
 **user_email:** `str` — The user profile you want to use when sending the message.
-
     
 </dd>
 </dl>
@@ -372,7 +360,6 @@ client.copilots.send_message(
 <dd>
 
 **conversation_id:** `typing.Optional[uuid.UUID]` — Credal-generated conversation ID for sending follow up messages. Conversation ID is returned after initial message. Optional, to be left off for first messages on new conversations.
-
     
 </dd>
 </dl>
@@ -381,7 +368,6 @@ client.copilots.send_message(
 <dd>
 
 **input_variables:** `typing.Optional[typing.Sequence[InputVariable]]` — Optional input variables to be used in the message. Map the name of the variable to a list of urls.
-
     
 </dd>
 </dl>
@@ -438,16 +424,16 @@ client = CredalApi(
 )
 response = client.copilots.stream_message(
     copilot_id=uuid.UUID(
-        "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+        "82e4b12a-6990-45d4-8ebd-85c00e030c25",
     ),
-    message="Is this user eligible for benefits based on their date of birth?",
+    message="Is Credal SOC 2 compliant?",
     email="ravin@credal.ai",
     input_variables=[
         InputVariable(
             name="input1",
             ids=[
                 uuid.UUID(
-                    "82e4b12a-6990-45d4-8ebd-85c00e030c26",
+                    "82e4b12a-6990-45d4-8ebd-85c00e030c24",
                 )
             ],
         ),
@@ -458,7 +444,7 @@ response = client.copilots.stream_message(
                     "82e4b12a-6990-45d4-8ebd-85c00e030c25",
                 ),
                 uuid.UUID(
-                    "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+                    "82e4b12a-6990-45d4-8ebd-85c00e030c26",
                 ),
             ],
         ),
@@ -482,7 +468,6 @@ for chunk in response:
 <dd>
 
 **copilot_id:** `uuid.UUID` — Credal-generated Copilot ID to specify which agent to route the request to.
-
     
 </dd>
 </dl>
@@ -491,7 +476,6 @@ for chunk in response:
 <dd>
 
 **message:** `str` — The message you want to send to your copilot.
-
     
 </dd>
 </dl>
@@ -500,7 +484,6 @@ for chunk in response:
 <dd>
 
 **email:** `str` — The user profile you want to use when sending the message.
-
     
 </dd>
 </dl>
@@ -509,7 +492,6 @@ for chunk in response:
 <dd>
 
 **conversation_id:** `typing.Optional[uuid.UUID]` — Credal-generated conversation ID for sending follow up messages. Conversation ID is returned after initial message. Optional, to be left off for first messages on new conversations.
-
     
 </dd>
 </dl>
@@ -518,7 +500,6 @@ for chunk in response:
 <dd>
 
 **input_variables:** `typing.Optional[typing.Sequence[InputVariable]]` — Optional input variables to be used in the message. Map the name of the variable to a list of urls.
-
     
 </dd>
 </dl>
@@ -596,7 +577,6 @@ client.copilots.add_collection_to_copilot(
 <dd>
 
 **copilot_id:** `uuid.UUID` — Credal-generated copilot ID to add the collection to.
-
     
 </dd>
 </dl>
@@ -605,7 +585,6 @@ client.copilots.add_collection_to_copilot(
 <dd>
 
 **collection_id:** `uuid.UUID` — Credal-generated collection ID to add.
-
     
 </dd>
 </dl>
@@ -683,7 +662,6 @@ client.copilots.remove_collection_from_copilot(
 <dd>
 
 **copilot_id:** `uuid.UUID` — Credal-generated copilot ID to add the collection to.
-
     
 </dd>
 </dl>
@@ -692,7 +670,6 @@ client.copilots.remove_collection_from_copilot(
 <dd>
 
 **collection_id:** `uuid.UUID` — Credal-generated collection ID to add.
-
     
 </dd>
 </dl>
@@ -777,7 +754,6 @@ client.copilots.update_configuration(
 <dd>
 
 **copilot_id:** `uuid.UUID` — Credal-generated copilot ID to add the collection to.
-
     
 </dd>
 </dl>
@@ -907,7 +883,6 @@ client.document_catalog.upload_document_contents(
 <dd>
 
 **document_name:** `str` — The name of the document you want to upload.
-
     
 </dd>
 </dl>
@@ -916,7 +891,6 @@ client.document_catalog.upload_document_contents(
 <dd>
 
 **document_contents:** `str` — The full LLM-formatted text contents of the document you want to upload.
-
     
 </dd>
 </dl>
@@ -925,7 +899,6 @@ client.document_catalog.upload_document_contents(
 <dd>
 
 **allowed_users_email_addresses:** `typing.Sequence[str]` — Users allowed to access the document. Unlike Credal's out of the box connectors which reconcile various permissions models from 3rd party software, for custom uploads the caller is responsible for specifying who can access the document and currently flattening groups if applicable. Documents can also be marked as internal public.
-
     
 </dd>
 </dl>
@@ -934,7 +907,6 @@ client.document_catalog.upload_document_contents(
 <dd>
 
 **upload_as_user_email:** `str` — [Legacy] The user on behalf of whom the document should be uploaded. In most cases, this can simply be the email of the developer making the API call. This field will be removed in the future in favor of purely specifying permissions via allowedUsersEmailAddresses.
-
     
 </dd>
 </dl>
@@ -943,7 +915,6 @@ client.document_catalog.upload_document_contents(
 <dd>
 
 **document_external_id:** `str` — The external ID of the document. This is typically the ID as it exists in its original external system. Uploads to the same external ID will update the document in Credal.
-
     
 </dd>
 </dl>
@@ -952,7 +923,6 @@ client.document_catalog.upload_document_contents(
 <dd>
 
 **document_external_url:** `typing.Optional[str]` — The external URL of the document you want to upload. If provided Credal will link to this URL.
-
     
 </dd>
 </dl>
@@ -961,7 +931,6 @@ client.document_catalog.upload_document_contents(
 <dd>
 
 **custom_metadata:** `typing.Optional[typing.Optional[typing.Any]]` — Optional JSON representing any custom metdata for this document
-
     
 </dd>
 </dl>
@@ -970,7 +939,6 @@ client.document_catalog.upload_document_contents(
 <dd>
 
 **collection_id:** `typing.Optional[str]` — If specified, document will also be added to a particular document collection
-
     
 </dd>
 </dl>
@@ -979,7 +947,6 @@ client.document_catalog.upload_document_contents(
 <dd>
 
 **force_update:** `typing.Optional[bool]` — If specified, document contents will be re-uploaded and re-embedded even if the document already exists in Credal
-
     
 </dd>
 </dl>
@@ -988,7 +955,6 @@ client.document_catalog.upload_document_contents(
 <dd>
 
 **internal_public:** `typing.Optional[bool]` — If specified, document will be accessible to everyone within the organization of the uploader
-
     
 </dd>
 </dl>
@@ -1258,7 +1224,6 @@ client.document_collections.add_documents_to_collection(
 <dd>
 
 **resource_identifiers:** `typing.Sequence[ResourceIdentifier]` — The set of resource identifier for which you want to add to the collection.
-
     
 </dd>
 </dl>
@@ -1352,7 +1317,6 @@ client.document_collections.remove_documents_from_collection(
 <dd>
 
 **resource_identifiers:** `typing.Sequence[ResourceIdentifier]` — The set of resource identifier for which you want to remove from the collection
-
     
 </dd>
 </dl>
@@ -1431,7 +1395,6 @@ client.document_collections.create_collection(
 <dd>
 
 **name:** `str` — A descriptive name for the collection.
-
     
 </dd>
 </dl>
@@ -1440,7 +1403,6 @@ client.document_collections.create_collection(
 <dd>
 
 **description:** `str` — An in depth name for the copilot's function. Useful for routing requests to the right copilot.
-
     
 </dd>
 </dl>
@@ -1449,7 +1411,6 @@ client.document_collections.create_collection(
 <dd>
 
 **collaborators:** `typing.Sequence[Collaborator]` — A list of collaborator emails and roles that will have access to the copilot.
-
     
 </dd>
 </dl>
@@ -1814,7 +1775,6 @@ client.permissions_service.check_resource_authorization_for_user(
 <dd>
 
 **resource_identifier:** `ResourceIdentifier` — The resource identifier for which you want to check authorization.
-
     
 </dd>
 </dl>
@@ -1823,7 +1783,6 @@ client.permissions_service.check_resource_authorization_for_user(
 <dd>
 
 **user_email:** `str` — The user email to check authorization for.
-
     
 </dd>
 </dl>
@@ -1832,7 +1791,6 @@ client.permissions_service.check_resource_authorization_for_user(
 <dd>
 
 **disable_cache:** `typing.Optional[bool]` — If specified, Credal will bypass the permissions cache and check current permissions for this resource
-
     
 </dd>
 </dl>
@@ -1916,7 +1874,6 @@ client.permissions_service.check_bulk_resources_authorization_for_user(
 <dd>
 
 **resource_identifiers:** `typing.Sequence[ResourceIdentifier]` — The set of resource identifier for which you want to check authorization. Currently limited to 20 resources.
-
     
 </dd>
 </dl>
@@ -1925,7 +1882,6 @@ client.permissions_service.check_bulk_resources_authorization_for_user(
 <dd>
 
 **user_email:** `str` — The user email to check authorization for.
-
     
 </dd>
 </dl>
@@ -1934,7 +1890,6 @@ client.permissions_service.check_bulk_resources_authorization_for_user(
 <dd>
 
 **disable_cache:** `typing.Optional[bool]` — If specified, Credal will bypass the permissions cache and check current permissions for all resources specified.
-
     
 </dd>
 </dl>
@@ -2005,7 +1960,6 @@ client.permissions_service.list_cached_authorized_resources_for_user(
 <dd>
 
 **user_email:** `str` — The user email to list authorized resources for.
-
     
 </dd>
 </dl>
@@ -2014,7 +1968,6 @@ client.permissions_service.list_cached_authorized_resources_for_user(
 <dd>
 
 **resource_type:** `typing.Optional[ResourceType]` — The type of resource you want to list. If not specified, all resource types will be listed.
-
     
 </dd>
 </dl>
@@ -2023,7 +1976,6 @@ client.permissions_service.list_cached_authorized_resources_for_user(
 <dd>
 
 **limit:** `typing.Optional[int]` — The maximum number of resources to return. Defaults to 100.
-
     
 </dd>
 </dl>
@@ -2032,7 +1984,6 @@ client.permissions_service.list_cached_authorized_resources_for_user(
 <dd>
 
 **offset:** `typing.Optional[int]` — The offset to use for pagination. If not specified, the first page of results will be returned.
-
     
 </dd>
 </dl>
@@ -2142,7 +2093,6 @@ client.search.search_document_collection(
 <dd>
 
 **user_email:** `str` — The email of the user making the search request for permissions reduction.
-
     
 </dd>
 </dl>
@@ -2151,7 +2101,6 @@ client.search.search_document_collection(
 <dd>
 
 **structured_query_filters:** `typing.Optional[typing.Sequence[SingleFieldFilter]]` — The structured query filters to apply to the search query.
-
     
 </dd>
 </dl>
@@ -2168,7 +2117,6 @@ client.search.search_document_collection(
 <dd>
 
 **metadata_filter_expression:** `typing.Optional[str]` — Legacy metadata filter expression to apply to the search query. Use structuredQueryFilters instead.
-
     
 </dd>
 </dl>

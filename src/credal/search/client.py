@@ -44,16 +44,13 @@ class SearchClient:
         user_email : str
             The email of the user making the search request for permissions reduction.
 
-
         structured_query_filters : typing.Optional[typing.Sequence[SingleFieldFilter]]
             The structured query filters to apply to the search query.
-
 
         search_options : typing.Optional[DocumentCollectionSearchOptions]
 
         metadata_filter_expression : typing.Optional[str]
             Legacy metadata filter expression to apply to the search query. Use structuredQueryFilters instead.
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -155,16 +152,13 @@ class AsyncSearchClient:
         user_email : str
             The email of the user making the search request for permissions reduction.
 
-
         structured_query_filters : typing.Optional[typing.Sequence[SingleFieldFilter]]
             The structured query filters to apply to the search query.
-
 
         search_options : typing.Optional[DocumentCollectionSearchOptions]
 
         metadata_filter_expression : typing.Optional[str]
             Legacy metadata filter expression to apply to the search query. Use structuredQueryFilters instead.
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
