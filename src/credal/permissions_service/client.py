@@ -38,14 +38,11 @@ class PermissionsServiceClient:
         resource_identifier : ResourceIdentifier
             The resource identifier for which you want to check authorization.
 
-
         user_email : str
             The user email to check authorization for.
 
-
         disable_cache : typing.Optional[bool]
             If specified, Credal will bypass the permissions cache and check current permissions for this resource
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -113,14 +110,11 @@ class PermissionsServiceClient:
         resource_identifiers : typing.Sequence[ResourceIdentifier]
             The set of resource identifier for which you want to check authorization. Currently limited to 20 resources.
 
-
         user_email : str
             The user email to check authorization for.
 
-
         disable_cache : typing.Optional[bool]
             If specified, Credal will bypass the permissions cache and check current permissions for all resources specified.
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -197,18 +191,14 @@ class PermissionsServiceClient:
         user_email : str
             The user email to list authorized resources for.
 
-
         resource_type : typing.Optional[ResourceType]
             The type of resource you want to list. If not specified, all resource types will be listed.
-
 
         limit : typing.Optional[int]
             The maximum number of resources to return. Defaults to 100.
 
-
         offset : typing.Optional[int]
             The offset to use for pagination. If not specified, the first page of results will be returned.
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -275,14 +265,11 @@ class AsyncPermissionsServiceClient:
         resource_identifier : ResourceIdentifier
             The resource identifier for which you want to check authorization.
 
-
         user_email : str
             The user email to check authorization for.
 
-
         disable_cache : typing.Optional[bool]
             If specified, Credal will bypass the permissions cache and check current permissions for this resource
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -358,14 +345,11 @@ class AsyncPermissionsServiceClient:
         resource_identifiers : typing.Sequence[ResourceIdentifier]
             The set of resource identifier for which you want to check authorization. Currently limited to 20 resources.
 
-
         user_email : str
             The user email to check authorization for.
 
-
         disable_cache : typing.Optional[bool]
             If specified, Credal will bypass the permissions cache and check current permissions for all resources specified.
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -450,18 +434,14 @@ class AsyncPermissionsServiceClient:
         user_email : str
             The user email to list authorized resources for.
 
-
         resource_type : typing.Optional[ResourceType]
             The type of resource you want to list. If not specified, all resource types will be listed.
-
 
         limit : typing.Optional[int]
             The maximum number of resources to return. Defaults to 100.
 
-
         offset : typing.Optional[int]
             The offset to use for pagination. If not specified, the first page of results will be returned.
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
