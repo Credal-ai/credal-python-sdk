@@ -2,16 +2,14 @@
 
 import typing
 from ..core.client_wrapper import SyncClientWrapper
+from .raw_client import RawSearchClient
 import uuid
 from .types.single_field_filter import SingleFieldFilter
 from .types.document_collection_search_options import DocumentCollectionSearchOptions
 from ..core.request_options import RequestOptions
 from .types.search_document_collection_response import SearchDocumentCollectionResponse
-from ..core.serialization import convert_and_respect_annotation_metadata
-from ..core.pydantic_utilities import parse_obj_as
-from json.decoder import JSONDecodeError
-from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper
+from .raw_client import AsyncRawSearchClient
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -19,7 +17,18 @@ OMIT = typing.cast(typing.Any, ...)
 
 class SearchClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
-        self._client_wrapper = client_wrapper
+        self._raw_client = RawSearchClient(client_wrapper=client_wrapper)
+
+    @property
+    def with_raw_response(self) -> RawSearchClient:
+        """
+        Retrieves a raw implementation of this client that returns raw responses.
+
+        Returns
+        -------
+        RawSearchClient
+        """
+        return self._raw_client
 
     def search_document_collection(
         self,
@@ -92,42 +101,32 @@ class SearchClient:
             ),
         )
         """
-        _response = self._client_wrapper.httpx_client.request(
-            "v0/search/searchDocumentCollection",
-            method="POST",
-            json={
-                "collectionId": collection_id,
-                "searchQuery": search_query,
-                "userEmail": user_email,
-                "structuredQueryFilters": convert_and_respect_annotation_metadata(
-                    object_=structured_query_filters, annotation=typing.Sequence[SingleFieldFilter], direction="write"
-                ),
-                "searchOptions": convert_and_respect_annotation_metadata(
-                    object_=search_options, annotation=DocumentCollectionSearchOptions, direction="write"
-                ),
-                "metadataFilterExpression": metadata_filter_expression,
-            },
+        response = self._raw_client.search_document_collection(
+            collection_id=collection_id,
+            search_query=search_query,
+            user_email=user_email,
+            structured_query_filters=structured_query_filters,
+            search_options=search_options,
+            metadata_filter_expression=metadata_filter_expression,
             request_options=request_options,
-            omit=OMIT,
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    SearchDocumentCollectionResponse,
-                    parse_obj_as(
-                        type_=SearchDocumentCollectionResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
 
 class AsyncSearchClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
-        self._client_wrapper = client_wrapper
+        self._raw_client = AsyncRawSearchClient(client_wrapper=client_wrapper)
+
+    @property
+    def with_raw_response(self) -> AsyncRawSearchClient:
+        """
+        Retrieves a raw implementation of this client that returns raw responses.
+
+        Returns
+        -------
+        AsyncRawSearchClient
+        """
+        return self._raw_client
 
     async def search_document_collection(
         self,
@@ -207,34 +206,13 @@ class AsyncSearchClient:
 
         asyncio.run(main())
         """
-        _response = await self._client_wrapper.httpx_client.request(
-            "v0/search/searchDocumentCollection",
-            method="POST",
-            json={
-                "collectionId": collection_id,
-                "searchQuery": search_query,
-                "userEmail": user_email,
-                "structuredQueryFilters": convert_and_respect_annotation_metadata(
-                    object_=structured_query_filters, annotation=typing.Sequence[SingleFieldFilter], direction="write"
-                ),
-                "searchOptions": convert_and_respect_annotation_metadata(
-                    object_=search_options, annotation=DocumentCollectionSearchOptions, direction="write"
-                ),
-                "metadataFilterExpression": metadata_filter_expression,
-            },
+        response = await self._raw_client.search_document_collection(
+            collection_id=collection_id,
+            search_query=search_query,
+            user_email=user_email,
+            structured_query_filters=structured_query_filters,
+            search_options=search_options,
+            metadata_filter_expression=metadata_filter_expression,
             request_options=request_options,
-            omit=OMIT,
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    SearchDocumentCollectionResponse,
-                    parse_obj_as(
-                        type_=SearchDocumentCollectionResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data

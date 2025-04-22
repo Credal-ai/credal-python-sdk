@@ -2,19 +2,17 @@
 
 import typing
 from ..core.client_wrapper import SyncClientWrapper
+from .raw_client import RawDocumentCollectionsClient
 import uuid
 from ..common.types.resource_identifier import ResourceIdentifier
 from ..core.request_options import RequestOptions
-from ..core.serialization import convert_and_respect_annotation_metadata
-from json.decoder import JSONDecodeError
-from ..core.api_error import ApiError
 from ..common.types.collaborator import Collaborator
 from .types.create_collection_response import CreateCollectionResponse
-from ..core.pydantic_utilities import parse_obj_as
 from .types.delete_collection_response import DeleteCollectionResponse
 from .types.mongo_collection_sync_config import MongoCollectionSyncConfig
 from .types.mongo_collection_sync_response import MongoCollectionSyncResponse
 from ..core.client_wrapper import AsyncClientWrapper
+from .raw_client import AsyncRawDocumentCollectionsClient
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -22,7 +20,18 @@ OMIT = typing.cast(typing.Any, ...)
 
 class DocumentCollectionsClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
-        self._client_wrapper = client_wrapper
+        self._raw_client = RawDocumentCollectionsClient(client_wrapper=client_wrapper)
+
+    @property
+    def with_raw_response(self) -> RawDocumentCollectionsClient:
+        """
+        Retrieves a raw implementation of this client that returns raw responses.
+
+        Returns
+        -------
+        RawDocumentCollectionsClient
+        """
+        return self._raw_client
 
     def add_documents_to_collection(
         self,
@@ -75,25 +84,10 @@ class DocumentCollectionsClient:
             ],
         )
         """
-        _response = self._client_wrapper.httpx_client.request(
-            "v0/documentCollections/addDocumentsToCollection",
-            method="POST",
-            json={
-                "collectionId": collection_id,
-                "resourceIdentifiers": convert_and_respect_annotation_metadata(
-                    object_=resource_identifiers, annotation=typing.Sequence[ResourceIdentifier], direction="write"
-                ),
-            },
-            request_options=request_options,
-            omit=OMIT,
+        response = self._raw_client.add_documents_to_collection(
+            collection_id=collection_id, resource_identifiers=resource_identifiers, request_options=request_options
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     def remove_documents_from_collection(
         self,
@@ -146,25 +140,10 @@ class DocumentCollectionsClient:
             ],
         )
         """
-        _response = self._client_wrapper.httpx_client.request(
-            "v0/documentCollections/removeDocumentsFromCollection",
-            method="DELETE",
-            json={
-                "collectionId": collection_id,
-                "resourceIdentifiers": convert_and_respect_annotation_metadata(
-                    object_=resource_identifiers, annotation=typing.Sequence[ResourceIdentifier], direction="write"
-                ),
-            },
-            request_options=request_options,
-            omit=OMIT,
+        response = self._raw_client.remove_documents_from_collection(
+            collection_id=collection_id, resource_identifiers=resource_identifiers, request_options=request_options
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     def create_collection(
         self,
@@ -175,7 +154,7 @@ class DocumentCollectionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateCollectionResponse:
         """
-        Create a new copilot. The API key used will be added to the copilot for future Requests
+        Create a new collection. The API key used will be added to the collection for future Requests
 
         Parameters
         ----------
@@ -183,10 +162,10 @@ class DocumentCollectionsClient:
             A descriptive name for the collection.
 
         description : str
-            An in depth name for the copilot's function. Useful for routing requests to the right copilot.
+            An in depth name for the agent's function. Useful for routing requests to the right agent.
 
         collaborators : typing.Sequence[Collaborator]
-            A list of collaborator emails and roles that will have access to the copilot.
+            A list of collaborator emails and roles that will have access to the agent.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -214,32 +193,10 @@ class DocumentCollectionsClient:
             ],
         )
         """
-        _response = self._client_wrapper.httpx_client.request(
-            "v0/documentCollections/createCollection",
-            method="POST",
-            json={
-                "name": name,
-                "description": description,
-                "collaborators": convert_and_respect_annotation_metadata(
-                    object_=collaborators, annotation=typing.Sequence[Collaborator], direction="write"
-                ),
-            },
-            request_options=request_options,
-            omit=OMIT,
+        response = self._raw_client.create_collection(
+            name=name, description=description, collaborators=collaborators, request_options=request_options
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    CreateCollectionResponse,
-                    parse_obj_as(
-                        type_=CreateCollectionResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     def delete_collection(
         self, *, collection_id: uuid.UUID, request_options: typing.Optional[RequestOptions] = None
@@ -273,28 +230,8 @@ class DocumentCollectionsClient:
             ),
         )
         """
-        _response = self._client_wrapper.httpx_client.request(
-            "v0/documentCollections/deleteCollection",
-            method="DELETE",
-            json={
-                "collectionId": collection_id,
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    DeleteCollectionResponse,
-                    parse_obj_as(
-                        type_=DeleteCollectionResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        response = self._raw_client.delete_collection(collection_id=collection_id, request_options=request_options)
+        return response.data
 
     def create_mongo_collection_sync(
         self,
@@ -305,7 +242,7 @@ class DocumentCollectionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> MongoCollectionSyncResponse:
         """
-        Credal lets you easily sync your MongoDB data for use in Collections and Copilots. Create a new sync from a MongoDB collection to a Credal collection.
+        Credal lets you easily sync your MongoDB data for use in Collections and Agents. Create a new sync from a MongoDB collection to a Credal collection.
 
         Parameters
         ----------
@@ -353,32 +290,10 @@ class DocumentCollectionsClient:
             ),
         )
         """
-        _response = self._client_wrapper.httpx_client.request(
-            "v0/documentCollections/mongodb/createMongoSync",
-            method="POST",
-            json={
-                "collectionId": collection_id,
-                "mongoURI": mongo_uri,
-                "config": convert_and_respect_annotation_metadata(
-                    object_=config, annotation=MongoCollectionSyncConfig, direction="write"
-                ),
-            },
-            request_options=request_options,
-            omit=OMIT,
+        response = self._raw_client.create_mongo_collection_sync(
+            collection_id=collection_id, mongo_uri=mongo_uri, config=config, request_options=request_options
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    MongoCollectionSyncResponse,
-                    parse_obj_as(
-                        type_=MongoCollectionSyncResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     def update_mongo_collection_sync(
         self,
@@ -389,7 +304,7 @@ class DocumentCollectionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> MongoCollectionSyncResponse:
         """
-        Credal lets you easily sync your MongoDB data for use in Collections and Copilots. Update an existing sync from a MongoDB collection to a Credal collection via the `mongoCredentialId`, to disambiguate between multiple potential syncs to a given collection.
+        Credal lets you easily sync your MongoDB data for use in Collections and Agents. Update an existing sync from a MongoDB collection to a Credal collection via the `mongoCredentialId`, to disambiguate between multiple potential syncs to a given collection.
 
         Parameters
         ----------
@@ -439,37 +354,26 @@ class DocumentCollectionsClient:
             ),
         )
         """
-        _response = self._client_wrapper.httpx_client.request(
-            "v0/documentCollections/mongodb/updateMongoSync",
-            method="POST",
-            json={
-                "mongoCredentialId": mongo_credential_id,
-                "mongoURI": mongo_uri,
-                "config": convert_and_respect_annotation_metadata(
-                    object_=config, annotation=MongoCollectionSyncConfig, direction="write"
-                ),
-            },
-            request_options=request_options,
-            omit=OMIT,
+        response = self._raw_client.update_mongo_collection_sync(
+            mongo_credential_id=mongo_credential_id, mongo_uri=mongo_uri, config=config, request_options=request_options
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    MongoCollectionSyncResponse,
-                    parse_obj_as(
-                        type_=MongoCollectionSyncResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
 
 class AsyncDocumentCollectionsClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
-        self._client_wrapper = client_wrapper
+        self._raw_client = AsyncRawDocumentCollectionsClient(client_wrapper=client_wrapper)
+
+    @property
+    def with_raw_response(self) -> AsyncRawDocumentCollectionsClient:
+        """
+        Retrieves a raw implementation of this client that returns raw responses.
+
+        Returns
+        -------
+        AsyncRawDocumentCollectionsClient
+        """
+        return self._raw_client
 
     async def add_documents_to_collection(
         self,
@@ -529,25 +433,10 @@ class AsyncDocumentCollectionsClient:
 
         asyncio.run(main())
         """
-        _response = await self._client_wrapper.httpx_client.request(
-            "v0/documentCollections/addDocumentsToCollection",
-            method="POST",
-            json={
-                "collectionId": collection_id,
-                "resourceIdentifiers": convert_and_respect_annotation_metadata(
-                    object_=resource_identifiers, annotation=typing.Sequence[ResourceIdentifier], direction="write"
-                ),
-            },
-            request_options=request_options,
-            omit=OMIT,
+        response = await self._raw_client.add_documents_to_collection(
+            collection_id=collection_id, resource_identifiers=resource_identifiers, request_options=request_options
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     async def remove_documents_from_collection(
         self,
@@ -607,25 +496,10 @@ class AsyncDocumentCollectionsClient:
 
         asyncio.run(main())
         """
-        _response = await self._client_wrapper.httpx_client.request(
-            "v0/documentCollections/removeDocumentsFromCollection",
-            method="DELETE",
-            json={
-                "collectionId": collection_id,
-                "resourceIdentifiers": convert_and_respect_annotation_metadata(
-                    object_=resource_identifiers, annotation=typing.Sequence[ResourceIdentifier], direction="write"
-                ),
-            },
-            request_options=request_options,
-            omit=OMIT,
+        response = await self._raw_client.remove_documents_from_collection(
+            collection_id=collection_id, resource_identifiers=resource_identifiers, request_options=request_options
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     async def create_collection(
         self,
@@ -636,7 +510,7 @@ class AsyncDocumentCollectionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateCollectionResponse:
         """
-        Create a new copilot. The API key used will be added to the copilot for future Requests
+        Create a new collection. The API key used will be added to the collection for future Requests
 
         Parameters
         ----------
@@ -644,10 +518,10 @@ class AsyncDocumentCollectionsClient:
             A descriptive name for the collection.
 
         description : str
-            An in depth name for the copilot's function. Useful for routing requests to the right copilot.
+            An in depth name for the agent's function. Useful for routing requests to the right agent.
 
         collaborators : typing.Sequence[Collaborator]
-            A list of collaborator emails and roles that will have access to the copilot.
+            A list of collaborator emails and roles that will have access to the agent.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -683,32 +557,10 @@ class AsyncDocumentCollectionsClient:
 
         asyncio.run(main())
         """
-        _response = await self._client_wrapper.httpx_client.request(
-            "v0/documentCollections/createCollection",
-            method="POST",
-            json={
-                "name": name,
-                "description": description,
-                "collaborators": convert_and_respect_annotation_metadata(
-                    object_=collaborators, annotation=typing.Sequence[Collaborator], direction="write"
-                ),
-            },
-            request_options=request_options,
-            omit=OMIT,
+        response = await self._raw_client.create_collection(
+            name=name, description=description, collaborators=collaborators, request_options=request_options
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    CreateCollectionResponse,
-                    parse_obj_as(
-                        type_=CreateCollectionResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     async def delete_collection(
         self, *, collection_id: uuid.UUID, request_options: typing.Optional[RequestOptions] = None
@@ -749,28 +601,10 @@ class AsyncDocumentCollectionsClient:
 
         asyncio.run(main())
         """
-        _response = await self._client_wrapper.httpx_client.request(
-            "v0/documentCollections/deleteCollection",
-            method="DELETE",
-            json={
-                "collectionId": collection_id,
-            },
-            request_options=request_options,
-            omit=OMIT,
+        response = await self._raw_client.delete_collection(
+            collection_id=collection_id, request_options=request_options
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    DeleteCollectionResponse,
-                    parse_obj_as(
-                        type_=DeleteCollectionResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     async def create_mongo_collection_sync(
         self,
@@ -781,7 +615,7 @@ class AsyncDocumentCollectionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> MongoCollectionSyncResponse:
         """
-        Credal lets you easily sync your MongoDB data for use in Collections and Copilots. Create a new sync from a MongoDB collection to a Credal collection.
+        Credal lets you easily sync your MongoDB data for use in Collections and Agents. Create a new sync from a MongoDB collection to a Credal collection.
 
         Parameters
         ----------
@@ -836,32 +670,10 @@ class AsyncDocumentCollectionsClient:
 
         asyncio.run(main())
         """
-        _response = await self._client_wrapper.httpx_client.request(
-            "v0/documentCollections/mongodb/createMongoSync",
-            method="POST",
-            json={
-                "collectionId": collection_id,
-                "mongoURI": mongo_uri,
-                "config": convert_and_respect_annotation_metadata(
-                    object_=config, annotation=MongoCollectionSyncConfig, direction="write"
-                ),
-            },
-            request_options=request_options,
-            omit=OMIT,
+        response = await self._raw_client.create_mongo_collection_sync(
+            collection_id=collection_id, mongo_uri=mongo_uri, config=config, request_options=request_options
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    MongoCollectionSyncResponse,
-                    parse_obj_as(
-                        type_=MongoCollectionSyncResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     async def update_mongo_collection_sync(
         self,
@@ -872,7 +684,7 @@ class AsyncDocumentCollectionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> MongoCollectionSyncResponse:
         """
-        Credal lets you easily sync your MongoDB data for use in Collections and Copilots. Update an existing sync from a MongoDB collection to a Credal collection via the `mongoCredentialId`, to disambiguate between multiple potential syncs to a given collection.
+        Credal lets you easily sync your MongoDB data for use in Collections and Agents. Update an existing sync from a MongoDB collection to a Credal collection via the `mongoCredentialId`, to disambiguate between multiple potential syncs to a given collection.
 
         Parameters
         ----------
@@ -929,29 +741,7 @@ class AsyncDocumentCollectionsClient:
 
         asyncio.run(main())
         """
-        _response = await self._client_wrapper.httpx_client.request(
-            "v0/documentCollections/mongodb/updateMongoSync",
-            method="POST",
-            json={
-                "mongoCredentialId": mongo_credential_id,
-                "mongoURI": mongo_uri,
-                "config": convert_and_respect_annotation_metadata(
-                    object_=config, annotation=MongoCollectionSyncConfig, direction="write"
-                ),
-            },
-            request_options=request_options,
-            omit=OMIT,
+        response = await self._raw_client.update_mongo_collection_sync(
+            mongo_credential_id=mongo_credential_id, mongo_uri=mongo_uri, config=config, request_options=request_options
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    MongoCollectionSyncResponse,
-                    parse_obj_as(
-                        type_=MongoCollectionSyncResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data

@@ -2,15 +2,13 @@
 
 import typing
 from ..core.client_wrapper import SyncClientWrapper
+from .raw_client import RawDocumentCatalogClient
 from ..core.request_options import RequestOptions
 from .types.upload_document_response import UploadDocumentResponse
-from ..core.pydantic_utilities import parse_obj_as
-from json.decoder import JSONDecodeError
-from ..core.api_error import ApiError
 from .types.sync_source_by_url_response import SyncSourceByUrlResponse
 from .types.document_metadata_patch import DocumentMetadataPatch
-from ..core.serialization import convert_and_respect_annotation_metadata
 from ..core.client_wrapper import AsyncClientWrapper
+from .raw_client import AsyncRawDocumentCatalogClient
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -18,7 +16,18 @@ OMIT = typing.cast(typing.Any, ...)
 
 class DocumentCatalogClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
-        self._client_wrapper = client_wrapper
+        self._raw_client = RawDocumentCatalogClient(client_wrapper=client_wrapper)
+
+    @property
+    def with_raw_response(self) -> RawDocumentCatalogClient:
+        """
+        Retrieves a raw implementation of this client that returns raw responses.
+
+        Returns
+        -------
+        RawDocumentCatalogClient
+        """
+        return self._raw_client
 
     def upload_document_contents(
         self,
@@ -90,37 +99,20 @@ class DocumentCatalogClient:
             upload_as_user_email="jack@credal.ai",
         )
         """
-        _response = self._client_wrapper.httpx_client.request(
-            "v0/catalog/uploadDocumentContents",
-            method="POST",
-            json={
-                "documentName": document_name,
-                "documentContents": document_contents,
-                "allowedUsersEmailAddresses": allowed_users_email_addresses,
-                "uploadAsUserEmail": upload_as_user_email,
-                "documentExternalId": document_external_id,
-                "documentExternalUrl": document_external_url,
-                "customMetadata": custom_metadata,
-                "collectionId": collection_id,
-                "forceUpdate": force_update,
-                "internalPublic": internal_public,
-            },
+        response = self._raw_client.upload_document_contents(
+            document_name=document_name,
+            document_contents=document_contents,
+            allowed_users_email_addresses=allowed_users_email_addresses,
+            upload_as_user_email=upload_as_user_email,
+            document_external_id=document_external_id,
+            document_external_url=document_external_url,
+            custom_metadata=custom_metadata,
+            collection_id=collection_id,
+            force_update=force_update,
+            internal_public=internal_public,
             request_options=request_options,
-            omit=OMIT,
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    UploadDocumentResponse,
-                    parse_obj_as(
-                        type_=UploadDocumentResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     def sync_source_by_url(
         self, *, upload_as_user_email: str, source_url: str, request_options: typing.Optional[RequestOptions] = None
@@ -153,29 +145,10 @@ class DocumentCatalogClient:
             upload_as_user_email="ria@credal.ai",
         )
         """
-        _response = self._client_wrapper.httpx_client.request(
-            "v0/catalog/syncSourceByUrl",
-            method="POST",
-            json={
-                "uploadAsUserEmail": upload_as_user_email,
-                "sourceUrl": source_url,
-            },
-            request_options=request_options,
-            omit=OMIT,
+        response = self._raw_client.sync_source_by_url(
+            upload_as_user_email=upload_as_user_email, source_url=source_url, request_options=request_options
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    SyncSourceByUrlResponse,
-                    parse_obj_as(
-                        type_=SyncSourceByUrlResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     def metadata(
         self,
@@ -229,30 +202,26 @@ class DocumentCatalogClient:
             upload_as_user_email="ben@credal.ai",
         )
         """
-        _response = self._client_wrapper.httpx_client.request(
-            "v0/catalog/metadata",
-            method="PATCH",
-            json={
-                "sources": convert_and_respect_annotation_metadata(
-                    object_=sources, annotation=typing.Sequence[DocumentMetadataPatch], direction="write"
-                ),
-                "uploadAsUserEmail": upload_as_user_email,
-            },
-            request_options=request_options,
-            omit=OMIT,
+        response = self._raw_client.metadata(
+            sources=sources, upload_as_user_email=upload_as_user_email, request_options=request_options
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
 
 class AsyncDocumentCatalogClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
-        self._client_wrapper = client_wrapper
+        self._raw_client = AsyncRawDocumentCatalogClient(client_wrapper=client_wrapper)
+
+    @property
+    def with_raw_response(self) -> AsyncRawDocumentCatalogClient:
+        """
+        Retrieves a raw implementation of this client that returns raw responses.
+
+        Returns
+        -------
+        AsyncRawDocumentCatalogClient
+        """
+        return self._raw_client
 
     async def upload_document_contents(
         self,
@@ -332,37 +301,20 @@ class AsyncDocumentCatalogClient:
 
         asyncio.run(main())
         """
-        _response = await self._client_wrapper.httpx_client.request(
-            "v0/catalog/uploadDocumentContents",
-            method="POST",
-            json={
-                "documentName": document_name,
-                "documentContents": document_contents,
-                "allowedUsersEmailAddresses": allowed_users_email_addresses,
-                "uploadAsUserEmail": upload_as_user_email,
-                "documentExternalId": document_external_id,
-                "documentExternalUrl": document_external_url,
-                "customMetadata": custom_metadata,
-                "collectionId": collection_id,
-                "forceUpdate": force_update,
-                "internalPublic": internal_public,
-            },
+        response = await self._raw_client.upload_document_contents(
+            document_name=document_name,
+            document_contents=document_contents,
+            allowed_users_email_addresses=allowed_users_email_addresses,
+            upload_as_user_email=upload_as_user_email,
+            document_external_id=document_external_id,
+            document_external_url=document_external_url,
+            custom_metadata=custom_metadata,
+            collection_id=collection_id,
+            force_update=force_update,
+            internal_public=internal_public,
             request_options=request_options,
-            omit=OMIT,
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    UploadDocumentResponse,
-                    parse_obj_as(
-                        type_=UploadDocumentResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     async def sync_source_by_url(
         self, *, upload_as_user_email: str, source_url: str, request_options: typing.Optional[RequestOptions] = None
@@ -403,29 +355,10 @@ class AsyncDocumentCatalogClient:
 
         asyncio.run(main())
         """
-        _response = await self._client_wrapper.httpx_client.request(
-            "v0/catalog/syncSourceByUrl",
-            method="POST",
-            json={
-                "uploadAsUserEmail": upload_as_user_email,
-                "sourceUrl": source_url,
-            },
-            request_options=request_options,
-            omit=OMIT,
+        response = await self._raw_client.sync_source_by_url(
+            upload_as_user_email=upload_as_user_email, source_url=source_url, request_options=request_options
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    SyncSourceByUrlResponse,
-                    parse_obj_as(
-                        type_=SyncSourceByUrlResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     async def metadata(
         self,
@@ -487,22 +420,7 @@ class AsyncDocumentCatalogClient:
 
         asyncio.run(main())
         """
-        _response = await self._client_wrapper.httpx_client.request(
-            "v0/catalog/metadata",
-            method="PATCH",
-            json={
-                "sources": convert_and_respect_annotation_metadata(
-                    object_=sources, annotation=typing.Sequence[DocumentMetadataPatch], direction="write"
-                ),
-                "uploadAsUserEmail": upload_as_user_email,
-            },
-            request_options=request_options,
-            omit=OMIT,
+        response = await self._raw_client.metadata(
+            sources=sources, upload_as_user_email=upload_as_user_email, request_options=request_options
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
