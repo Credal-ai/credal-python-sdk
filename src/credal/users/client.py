@@ -2,12 +2,11 @@
 
 import typing
 from ..core.client_wrapper import SyncClientWrapper
+from .raw_client import RawUsersClient
 from .types.user_metadata_patch import UserMetadataPatch
 from ..core.request_options import RequestOptions
-from ..core.serialization import convert_and_respect_annotation_metadata
-from json.decoder import JSONDecodeError
-from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper
+from .raw_client import AsyncRawUsersClient
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -15,7 +14,18 @@ OMIT = typing.cast(typing.Any, ...)
 
 class UsersClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
-        self._client_wrapper = client_wrapper
+        self._raw_client = RawUsersClient(client_wrapper=client_wrapper)
+
+    @property
+    def with_raw_response(self) -> RawUsersClient:
+        """
+        Retrieves a raw implementation of this client that returns raw responses.
+
+        Returns
+        -------
+        RawUsersClient
+        """
+        return self._raw_client
 
     def metadata(
         self, *, request: typing.Sequence[UserMetadataPatch], request_options: typing.Optional[RequestOptions] = None
@@ -55,27 +65,24 @@ class UsersClient:
             ],
         )
         """
-        _response = self._client_wrapper.httpx_client.request(
-            "v0/users/metadata",
-            method="PATCH",
-            json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=typing.Sequence[UserMetadataPatch], direction="write"
-            ),
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        response = self._raw_client.metadata(request=request, request_options=request_options)
+        return response.data
 
 
 class AsyncUsersClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
-        self._client_wrapper = client_wrapper
+        self._raw_client = AsyncRawUsersClient(client_wrapper=client_wrapper)
+
+    @property
+    def with_raw_response(self) -> AsyncRawUsersClient:
+        """
+        Retrieves a raw implementation of this client that returns raw responses.
+
+        Returns
+        -------
+        AsyncRawUsersClient
+        """
+        return self._raw_client
 
     async def metadata(
         self, *, request: typing.Sequence[UserMetadataPatch], request_options: typing.Optional[RequestOptions] = None
@@ -123,19 +130,5 @@ class AsyncUsersClient:
 
         asyncio.run(main())
         """
-        _response = await self._client_wrapper.httpx_client.request(
-            "v0/users/metadata",
-            method="PATCH",
-            json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=typing.Sequence[UserMetadataPatch], direction="write"
-            ),
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        response = await self._raw_client.metadata(request=request, request_options=request_options)
+        return response.data

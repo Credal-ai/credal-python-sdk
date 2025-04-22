@@ -2,24 +2,20 @@
 
 import typing
 from ..core.client_wrapper import SyncClientWrapper
+from .raw_client import RawCopilotsClient
 from ..common.types.collaborator import Collaborator
 from ..core.request_options import RequestOptions
 from .types.create_copilot_response import CreateCopilotResponse
-from ..core.serialization import convert_and_respect_annotation_metadata
-from ..core.pydantic_utilities import parse_obj_as
-from json.decoder import JSONDecodeError
-from ..core.api_error import ApiError
 import uuid
 from .types.create_conversation_response import CreateConversationResponse
 from .types.message_feedback import MessageFeedback
 from .types.input_variable import InputVariable
 from .types.send_agent_message_response import SendAgentMessageResponse
 from .types.streaming_chunk import StreamingChunk
-import httpx_sse
-import json
 from .types.configuration import Configuration
 from .types.delete_copilot_response import DeleteCopilotResponse
 from ..core.client_wrapper import AsyncClientWrapper
+from .raw_client import AsyncRawCopilotsClient
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -27,7 +23,18 @@ OMIT = typing.cast(typing.Any, ...)
 
 class CopilotsClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
-        self._client_wrapper = client_wrapper
+        self._raw_client = RawCopilotsClient(client_wrapper=client_wrapper)
+
+    @property
+    def with_raw_response(self) -> RawCopilotsClient:
+        """
+        Retrieves a raw implementation of this client that returns raw responses.
+
+        Returns
+        -------
+        RawCopilotsClient
+        """
+        return self._raw_client
 
     def create_copilot(
         self,
@@ -38,18 +45,18 @@ class CopilotsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateCopilotResponse:
         """
-        Create a new copilot. The API key used will be added to the copilot for future Requests
+        Create a new agent. The API key used will be added to the agent for future Requests
 
         Parameters
         ----------
         name : str
-            A descriptive name for the copilot.
+            A descriptive name for the agent.
 
         description : str
-            An in depth name for the copilot's function. Useful for routing requests to the right copilot.
+            An in depth name for the agent's function. Useful for routing requests to the right agent.
 
         collaborators : typing.Sequence[Collaborator]
-            A list of collaborator emails and roles that will have access to the copilot.
+            A list of collaborator emails and roles that will have access to the agent.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -67,8 +74,8 @@ class CopilotsClient:
             api_key="YOUR_API_KEY",
         )
         client.copilots.create_copilot(
-            name="Customer Copilot",
-            description="This copilot is used to answer customer requests based on internal documentation.",
+            name="Customer Agent",
+            description="This agent is used to answer customer requests based on internal documentation.",
             collaborators=[
                 Collaborator(
                     email="test@gmail.com",
@@ -77,43 +84,21 @@ class CopilotsClient:
             ],
         )
         """
-        _response = self._client_wrapper.httpx_client.request(
-            "v0/copilots/createCopilot",
-            method="POST",
-            json={
-                "name": name,
-                "description": description,
-                "collaborators": convert_and_respect_annotation_metadata(
-                    object_=collaborators, annotation=typing.Sequence[Collaborator], direction="write"
-                ),
-            },
-            request_options=request_options,
-            omit=OMIT,
+        response = self._raw_client.create_copilot(
+            name=name, description=description, collaborators=collaborators, request_options=request_options
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    CreateCopilotResponse,
-                    parse_obj_as(
-                        type_=CreateCopilotResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     def create_conversation(
         self, *, agent_id: uuid.UUID, user_email: str, request_options: typing.Optional[RequestOptions] = None
     ) -> CreateConversationResponse:
         """
-        OPTIONAL. Create a new conversation with the Copilot. The conversation ID can be used in the `sendMessage` endpoint. The `sendMessage` endpoint automatically creates new conversations upon first request, but calling this endpoint can simplify certain use cases where it is helpful for the application to have the conversation ID before the first message is sent.
+        OPTIONAL. Create a new conversation with the Agent. The conversation ID can be used in the `sendMessage` endpoint. The `sendMessage` endpoint automatically creates new conversations upon first request, but calling this endpoint can simplify certain use cases where it is helpful for the application to have the conversation ID before the first message is sent.
 
         Parameters
         ----------
         agent_id : uuid.UUID
-            Credal-generated Copilot ID to specify which agent to route the request to.
+            Credal-generated Agent ID to specify which agent to route the request to.
 
         user_email : str
             End-user for the conversation.
@@ -141,29 +126,10 @@ class CopilotsClient:
             user_email="ravin@credal.ai",
         )
         """
-        _response = self._client_wrapper.httpx_client.request(
-            "v0/copilots/createConversation",
-            method="POST",
-            json={
-                "agentId": agent_id,
-                "userEmail": user_email,
-            },
-            request_options=request_options,
-            omit=OMIT,
+        response = self._raw_client.create_conversation(
+            agent_id=agent_id, user_email=user_email, request_options=request_options
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    CreateConversationResponse,
-                    parse_obj_as(
-                        type_=CreateConversationResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     def provide_message_feedback(
         self,
@@ -178,7 +144,7 @@ class CopilotsClient:
         Parameters
         ----------
         agent_id : uuid.UUID
-            Credal-generated Copilot ID to specify which agent to route the request to.
+            Credal-generated Agent ID to specify which agent to route the request to.
 
         user_email : str
             The user profile you want to use when providing feedback.
@@ -221,27 +187,14 @@ class CopilotsClient:
             ),
         )
         """
-        _response = self._client_wrapper.httpx_client.request(
-            "v0/copilots/provideMessageFeedback",
-            method="POST",
-            json={
-                "agentId": agent_id,
-                "userEmail": user_email,
-                "messageId": message_id,
-                "messageFeedback": convert_and_respect_annotation_metadata(
-                    object_=message_feedback, annotation=MessageFeedback, direction="write"
-                ),
-            },
+        response = self._raw_client.provide_message_feedback(
+            agent_id=agent_id,
+            user_email=user_email,
+            message_id=message_id,
+            message_feedback=message_feedback,
             request_options=request_options,
-            omit=OMIT,
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     def send_message(
         self,
@@ -257,10 +210,10 @@ class CopilotsClient:
         Parameters
         ----------
         agent_id : uuid.UUID
-            Credal-generated Copilot ID to specify which agent to route the request to.
+            Credal-generated Agent ID to specify which agent to route the request to.
 
         message : str
-            The message you want to send to your copilot.
+            The message you want to send to your agent.
 
         user_email : str
             The user profile you want to use when sending the message.
@@ -317,34 +270,15 @@ class CopilotsClient:
             ],
         )
         """
-        _response = self._client_wrapper.httpx_client.request(
-            "v0/copilots/sendMessage",
-            method="POST",
-            json={
-                "agentId": agent_id,
-                "message": message,
-                "userEmail": user_email,
-                "conversationId": conversation_id,
-                "inputVariables": convert_and_respect_annotation_metadata(
-                    object_=input_variables, annotation=typing.Sequence[InputVariable], direction="write"
-                ),
-            },
+        response = self._raw_client.send_message(
+            agent_id=agent_id,
+            message=message,
+            user_email=user_email,
+            conversation_id=conversation_id,
+            input_variables=input_variables,
             request_options=request_options,
-            omit=OMIT,
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    SendAgentMessageResponse,
-                    parse_obj_as(
-                        type_=SendAgentMessageResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     def stream_message(
         self,
@@ -357,15 +291,15 @@ class CopilotsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.Iterator[StreamingChunk]:
         """
-        This endpoint allows you to send a message to a specific copilot and get the response back as a streamed set of Server-Sent Events.
+        This endpoint allows you to send a message to a specific agent and get the response back as a streamed set of Server-Sent Events.
 
         Parameters
         ----------
         copilot_id : uuid.UUID
-            Credal-generated Copilot ID to specify which agent to route the request to.
+            Credal-generated Agent ID to specify which agent to route the request to.
 
         message : str
-            The message you want to send to your copilot.
+            The message you want to send to your agent.
 
         email : str
             The user profile you want to use when sending the message.
@@ -425,41 +359,15 @@ class CopilotsClient:
         for chunk in response:
             yield chunk
         """
-        with self._client_wrapper.httpx_client.stream(
-            "v0/copilots/streamMessage",
-            method="POST",
-            json={
-                "copilotId": copilot_id,
-                "message": message,
-                "email": email,
-                "conversationId": conversation_id,
-                "inputVariables": convert_and_respect_annotation_metadata(
-                    object_=input_variables, annotation=typing.Sequence[InputVariable], direction="write"
-                ),
-            },
+        with self._raw_client.stream_message(
+            copilot_id=copilot_id,
+            message=message,
+            email=email,
+            conversation_id=conversation_id,
+            input_variables=input_variables,
             request_options=request_options,
-            omit=OMIT,
-        ) as _response:
-            try:
-                if 200 <= _response.status_code < 300:
-                    _event_source = httpx_sse.EventSource(_response)
-                    for _sse in _event_source.iter_sse():
-                        try:
-                            yield typing.cast(
-                                StreamingChunk,
-                                parse_obj_as(
-                                    type_=StreamingChunk,  # type: ignore
-                                    object_=json.loads(_sse.data),
-                                ),
-                            )
-                        except:
-                            pass
-                    return
-                _response.read()
-                _response_json = _response.json()
-            except JSONDecodeError:
-                raise ApiError(status_code=_response.status_code, body=_response.text)
-            raise ApiError(status_code=_response.status_code, body=_response_json)
+        ) as r:
+            yield from r.data
 
     def add_collection_to_copilot(
         self,
@@ -469,12 +377,12 @@ class CopilotsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
-        Link a collection with a copilot. The API Key used must be added to both the collection and the copilot beforehand.
+        Link a collection with a agent. The API Key used must be added to both the collection and the agent beforehand.
 
         Parameters
         ----------
         copilot_id : uuid.UUID
-            Credal-generated copilot ID to add the collection to.
+            Credal-generated Agent ID to add the collection to.
 
         collection_id : uuid.UUID
             Credal-generated collection ID to add.
@@ -504,23 +412,10 @@ class CopilotsClient:
             ),
         )
         """
-        _response = self._client_wrapper.httpx_client.request(
-            "v0/copilots/addCollectionToCopilot",
-            method="POST",
-            json={
-                "copilotId": copilot_id,
-                "collectionId": collection_id,
-            },
-            request_options=request_options,
-            omit=OMIT,
+        response = self._raw_client.add_collection_to_copilot(
+            copilot_id=copilot_id, collection_id=collection_id, request_options=request_options
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     def remove_collection_from_copilot(
         self,
@@ -530,12 +425,12 @@ class CopilotsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
-        Unlink a collection with a copilot. The API Key used must be added to both the collection and the copilot beforehand.
+        Unlink a collection with a agent. The API Key used must be added to both the collection and the agent beforehand.
 
         Parameters
         ----------
         copilot_id : uuid.UUID
-            Credal-generated copilot ID to add the collection to.
+            Credal-generated agent ID to add the collection to.
 
         collection_id : uuid.UUID
             Credal-generated collection ID to add.
@@ -565,23 +460,10 @@ class CopilotsClient:
             ),
         )
         """
-        _response = self._client_wrapper.httpx_client.request(
-            "v0/copilots/removeCollectionFromCopilot",
-            method="POST",
-            json={
-                "copilotId": copilot_id,
-                "collectionId": collection_id,
-            },
-            request_options=request_options,
-            omit=OMIT,
+        response = self._raw_client.remove_collection_from_copilot(
+            copilot_id=copilot_id, collection_id=collection_id, request_options=request_options
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     def update_configuration(
         self,
@@ -591,12 +473,12 @@ class CopilotsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
-        Update the configuration for a copilot
+        Update the configuration for a agent
 
         Parameters
         ----------
         copilot_id : uuid.UUID
-            Credal-generated copilot ID to add the collection to.
+            Credal-generated agent ID to add the collection to.
 
         configuration : Configuration
 
@@ -622,8 +504,8 @@ class CopilotsClient:
                 "82e4b12a-6990-45d4-8ebd-85c00e030c24",
             ),
             configuration=Configuration(
-                name="Customer Copilot",
-                description="This copilot is used to answer customer requests based on internal documentation.",
+                name="Customer Agent",
+                description="This agent is used to answer customer requests based on internal documentation.",
                 prompt="You are a polite, helpful assistant used to answer customer requests.",
                 ai_endpoint_configuration=AiEndpointConfiguration(
                     base_url="https://api.openai.com/v1/",
@@ -632,25 +514,10 @@ class CopilotsClient:
             ),
         )
         """
-        _response = self._client_wrapper.httpx_client.request(
-            "v0/copilots/updateConfiguration",
-            method="POST",
-            json={
-                "copilotId": copilot_id,
-                "configuration": convert_and_respect_annotation_metadata(
-                    object_=configuration, annotation=Configuration, direction="write"
-                ),
-            },
-            request_options=request_options,
-            omit=OMIT,
+        response = self._raw_client.update_configuration(
+            copilot_id=copilot_id, configuration=configuration, request_options=request_options
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     def delete_copilot(
         self, *, id: uuid.UUID, request_options: typing.Optional[RequestOptions] = None
@@ -683,33 +550,24 @@ class CopilotsClient:
             ),
         )
         """
-        _response = self._client_wrapper.httpx_client.request(
-            "v0/copilots/deleteCopilot",
-            method="DELETE",
-            json={
-                "id": id,
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    DeleteCopilotResponse,
-                    parse_obj_as(
-                        type_=DeleteCopilotResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        response = self._raw_client.delete_copilot(id=id, request_options=request_options)
+        return response.data
 
 
 class AsyncCopilotsClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
-        self._client_wrapper = client_wrapper
+        self._raw_client = AsyncRawCopilotsClient(client_wrapper=client_wrapper)
+
+    @property
+    def with_raw_response(self) -> AsyncRawCopilotsClient:
+        """
+        Retrieves a raw implementation of this client that returns raw responses.
+
+        Returns
+        -------
+        AsyncRawCopilotsClient
+        """
+        return self._raw_client
 
     async def create_copilot(
         self,
@@ -720,18 +578,18 @@ class AsyncCopilotsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateCopilotResponse:
         """
-        Create a new copilot. The API key used will be added to the copilot for future Requests
+        Create a new agent. The API key used will be added to the agent for future Requests
 
         Parameters
         ----------
         name : str
-            A descriptive name for the copilot.
+            A descriptive name for the agent.
 
         description : str
-            An in depth name for the copilot's function. Useful for routing requests to the right copilot.
+            An in depth name for the agent's function. Useful for routing requests to the right agent.
 
         collaborators : typing.Sequence[Collaborator]
-            A list of collaborator emails and roles that will have access to the copilot.
+            A list of collaborator emails and roles that will have access to the agent.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -754,8 +612,8 @@ class AsyncCopilotsClient:
 
         async def main() -> None:
             await client.copilots.create_copilot(
-                name="Customer Copilot",
-                description="This copilot is used to answer customer requests based on internal documentation.",
+                name="Customer Agent",
+                description="This agent is used to answer customer requests based on internal documentation.",
                 collaborators=[
                     Collaborator(
                         email="test@gmail.com",
@@ -767,43 +625,21 @@ class AsyncCopilotsClient:
 
         asyncio.run(main())
         """
-        _response = await self._client_wrapper.httpx_client.request(
-            "v0/copilots/createCopilot",
-            method="POST",
-            json={
-                "name": name,
-                "description": description,
-                "collaborators": convert_and_respect_annotation_metadata(
-                    object_=collaborators, annotation=typing.Sequence[Collaborator], direction="write"
-                ),
-            },
-            request_options=request_options,
-            omit=OMIT,
+        response = await self._raw_client.create_copilot(
+            name=name, description=description, collaborators=collaborators, request_options=request_options
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    CreateCopilotResponse,
-                    parse_obj_as(
-                        type_=CreateCopilotResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     async def create_conversation(
         self, *, agent_id: uuid.UUID, user_email: str, request_options: typing.Optional[RequestOptions] = None
     ) -> CreateConversationResponse:
         """
-        OPTIONAL. Create a new conversation with the Copilot. The conversation ID can be used in the `sendMessage` endpoint. The `sendMessage` endpoint automatically creates new conversations upon first request, but calling this endpoint can simplify certain use cases where it is helpful for the application to have the conversation ID before the first message is sent.
+        OPTIONAL. Create a new conversation with the Agent. The conversation ID can be used in the `sendMessage` endpoint. The `sendMessage` endpoint automatically creates new conversations upon first request, but calling this endpoint can simplify certain use cases where it is helpful for the application to have the conversation ID before the first message is sent.
 
         Parameters
         ----------
         agent_id : uuid.UUID
-            Credal-generated Copilot ID to specify which agent to route the request to.
+            Credal-generated Agent ID to specify which agent to route the request to.
 
         user_email : str
             End-user for the conversation.
@@ -838,29 +674,10 @@ class AsyncCopilotsClient:
 
         asyncio.run(main())
         """
-        _response = await self._client_wrapper.httpx_client.request(
-            "v0/copilots/createConversation",
-            method="POST",
-            json={
-                "agentId": agent_id,
-                "userEmail": user_email,
-            },
-            request_options=request_options,
-            omit=OMIT,
+        response = await self._raw_client.create_conversation(
+            agent_id=agent_id, user_email=user_email, request_options=request_options
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    CreateConversationResponse,
-                    parse_obj_as(
-                        type_=CreateConversationResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     async def provide_message_feedback(
         self,
@@ -875,7 +692,7 @@ class AsyncCopilotsClient:
         Parameters
         ----------
         agent_id : uuid.UUID
-            Credal-generated Copilot ID to specify which agent to route the request to.
+            Credal-generated Agent ID to specify which agent to route the request to.
 
         user_email : str
             The user profile you want to use when providing feedback.
@@ -925,27 +742,14 @@ class AsyncCopilotsClient:
 
         asyncio.run(main())
         """
-        _response = await self._client_wrapper.httpx_client.request(
-            "v0/copilots/provideMessageFeedback",
-            method="POST",
-            json={
-                "agentId": agent_id,
-                "userEmail": user_email,
-                "messageId": message_id,
-                "messageFeedback": convert_and_respect_annotation_metadata(
-                    object_=message_feedback, annotation=MessageFeedback, direction="write"
-                ),
-            },
+        response = await self._raw_client.provide_message_feedback(
+            agent_id=agent_id,
+            user_email=user_email,
+            message_id=message_id,
+            message_feedback=message_feedback,
             request_options=request_options,
-            omit=OMIT,
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     async def send_message(
         self,
@@ -961,10 +765,10 @@ class AsyncCopilotsClient:
         Parameters
         ----------
         agent_id : uuid.UUID
-            Credal-generated Copilot ID to specify which agent to route the request to.
+            Credal-generated Agent ID to specify which agent to route the request to.
 
         message : str
-            The message you want to send to your copilot.
+            The message you want to send to your agent.
 
         user_email : str
             The user profile you want to use when sending the message.
@@ -1028,34 +832,15 @@ class AsyncCopilotsClient:
 
         asyncio.run(main())
         """
-        _response = await self._client_wrapper.httpx_client.request(
-            "v0/copilots/sendMessage",
-            method="POST",
-            json={
-                "agentId": agent_id,
-                "message": message,
-                "userEmail": user_email,
-                "conversationId": conversation_id,
-                "inputVariables": convert_and_respect_annotation_metadata(
-                    object_=input_variables, annotation=typing.Sequence[InputVariable], direction="write"
-                ),
-            },
+        response = await self._raw_client.send_message(
+            agent_id=agent_id,
+            message=message,
+            user_email=user_email,
+            conversation_id=conversation_id,
+            input_variables=input_variables,
             request_options=request_options,
-            omit=OMIT,
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    SendAgentMessageResponse,
-                    parse_obj_as(
-                        type_=SendAgentMessageResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     async def stream_message(
         self,
@@ -1068,15 +853,15 @@ class AsyncCopilotsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.AsyncIterator[StreamingChunk]:
         """
-        This endpoint allows you to send a message to a specific copilot and get the response back as a streamed set of Server-Sent Events.
+        This endpoint allows you to send a message to a specific agent and get the response back as a streamed set of Server-Sent Events.
 
         Parameters
         ----------
         copilot_id : uuid.UUID
-            Credal-generated Copilot ID to specify which agent to route the request to.
+            Credal-generated Agent ID to specify which agent to route the request to.
 
         message : str
-            The message you want to send to your copilot.
+            The message you want to send to your agent.
 
         email : str
             The user profile you want to use when sending the message.
@@ -1143,41 +928,16 @@ class AsyncCopilotsClient:
 
         asyncio.run(main())
         """
-        async with self._client_wrapper.httpx_client.stream(
-            "v0/copilots/streamMessage",
-            method="POST",
-            json={
-                "copilotId": copilot_id,
-                "message": message,
-                "email": email,
-                "conversationId": conversation_id,
-                "inputVariables": convert_and_respect_annotation_metadata(
-                    object_=input_variables, annotation=typing.Sequence[InputVariable], direction="write"
-                ),
-            },
+        async with self._raw_client.stream_message(
+            copilot_id=copilot_id,
+            message=message,
+            email=email,
+            conversation_id=conversation_id,
+            input_variables=input_variables,
             request_options=request_options,
-            omit=OMIT,
-        ) as _response:
-            try:
-                if 200 <= _response.status_code < 300:
-                    _event_source = httpx_sse.EventSource(_response)
-                    async for _sse in _event_source.aiter_sse():
-                        try:
-                            yield typing.cast(
-                                StreamingChunk,
-                                parse_obj_as(
-                                    type_=StreamingChunk,  # type: ignore
-                                    object_=json.loads(_sse.data),
-                                ),
-                            )
-                        except:
-                            pass
-                    return
-                await _response.aread()
-                _response_json = _response.json()
-            except JSONDecodeError:
-                raise ApiError(status_code=_response.status_code, body=_response.text)
-            raise ApiError(status_code=_response.status_code, body=_response_json)
+        ) as r:
+            async for data in r.data:
+                yield data
 
     async def add_collection_to_copilot(
         self,
@@ -1187,12 +947,12 @@ class AsyncCopilotsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
-        Link a collection with a copilot. The API Key used must be added to both the collection and the copilot beforehand.
+        Link a collection with a agent. The API Key used must be added to both the collection and the agent beforehand.
 
         Parameters
         ----------
         copilot_id : uuid.UUID
-            Credal-generated copilot ID to add the collection to.
+            Credal-generated Agent ID to add the collection to.
 
         collection_id : uuid.UUID
             Credal-generated collection ID to add.
@@ -1229,23 +989,10 @@ class AsyncCopilotsClient:
 
         asyncio.run(main())
         """
-        _response = await self._client_wrapper.httpx_client.request(
-            "v0/copilots/addCollectionToCopilot",
-            method="POST",
-            json={
-                "copilotId": copilot_id,
-                "collectionId": collection_id,
-            },
-            request_options=request_options,
-            omit=OMIT,
+        response = await self._raw_client.add_collection_to_copilot(
+            copilot_id=copilot_id, collection_id=collection_id, request_options=request_options
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     async def remove_collection_from_copilot(
         self,
@@ -1255,12 +1002,12 @@ class AsyncCopilotsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
-        Unlink a collection with a copilot. The API Key used must be added to both the collection and the copilot beforehand.
+        Unlink a collection with a agent. The API Key used must be added to both the collection and the agent beforehand.
 
         Parameters
         ----------
         copilot_id : uuid.UUID
-            Credal-generated copilot ID to add the collection to.
+            Credal-generated agent ID to add the collection to.
 
         collection_id : uuid.UUID
             Credal-generated collection ID to add.
@@ -1297,23 +1044,10 @@ class AsyncCopilotsClient:
 
         asyncio.run(main())
         """
-        _response = await self._client_wrapper.httpx_client.request(
-            "v0/copilots/removeCollectionFromCopilot",
-            method="POST",
-            json={
-                "copilotId": copilot_id,
-                "collectionId": collection_id,
-            },
-            request_options=request_options,
-            omit=OMIT,
+        response = await self._raw_client.remove_collection_from_copilot(
+            copilot_id=copilot_id, collection_id=collection_id, request_options=request_options
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     async def update_configuration(
         self,
@@ -1323,12 +1057,12 @@ class AsyncCopilotsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
-        Update the configuration for a copilot
+        Update the configuration for a agent
 
         Parameters
         ----------
         copilot_id : uuid.UUID
-            Credal-generated copilot ID to add the collection to.
+            Credal-generated agent ID to add the collection to.
 
         configuration : Configuration
 
@@ -1358,8 +1092,8 @@ class AsyncCopilotsClient:
                     "82e4b12a-6990-45d4-8ebd-85c00e030c24",
                 ),
                 configuration=Configuration(
-                    name="Customer Copilot",
-                    description="This copilot is used to answer customer requests based on internal documentation.",
+                    name="Customer Agent",
+                    description="This agent is used to answer customer requests based on internal documentation.",
                     prompt="You are a polite, helpful assistant used to answer customer requests.",
                     ai_endpoint_configuration=AiEndpointConfiguration(
                         base_url="https://api.openai.com/v1/",
@@ -1371,25 +1105,10 @@ class AsyncCopilotsClient:
 
         asyncio.run(main())
         """
-        _response = await self._client_wrapper.httpx_client.request(
-            "v0/copilots/updateConfiguration",
-            method="POST",
-            json={
-                "copilotId": copilot_id,
-                "configuration": convert_and_respect_annotation_metadata(
-                    object_=configuration, annotation=Configuration, direction="write"
-                ),
-            },
-            request_options=request_options,
-            omit=OMIT,
+        response = await self._raw_client.update_configuration(
+            copilot_id=copilot_id, configuration=configuration, request_options=request_options
         )
-        try:
-            if 200 <= _response.status_code < 300:
-                return
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        return response.data
 
     async def delete_copilot(
         self, *, id: uuid.UUID, request_options: typing.Optional[RequestOptions] = None
@@ -1429,25 +1148,5 @@ class AsyncCopilotsClient:
 
         asyncio.run(main())
         """
-        _response = await self._client_wrapper.httpx_client.request(
-            "v0/copilots/deleteCopilot",
-            method="DELETE",
-            json={
-                "id": id,
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    DeleteCopilotResponse,
-                    parse_obj_as(
-                        type_=DeleteCopilotResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
+        response = await self._raw_client.delete_copilot(id=id, request_options=request_options)
+        return response.data

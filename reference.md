@@ -12,7 +12,7 @@
 <dl>
 <dd>
 
-Create a new copilot. The API key used will be added to the copilot for future Requests
+Create a new agent. The API key used will be added to the agent for future Requests
 </dd>
 </dl>
 </dd>
@@ -34,8 +34,8 @@ client = CredalApi(
     api_key="YOUR_API_KEY",
 )
 client.copilots.create_copilot(
-    name="Customer Copilot",
-    description="This copilot is used to answer customer requests based on internal documentation.",
+    name="Customer Agent",
+    description="This agent is used to answer customer requests based on internal documentation.",
     collaborators=[
         Collaborator(
             email="test@gmail.com",
@@ -58,7 +58,7 @@ client.copilots.create_copilot(
 <dl>
 <dd>
 
-**name:** `str` — A descriptive name for the copilot.
+**name:** `str` — A descriptive name for the agent.
     
 </dd>
 </dl>
@@ -66,7 +66,7 @@ client.copilots.create_copilot(
 <dl>
 <dd>
 
-**description:** `str` — An in depth name for the copilot's function. Useful for routing requests to the right copilot.
+**description:** `str` — An in depth name for the agent's function. Useful for routing requests to the right agent.
     
 </dd>
 </dl>
@@ -74,7 +74,7 @@ client.copilots.create_copilot(
 <dl>
 <dd>
 
-**collaborators:** `typing.Sequence[Collaborator]` — A list of collaborator emails and roles that will have access to the copilot.
+**collaborators:** `typing.Sequence[Collaborator]` — A list of collaborator emails and roles that will have access to the agent.
     
 </dd>
 </dl>
@@ -106,7 +106,7 @@ client.copilots.create_copilot(
 <dl>
 <dd>
 
-OPTIONAL. Create a new conversation with the Copilot. The conversation ID can be used in the `sendMessage` endpoint. The `sendMessage` endpoint automatically creates new conversations upon first request, but calling this endpoint can simplify certain use cases where it is helpful for the application to have the conversation ID before the first message is sent.
+OPTIONAL. Create a new conversation with the Agent. The conversation ID can be used in the `sendMessage` endpoint. The `sendMessage` endpoint automatically creates new conversations upon first request, but calling this endpoint can simplify certain use cases where it is helpful for the application to have the conversation ID before the first message is sent.
 </dd>
 </dl>
 </dd>
@@ -149,7 +149,7 @@ client.copilots.create_conversation(
 <dl>
 <dd>
 
-**agent_id:** `uuid.UUID` — Credal-generated Copilot ID to specify which agent to route the request to.
+**agent_id:** `uuid.UUID` — Credal-generated Agent ID to specify which agent to route the request to.
     
 </dd>
 </dl>
@@ -227,7 +227,7 @@ client.copilots.provide_message_feedback(
 <dl>
 <dd>
 
-**agent_id:** `uuid.UUID` — Credal-generated Copilot ID to specify which agent to route the request to.
+**agent_id:** `uuid.UUID` — Credal-generated Agent ID to specify which agent to route the request to.
     
 </dd>
 </dl>
@@ -335,7 +335,7 @@ client.copilots.send_message(
 <dl>
 <dd>
 
-**agent_id:** `uuid.UUID` — Credal-generated Copilot ID to specify which agent to route the request to.
+**agent_id:** `uuid.UUID` — Credal-generated Agent ID to specify which agent to route the request to.
     
 </dd>
 </dl>
@@ -343,7 +343,7 @@ client.copilots.send_message(
 <dl>
 <dd>
 
-**message:** `str` — The message you want to send to your copilot.
+**message:** `str` — The message you want to send to your agent.
     
 </dd>
 </dl>
@@ -399,7 +399,7 @@ client.copilots.send_message(
 <dl>
 <dd>
 
-This endpoint allows you to send a message to a specific copilot and get the response back as a streamed set of Server-Sent Events.
+This endpoint allows you to send a message to a specific agent and get the response back as a streamed set of Server-Sent Events.
 </dd>
 </dl>
 </dd>
@@ -450,7 +450,7 @@ response = client.copilots.stream_message(
         ),
     ],
 )
-for chunk in response:
+for chunk in response.data:
     yield chunk
 
 ```
@@ -467,7 +467,7 @@ for chunk in response:
 <dl>
 <dd>
 
-**copilot_id:** `uuid.UUID` — Credal-generated Copilot ID to specify which agent to route the request to.
+**copilot_id:** `uuid.UUID` — Credal-generated Agent ID to specify which agent to route the request to.
     
 </dd>
 </dl>
@@ -475,7 +475,7 @@ for chunk in response:
 <dl>
 <dd>
 
-**message:** `str` — The message you want to send to your copilot.
+**message:** `str` — The message you want to send to your agent.
     
 </dd>
 </dl>
@@ -531,7 +531,7 @@ for chunk in response:
 <dl>
 <dd>
 
-Link a collection with a copilot. The API Key used must be added to both the collection and the copilot beforehand.
+Link a collection with a agent. The API Key used must be added to both the collection and the agent beforehand.
 </dd>
 </dl>
 </dd>
@@ -576,7 +576,7 @@ client.copilots.add_collection_to_copilot(
 <dl>
 <dd>
 
-**copilot_id:** `uuid.UUID` — Credal-generated copilot ID to add the collection to.
+**copilot_id:** `uuid.UUID` — Credal-generated Agent ID to add the collection to.
     
 </dd>
 </dl>
@@ -616,7 +616,7 @@ client.copilots.add_collection_to_copilot(
 <dl>
 <dd>
 
-Unlink a collection with a copilot. The API Key used must be added to both the collection and the copilot beforehand.
+Unlink a collection with a agent. The API Key used must be added to both the collection and the agent beforehand.
 </dd>
 </dl>
 </dd>
@@ -661,7 +661,7 @@ client.copilots.remove_collection_from_copilot(
 <dl>
 <dd>
 
-**copilot_id:** `uuid.UUID` — Credal-generated copilot ID to add the collection to.
+**copilot_id:** `uuid.UUID` — Credal-generated agent ID to add the collection to.
     
 </dd>
 </dl>
@@ -701,7 +701,7 @@ client.copilots.remove_collection_from_copilot(
 <dl>
 <dd>
 
-Update the configuration for a copilot
+Update the configuration for a agent
 </dd>
 </dl>
 </dd>
@@ -729,8 +729,8 @@ client.copilots.update_configuration(
         "82e4b12a-6990-45d4-8ebd-85c00e030c24",
     ),
     configuration=Configuration(
-        name="Customer Copilot",
-        description="This copilot is used to answer customer requests based on internal documentation.",
+        name="Customer Agent",
+        description="This agent is used to answer customer requests based on internal documentation.",
         prompt="You are a polite, helpful assistant used to answer customer requests.",
         ai_endpoint_configuration=AiEndpointConfiguration(
             base_url="https://api.openai.com/v1/",
@@ -753,7 +753,7 @@ client.copilots.update_configuration(
 <dl>
 <dd>
 
-**copilot_id:** `uuid.UUID` — Credal-generated copilot ID to add the collection to.
+**copilot_id:** `uuid.UUID` — Credal-generated agent ID to add the collection to.
     
 </dd>
 </dl>
@@ -1348,7 +1348,7 @@ client.document_collections.remove_documents_from_collection(
 <dl>
 <dd>
 
-Create a new copilot. The API key used will be added to the copilot for future Requests
+Create a new collection. The API key used will be added to the collection for future Requests
 </dd>
 </dl>
 </dd>
@@ -1402,7 +1402,7 @@ client.document_collections.create_collection(
 <dl>
 <dd>
 
-**description:** `str` — An in depth name for the copilot's function. Useful for routing requests to the right copilot.
+**description:** `str` — An in depth name for the agent's function. Useful for routing requests to the right agent.
     
 </dd>
 </dl>
@@ -1410,7 +1410,7 @@ client.document_collections.create_collection(
 <dl>
 <dd>
 
-**collaborators:** `typing.Sequence[Collaborator]` — A list of collaborator emails and roles that will have access to the copilot.
+**collaborators:** `typing.Sequence[Collaborator]` — A list of collaborator emails and roles that will have access to the agent.
     
 </dd>
 </dl>
@@ -1516,7 +1516,7 @@ client.document_collections.delete_collection(
 <dl>
 <dd>
 
-Credal lets you easily sync your MongoDB data for use in Collections and Copilots. Create a new sync from a MongoDB collection to a Credal collection.
+Credal lets you easily sync your MongoDB data for use in Collections and Agents. Create a new sync from a MongoDB collection to a Credal collection.
 </dd>
 </dl>
 </dd>
@@ -1622,7 +1622,7 @@ client.document_collections.create_mongo_collection_sync(
 <dl>
 <dd>
 
-Credal lets you easily sync your MongoDB data for use in Collections and Copilots. Update an existing sync from a MongoDB collection to a Credal collection via the `mongoCredentialId`, to disambiguate between multiple potential syncs to a given collection.
+Credal lets you easily sync your MongoDB data for use in Collections and Agents. Update an existing sync from a MongoDB collection to a Credal collection via the `mongoCredentialId`, to disambiguate between multiple potential syncs to a given collection.
 </dd>
 </dl>
 </dd>
