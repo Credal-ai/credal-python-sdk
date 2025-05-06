@@ -29,20 +29,8 @@ Create a new agent. The API key used will be added to the agent for future Reque
 ```python
 from credal import CredalApi
 from credal.common import Collaborator
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-client.copilots.create_copilot(
-    name="Customer Agent",
-    description="This agent is used to answer customer requests based on internal documentation.",
-    collaborators=[
-        Collaborator(
-            email="test@gmail.com",
-            role="editor",
-        )
-    ],
-)
+client = CredalApi(api_key="YOUR_API_KEY", )
+client.copilots.create_copilot(name='Customer Agent', description='This agent is used to answer customer requests based on internal documentation.', collaborators=[Collaborator(email='test@gmail.com', role="editor", )], )
 
 ```
 </dd>
@@ -121,19 +109,10 @@ OPTIONAL. Create a new conversation with the Agent. The conversation ID can be u
 <dd>
 
 ```python
-import uuid
-
 from credal import CredalApi
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-client.copilots.create_conversation(
-    agent_id=uuid.UUID(
-        "82e4b12a-6990-45d4-8ebd-85c00e030c24",
-    ),
-    user_email="ravin@credal.ai",
-)
+import uuid
+client = CredalApi(api_key="YOUR_API_KEY", )
+client.copilots.create_conversation(agent_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), user_email='ravin@credal.ai', )
 
 ```
 </dd>
@@ -190,28 +169,11 @@ client.copilots.create_conversation(
 <dd>
 
 ```python
-import uuid
-
 from credal import CredalApi
+import uuid
 from credal.copilots import MessageFeedback
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-client.copilots.provide_message_feedback(
-    user_email="ravin@credal.ai",
-    message_id=uuid.UUID(
-        "dd721cd8-4bf2-4b94-9869-258df3dab9dc",
-    ),
-    agent_id=uuid.UUID(
-        "82e4b12a-6990-45d4-8ebd-85c00e030c24",
-    ),
-    message_feedback=MessageFeedback(
-        feedback="NEGATIVE",
-        suggested_answer="Yes, Credal is SOC 2 compliant.",
-        descriptive_feedback="The response should be extremely clear and concise.",
-    ),
-)
+client = CredalApi(api_key="YOUR_API_KEY", )
+client.copilots.provide_message_feedback(user_email='ravin@credal.ai', message_id=uuid.UUID("dd721cd8-4bf2-4b94-9869-258df3dab9dc", ), agent_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), message_feedback=MessageFeedback(feedback="NEGATIVE", suggested_answer='Yes, Credal is SOC 2 compliant.', descriptive_feedback='The response should be extremely clear and concise.', ), )
 
 ```
 </dd>
@@ -284,42 +246,11 @@ client.copilots.provide_message_feedback(
 <dd>
 
 ```python
-import uuid
-
 from credal import CredalApi
+import uuid
 from credal.copilots import InputVariable
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-client.copilots.send_message(
-    agent_id=uuid.UUID(
-        "82e4b12a-6990-45d4-8ebd-85c00e030c24",
-    ),
-    message="Is Credal SOC 2 compliant?",
-    user_email="ravin@credal.ai",
-    input_variables=[
-        InputVariable(
-            name="input1",
-            ids=[
-                uuid.UUID(
-                    "82e4b12a-6990-45d4-8ebd-85c00e030c24",
-                )
-            ],
-        ),
-        InputVariable(
-            name="input2",
-            ids=[
-                uuid.UUID(
-                    "82e4b12a-6990-45d4-8ebd-85c00e030c25",
-                ),
-                uuid.UUID(
-                    "82e4b12a-6990-45d4-8ebd-85c00e030c26",
-                ),
-            ],
-        ),
-    ],
-)
+client = CredalApi(api_key="YOUR_API_KEY", )
+client.copilots.send_message(agent_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), message='Is Credal SOC 2 compliant?', user_email='ravin@credal.ai', input_variables=[InputVariable(name='input1', ids=[uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", )], ), InputVariable(name='input2', ids=[uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c25", ), uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c26", )], )], )
 
 ```
 </dd>
@@ -414,42 +345,11 @@ This endpoint allows you to send a message to a specific agent and get the respo
 <dd>
 
 ```python
-import uuid
-
 from credal import CredalApi
+import uuid
 from credal.copilots import InputVariable
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-response = client.copilots.stream_message(
-    copilot_id=uuid.UUID(
-        "82e4b12a-6990-45d4-8ebd-85c00e030c25",
-    ),
-    message="Is Credal SOC 2 compliant?",
-    email="ravin@credal.ai",
-    input_variables=[
-        InputVariable(
-            name="input1",
-            ids=[
-                uuid.UUID(
-                    "82e4b12a-6990-45d4-8ebd-85c00e030c24",
-                )
-            ],
-        ),
-        InputVariable(
-            name="input2",
-            ids=[
-                uuid.UUID(
-                    "82e4b12a-6990-45d4-8ebd-85c00e030c25",
-                ),
-                uuid.UUID(
-                    "82e4b12a-6990-45d4-8ebd-85c00e030c26",
-                ),
-            ],
-        ),
-    ],
-)
+client = CredalApi(api_key="YOUR_API_KEY", )
+response = client.copilots.stream_message(copilot_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c25", ), message='Is Credal SOC 2 compliant?', email='ravin@credal.ai', input_variables=[InputVariable(name='input1', ids=[uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", )], ), InputVariable(name='input2', ids=[uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c25", ), uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c26", )], )], )
 for chunk in response.data:
     yield chunk
 
@@ -546,21 +446,10 @@ Link a collection with a agent. The API Key used must be added to both the colle
 <dd>
 
 ```python
-import uuid
-
 from credal import CredalApi
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-client.copilots.add_collection_to_copilot(
-    copilot_id=uuid.UUID(
-        "82e4b12a-6990-45d4-8ebd-85c00e030c24",
-    ),
-    collection_id=uuid.UUID(
-        "def1055f-83c5-43d6-b558-f7a38e7b299e",
-    ),
-)
+import uuid
+client = CredalApi(api_key="YOUR_API_KEY", )
+client.copilots.add_collection_to_copilot(copilot_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), collection_id=uuid.UUID("def1055f-83c5-43d6-b558-f7a38e7b299e", ), )
 
 ```
 </dd>
@@ -631,21 +520,10 @@ Unlink a collection with a agent. The API Key used must be added to both the col
 <dd>
 
 ```python
-import uuid
-
 from credal import CredalApi
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-client.copilots.remove_collection_from_copilot(
-    copilot_id=uuid.UUID(
-        "82e4b12a-6990-45d4-8ebd-85c00e030c24",
-    ),
-    collection_id=uuid.UUID(
-        "def1055f-83c5-43d6-b558-f7a38e7b299e",
-    ),
-)
+import uuid
+client = CredalApi(api_key="YOUR_API_KEY", )
+client.copilots.remove_collection_from_copilot(copilot_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), collection_id=uuid.UUID("def1055f-83c5-43d6-b558-f7a38e7b299e", ), )
 
 ```
 </dd>
@@ -716,28 +594,12 @@ Update the configuration for a agent
 <dd>
 
 ```python
-import uuid
-
 from credal import CredalApi
-from credal.copilots import AiEndpointConfiguration, Configuration
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-client.copilots.update_configuration(
-    copilot_id=uuid.UUID(
-        "82e4b12a-6990-45d4-8ebd-85c00e030c24",
-    ),
-    configuration=Configuration(
-        name="Customer Agent",
-        description="This agent is used to answer customer requests based on internal documentation.",
-        prompt="You are a polite, helpful assistant used to answer customer requests.",
-        ai_endpoint_configuration=AiEndpointConfiguration(
-            base_url="https://api.openai.com/v1/",
-            api_key="<YOUR_API_KEY_HERE>",
-        ),
-    ),
-)
+import uuid
+from credal.copilots import Configuration
+from credal.copilots import AiEndpointConfiguration
+client = CredalApi(api_key="YOUR_API_KEY", )
+client.copilots.update_configuration(copilot_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), configuration=Configuration(name='Customer Agent', description='This agent is used to answer customer requests based on internal documentation.', prompt='You are a polite, helpful assistant used to answer customer requests.', ai_endpoint_configuration=AiEndpointConfiguration(base_url='https://api.openai.com/v1/', api_key='<YOUR_API_KEY_HERE>', ), ), )
 
 ```
 </dd>
@@ -794,18 +656,10 @@ client.copilots.update_configuration(
 <dd>
 
 ```python
-import uuid
-
 from credal import CredalApi
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-client.copilots.delete_copilot(
-    id=uuid.UUID(
-        "ac20e6ba-0bae-11ef-b25a-efca73df4c3a",
-    ),
-)
+import uuid
+client = CredalApi(api_key="YOUR_API_KEY", )
+client.copilots.delete_copilot(id=uuid.UUID("ac20e6ba-0bae-11ef-b25a-efca73df4c3a", ), )
 
 ```
 </dd>
@@ -856,17 +710,8 @@ client.copilots.delete_copilot(
 
 ```python
 from credal import CredalApi
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-client.document_catalog.upload_document_contents(
-    document_name="My Document",
-    document_contents="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    document_external_id="73eead26-d124-4940-b329-5f068a0a8db9",
-    allowed_users_email_addresses=["jack@credal.ai", "ravin@credal.ai"],
-    upload_as_user_email="jack@credal.ai",
-)
+client = CredalApi(api_key="YOUR_API_KEY", )
+client.document_catalog.upload_document_contents(document_name='My Document', document_contents='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', document_external_id='73eead26-d124-4940-b329-5f068a0a8db9', allowed_users_email_addresses=['jack@credal.ai', 'ravin@credal.ai'], upload_as_user_email='jack@credal.ai', )
 
 ```
 </dd>
@@ -1002,14 +847,8 @@ Sync a document from a source URL. Does not support recursive web search. Reach 
 
 ```python
 from credal import CredalApi
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-client.document_catalog.sync_source_by_url(
-    source_url="https://drive.google.com/file/d/123456/view",
-    upload_as_user_email="ria@credal.ai",
-)
+client = CredalApi(api_key="YOUR_API_KEY", )
+client.document_catalog.sync_source_by_url(source_url='https://drive.google.com/file/d/123456/view', upload_as_user_email='ria@credal.ai', )
 
 ```
 </dd>
@@ -1081,31 +920,12 @@ Bulk patch metadata for documents, synced natively by Credal or manual API uploa
 
 ```python
 from credal import CredalApi
-from credal.common import ResourceIdentifier_ExternalResourceId
 from credal.document_catalog import DocumentMetadataPatch
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-client.document_catalog.metadata(
-    sources=[
-        DocumentMetadataPatch(
-            metadata={"Department": "HR", "Country": "United States"},
-            resource_identifier=ResourceIdentifier_ExternalResourceId(
-                external_resource_id="170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr",
-                resource_type="GOOGLE_DRIVE_ITEM",
-            ),
-        ),
-        DocumentMetadataPatch(
-            metadata={"Department": "Sales", "Vertical": "Healthcare"},
-            resource_identifier=ResourceIdentifier_ExternalResourceId(
-                external_resource_id="123456",
-                resource_type="ZENDESK_TICKET",
-            ),
-        ),
-    ],
-    upload_as_user_email="ben@credal.ai",
-)
+from credal.common import ResourceIdentifier_ExternalResourceId
+client = CredalApi(api_key="YOUR_API_KEY", )
+client.document_catalog.metadata(sources=[DocumentMetadataPatch(metadata={'Department': 'HR', 'Country': 'United States'}
+, resource_identifier=ResourceIdentifier_ExternalResourceId(external_resource_id='170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr', resource_type="GOOGLE_DRIVE_ITEM", ), ), DocumentMetadataPatch(metadata={'Department': 'Sales', 'Vertical': 'Healthcare'}
+, resource_identifier=ResourceIdentifier_ExternalResourceId(external_resource_id='123456', resource_type="ZENDESK_TICKET", ), )], upload_as_user_email='ben@credal.ai', )
 
 ```
 </dd>
@@ -1177,29 +997,11 @@ Add documents to a document collection. Note that the documents must already exi
 <dd>
 
 ```python
-import uuid
-
 from credal import CredalApi
+import uuid
 from credal.common import ResourceIdentifier_ExternalResourceId
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-client.document_collections.add_documents_to_collection(
-    collection_id=uuid.UUID(
-        "82e4b12a-6990-45d4-8ebd-85c00e030c24",
-    ),
-    resource_identifiers=[
-        ResourceIdentifier_ExternalResourceId(
-            external_resource_id="170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr",
-            resource_type="GOOGLE_DRIVE_ITEM",
-        ),
-        ResourceIdentifier_ExternalResourceId(
-            external_resource_id="398KAHdfkjsdf09r54UvyslPVWkQFOA0lOiu34in923",
-            resource_type="GOOGLE_DRIVE_ITEM",
-        ),
-    ],
-)
+client = CredalApi(api_key="YOUR_API_KEY", )
+client.document_collections.add_documents_to_collection(collection_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), resource_identifiers=[ResourceIdentifier_ExternalResourceId(external_resource_id='170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr', resource_type="GOOGLE_DRIVE_ITEM", ), ResourceIdentifier_ExternalResourceId(external_resource_id='398KAHdfkjsdf09r54UvyslPVWkQFOA0lOiu34in923', resource_type="GOOGLE_DRIVE_ITEM", )], )
 
 ```
 </dd>
@@ -1270,29 +1072,11 @@ Remove documents from a collection
 <dd>
 
 ```python
-import uuid
-
 from credal import CredalApi
+import uuid
 from credal.common import ResourceIdentifier_ExternalResourceId
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-client.document_collections.remove_documents_from_collection(
-    collection_id=uuid.UUID(
-        "82e4b12a-6990-45d4-8ebd-85c00e030c24",
-    ),
-    resource_identifiers=[
-        ResourceIdentifier_ExternalResourceId(
-            external_resource_id="170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr",
-            resource_type="GOOGLE_DRIVE_ITEM",
-        ),
-        ResourceIdentifier_ExternalResourceId(
-            external_resource_id="398KAHdfkjsdf09r54UvyslPVWkQFOA0lOiu34in923",
-            resource_type="GOOGLE_DRIVE_ITEM",
-        ),
-    ],
-)
+client = CredalApi(api_key="YOUR_API_KEY", )
+client.document_collections.remove_documents_from_collection(collection_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), resource_identifiers=[ResourceIdentifier_ExternalResourceId(external_resource_id='170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr', resource_type="GOOGLE_DRIVE_ITEM", ), ResourceIdentifier_ExternalResourceId(external_resource_id='398KAHdfkjsdf09r54UvyslPVWkQFOA0lOiu34in923', resource_type="GOOGLE_DRIVE_ITEM", )], )
 
 ```
 </dd>
@@ -1365,20 +1149,8 @@ Create a new collection. The API key used will be added to the collection for fu
 ```python
 from credal import CredalApi
 from credal.common import Collaborator
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-client.document_collections.create_collection(
-    name="Customer Collection",
-    description="This collection is used to answer customer requests based on internal documentation.",
-    collaborators=[
-        Collaborator(
-            email="test@gmail.com",
-            role="editor",
-        )
-    ],
-)
+client = CredalApi(api_key="YOUR_API_KEY", )
+client.document_collections.create_collection(name='Customer Collection', description='This collection is used to answer customer requests based on internal documentation.', collaborators=[Collaborator(email='test@gmail.com', role="editor", )], )
 
 ```
 </dd>
@@ -1457,18 +1229,10 @@ Delete the collection.
 <dd>
 
 ```python
-import uuid
-
 from credal import CredalApi
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-client.document_collections.delete_collection(
-    collection_id=uuid.UUID(
-        "ac20e6ba-0bae-11ef-b25a-efca73df4c3a",
-    ),
-)
+import uuid
+client = CredalApi(api_key="YOUR_API_KEY", )
+client.document_collections.delete_collection(collection_id=uuid.UUID("ac20e6ba-0bae-11ef-b25a-efca73df4c3a", ), )
 
 ```
 </dd>
@@ -1531,34 +1295,13 @@ Credal lets you easily sync your MongoDB data for use in Collections and Agents.
 <dd>
 
 ```python
-import uuid
-
 from credal import CredalApi
-from credal.document_collections import (
-    MongoCollectionSyncConfig,
-    MongoSourceFieldsConfig,
-)
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-client.document_collections.create_mongo_collection_sync(
-    mongo_uri="mongodb+srv://cluster0.hzwklqn.mongodb.net/Cluster0?retryWrites=true&w=majority",
-    collection_id=uuid.UUID(
-        "ac20e6ba-0bae-11ef-b25a-efca73df4c3a",
-    ),
-    config=MongoCollectionSyncConfig(
-        sync_name="My sales transcripts",
-        collection_name="myCollection",
-        filter_expression={"status": {"$ne": "disabled"}},
-        source_fields=MongoSourceFieldsConfig(
-            body="body",
-            source_name="meetingName",
-            source_system_updated="transcriptDatetime",
-            source_url="link",
-        ),
-    ),
-)
+import uuid
+from credal.document_collections import MongoCollectionSyncConfig
+from credal.document_collections import MongoSourceFieldsConfig
+client = CredalApi(api_key="YOUR_API_KEY", )
+client.document_collections.create_mongo_collection_sync(mongo_uri='mongodb+srv://cluster0.hzwklqn.mongodb.net/Cluster0?retryWrites=true&w=majority', collection_id=uuid.UUID("ac20e6ba-0bae-11ef-b25a-efca73df4c3a", ), config=MongoCollectionSyncConfig(sync_name='My sales transcripts', collection_name='myCollection', filter_expression={'status': {'$ne': 'disabled'}}
+, source_fields=MongoSourceFieldsConfig(body='body', source_name='meetingName', source_system_updated='transcriptDatetime', source_url='link', ), ), )
 
 ```
 </dd>
@@ -1637,36 +1380,13 @@ Credal lets you easily sync your MongoDB data for use in Collections and Agents.
 <dd>
 
 ```python
-import uuid
-
 from credal import CredalApi
-from credal.document_collections import (
-    MongoCollectionSyncConfig,
-    MongoSourceFieldsConfig,
-)
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-client.document_collections.update_mongo_collection_sync(
-    mongo_uri="mongodb+srv://cluster0.hzwklqn.mongodb.net/Cluster0?retryWrites=true&w=majority",
-    mongo_credential_id=uuid.UUID(
-        "5988ed76-6ee1-11ef-97dd-1fca54b7c4bc",
-    ),
-    config=MongoCollectionSyncConfig(
-        sync_name="My recent summarized sales transcripts",
-        collection_name="myCollection",
-        filter_expression={
-            "transcriptDatetime": {"$gt": "2023-01-01T00:00:00.000Z"}
-        },
-        source_fields=MongoSourceFieldsConfig(
-            body="transcriptSummary",
-            source_name="meetingName",
-            source_system_updated="transcriptDatetime",
-            source_url="link",
-        ),
-    ),
-)
+import uuid
+from credal.document_collections import MongoCollectionSyncConfig
+from credal.document_collections import MongoSourceFieldsConfig
+client = CredalApi(api_key="YOUR_API_KEY", )
+client.document_collections.update_mongo_collection_sync(mongo_uri='mongodb+srv://cluster0.hzwklqn.mongodb.net/Cluster0?retryWrites=true&w=majority', mongo_credential_id=uuid.UUID("5988ed76-6ee1-11ef-97dd-1fca54b7c4bc", ), config=MongoCollectionSyncConfig(sync_name='My recent summarized sales transcripts', collection_name='myCollection', filter_expression={'transcriptDatetime': {'$gt': '2023-01-01T00:00:00.000Z'}}
+, source_fields=MongoSourceFieldsConfig(body='transcriptSummary', source_name='meetingName', source_system_updated='transcriptDatetime', source_url='link', ), ), )
 
 ```
 </dd>
@@ -1748,17 +1468,8 @@ Admin endpoint to check whether the specified user is authorized to read the spe
 ```python
 from credal import CredalApi
 from credal.common import ResourceIdentifier_ExternalResourceId
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-client.permissions_service.check_resource_authorization_for_user(
-    resource_identifier=ResourceIdentifier_ExternalResourceId(
-        external_resource_id="170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr",
-        resource_type="GOOGLE_DRIVE_ITEM",
-    ),
-    user_email="john.smith@foo.com",
-)
+client = CredalApi(api_key="YOUR_API_KEY", )
+client.permissions_service.check_resource_authorization_for_user(resource_identifier=ResourceIdentifier_ExternalResourceId(external_resource_id='170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr', resource_type="GOOGLE_DRIVE_ITEM", ), user_email='john.smith@foo.com', )
 
 ```
 </dd>
@@ -1838,26 +1549,10 @@ Admin endpoint to check whether the specified user is authorized to read the spe
 
 ```python
 from credal import CredalApi
-from credal.common import (
-    ResourceIdentifier_ExternalResourceId,
-    ResourceIdentifier_Url,
-)
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-client.permissions_service.check_bulk_resources_authorization_for_user(
-    resource_identifiers=[
-        ResourceIdentifier_Url(
-            url="https://docs.google.com/document/d/170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr/edit",
-        ),
-        ResourceIdentifier_ExternalResourceId(
-            external_resource_id="sfsdfvr54UvyslPVWkQFOA0dfsdfsdflgNycFmdZJQr",
-            resource_type="ZENDESK_TICKET",
-        ),
-    ],
-    user_email="john.smith@foo.com",
-)
+from credal.common import ResourceIdentifier_Url
+from credal.common import ResourceIdentifier_ExternalResourceId
+client = CredalApi(api_key="YOUR_API_KEY", )
+client.permissions_service.check_bulk_resources_authorization_for_user(resource_identifiers=[ResourceIdentifier_Url(url='https://docs.google.com/document/d/170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr/edit', ), ResourceIdentifier_ExternalResourceId(external_resource_id='sfsdfvr54UvyslPVWkQFOA0dfsdfsdflgNycFmdZJQr', resource_type="ZENDESK_TICKET", )], user_email='john.smith@foo.com', )
 
 ```
 </dd>
@@ -1937,13 +1632,8 @@ Admin endpoint to list all resources that the specified user is authorized to re
 
 ```python
 from credal import CredalApi
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-client.permissions_service.list_cached_authorized_resources_for_user(
-    user_email="john.smith@foo.com",
-)
+client = CredalApi(api_key="YOUR_API_KEY", )
+client.permissions_service.list_cached_authorized_resources_for_user(user_email='john.smith@foo.com', )
 
 ```
 </dd>
@@ -2031,36 +1721,12 @@ Search across all documents in a document collection using the document metadata
 <dd>
 
 ```python
-import uuid
-
 from credal import CredalApi
-from credal.search import DocumentCollectionSearchOptions, SingleFieldFilter
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-client.search.search_document_collection(
-    collection_id=uuid.UUID(
-        "82e4b12a-6990-45d4-8ebd-85c00e030c24",
-    ),
-    search_query="ABC Corp",
-    structured_query_filters=[
-        SingleFieldFilter(
-            field="status",
-            operator="==",
-            value="Open",
-        )
-    ],
-    user_email="jack@credal.ai",
-    search_options=DocumentCollectionSearchOptions(
-        max_chunks=10,
-        merge_contents=True,
-        threshold=0.8,
-        enable_smart_filtering=True,
-        enable_query_extraction=True,
-        enable_reranking=True,
-    ),
-)
+import uuid
+from credal.search import SingleFieldFilter
+from credal.search import DocumentCollectionSearchOptions
+client = CredalApi(api_key="YOUR_API_KEY", )
+client.search.search_document_collection(collection_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), search_query='ABC Corp', structured_query_filters=[SingleFieldFilter(field='status', operator="==", value='Open', )], user_email='jack@credal.ai', search_options=DocumentCollectionSearchOptions(max_chunks=10, merge_contents=True, threshold=0.8, enable_smart_filtering=True, enable_query_extraction=True, enable_reranking=True, ), )
 
 ```
 </dd>
@@ -2166,22 +1832,10 @@ Bulk patch metadata for users
 ```python
 from credal import CredalApi
 from credal.users import UserMetadataPatch
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-client.users.metadata(
-    request=[
-        UserMetadataPatch(
-            metadata={"State": "NY", "Job Role": "CEO"},
-            user_email="ravin@credal.ai",
-        ),
-        UserMetadataPatch(
-            metadata={"State": "NY", "Department": "Engineering"},
-            user_email="jack@credal.ai",
-        ),
-    ],
-)
+client = CredalApi(api_key="YOUR_API_KEY", )
+client.users.metadata(request=[UserMetadataPatch(metadata={'State': 'NY', 'Job Role': 'CEO'}
+, user_email='ravin@credal.ai', ), UserMetadataPatch(metadata={'State': 'NY', 'Department': 'Engineering'}
+, user_email='jack@credal.ai', )], )
 
 ```
 </dd>
