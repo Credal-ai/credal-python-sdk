@@ -63,8 +63,17 @@ class PermissionsServiceClient:
         --------
         from credal import CredalApi
         from credal.common import ResourceIdentifier_ExternalResourceId
-        client = CredalApi(api_key="YOUR_API_KEY", )
-        client.permissions_service.check_resource_authorization_for_user(resource_identifier=ResourceIdentifier_ExternalResourceId(external_resource_id='170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr', resource_type="GOOGLE_DRIVE_ITEM", ), user_email='john.smith@foo.com', )
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.permissions_service.check_resource_authorization_for_user(
+            resource_identifier=ResourceIdentifier_ExternalResourceId(
+                external_resource_id="170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr",
+                resource_type="GOOGLE_DRIVE_ITEM",
+            ),
+            user_email="john.smith@foo.com",
+        )
         """
         _response = self._raw_client.check_resource_authorization_for_user(
             resource_identifier=resource_identifier,
@@ -106,10 +115,26 @@ class PermissionsServiceClient:
         Examples
         --------
         from credal import CredalApi
-        from credal.common import ResourceIdentifier_Url
-        from credal.common import ResourceIdentifier_ExternalResourceId
-        client = CredalApi(api_key="YOUR_API_KEY", )
-        client.permissions_service.check_bulk_resources_authorization_for_user(resource_identifiers=[ResourceIdentifier_Url(url='https://docs.google.com/document/d/170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr/edit', ), ResourceIdentifier_ExternalResourceId(external_resource_id='sfsdfvr54UvyslPVWkQFOA0dfsdfsdflgNycFmdZJQr', resource_type="ZENDESK_TICKET", )], user_email='john.smith@foo.com', )
+        from credal.common import (
+            ResourceIdentifier_ExternalResourceId,
+            ResourceIdentifier_Url,
+        )
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.permissions_service.check_bulk_resources_authorization_for_user(
+            resource_identifiers=[
+                ResourceIdentifier_Url(
+                    url="https://docs.google.com/document/d/170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr/edit",
+                ),
+                ResourceIdentifier_ExternalResourceId(
+                    external_resource_id="sfsdfvr54UvyslPVWkQFOA0dfsdfsdflgNycFmdZJQr",
+                    resource_type="ZENDESK_TICKET",
+                ),
+            ],
+            user_email="john.smith@foo.com",
+        )
         """
         _response = self._raw_client.check_bulk_resources_authorization_for_user(
             resource_identifiers=resource_identifiers,
@@ -155,8 +180,13 @@ class PermissionsServiceClient:
         Examples
         --------
         from credal import CredalApi
-        client = CredalApi(api_key="YOUR_API_KEY", )
-        client.permissions_service.list_cached_authorized_resources_for_user(user_email='john.smith@foo.com', )
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.permissions_service.list_cached_authorized_resources_for_user(
+            user_email="john.smith@foo.com",
+        )
         """
         _response = self._raw_client.list_cached_authorized_resources_for_user(
             user_email=user_email,
@@ -214,12 +244,26 @@ class AsyncPermissionsServiceClient:
 
         Examples
         --------
+        import asyncio
+
         from credal import AsyncCredalApi
         from credal.common import ResourceIdentifier_ExternalResourceId
-        import asyncio
-        client = AsyncCredalApi(api_key="YOUR_API_KEY", )
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.permissions_service.check_resource_authorization_for_user(resource_identifier=ResourceIdentifier_ExternalResourceId(external_resource_id='170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr', resource_type="GOOGLE_DRIVE_ITEM", ), user_email='john.smith@foo.com', )
+            await client.permissions_service.check_resource_authorization_for_user(
+                resource_identifier=ResourceIdentifier_ExternalResourceId(
+                    external_resource_id="170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr",
+                    resource_type="GOOGLE_DRIVE_ITEM",
+                ),
+                user_email="john.smith@foo.com",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.check_resource_authorization_for_user(
@@ -261,13 +305,34 @@ class AsyncPermissionsServiceClient:
 
         Examples
         --------
-        from credal import AsyncCredalApi
-        from credal.common import ResourceIdentifier_Url
-        from credal.common import ResourceIdentifier_ExternalResourceId
         import asyncio
-        client = AsyncCredalApi(api_key="YOUR_API_KEY", )
+
+        from credal import AsyncCredalApi
+        from credal.common import (
+            ResourceIdentifier_ExternalResourceId,
+            ResourceIdentifier_Url,
+        )
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.permissions_service.check_bulk_resources_authorization_for_user(resource_identifiers=[ResourceIdentifier_Url(url='https://docs.google.com/document/d/170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr/edit', ), ResourceIdentifier_ExternalResourceId(external_resource_id='sfsdfvr54UvyslPVWkQFOA0dfsdfsdflgNycFmdZJQr', resource_type="ZENDESK_TICKET", )], user_email='john.smith@foo.com', )
+            await client.permissions_service.check_bulk_resources_authorization_for_user(
+                resource_identifiers=[
+                    ResourceIdentifier_Url(
+                        url="https://docs.google.com/document/d/170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr/edit",
+                    ),
+                    ResourceIdentifier_ExternalResourceId(
+                        external_resource_id="sfsdfvr54UvyslPVWkQFOA0dfsdfsdflgNycFmdZJQr",
+                        resource_type="ZENDESK_TICKET",
+                    ),
+                ],
+                user_email="john.smith@foo.com",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.check_bulk_resources_authorization_for_user(
@@ -313,11 +378,21 @@ class AsyncPermissionsServiceClient:
 
         Examples
         --------
-        from credal import AsyncCredalApi
         import asyncio
-        client = AsyncCredalApi(api_key="YOUR_API_KEY", )
+
+        from credal import AsyncCredalApi
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.permissions_service.list_cached_authorized_resources_for_user(user_email='john.smith@foo.com', )
+            await client.permissions_service.list_cached_authorized_resources_for_user(
+                user_email="john.smith@foo.com",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_cached_authorized_resources_for_user(

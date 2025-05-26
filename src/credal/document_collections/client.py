@@ -59,11 +59,29 @@ class DocumentCollectionsClient:
 
         Examples
         --------
-        from credal import CredalApi
         import uuid
+
+        from credal import CredalApi
         from credal.common import ResourceIdentifier_ExternalResourceId
-        client = CredalApi(api_key="YOUR_API_KEY", )
-        client.document_collections.add_documents_to_collection(collection_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), resource_identifiers=[ResourceIdentifier_ExternalResourceId(external_resource_id='170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr', resource_type="GOOGLE_DRIVE_ITEM", ), ResourceIdentifier_ExternalResourceId(external_resource_id='398KAHdfkjsdf09r54UvyslPVWkQFOA0lOiu34in923', resource_type="GOOGLE_DRIVE_ITEM", )], )
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.document_collections.add_documents_to_collection(
+            collection_id=uuid.UUID(
+                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+            ),
+            resource_identifiers=[
+                ResourceIdentifier_ExternalResourceId(
+                    external_resource_id="170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr",
+                    resource_type="GOOGLE_DRIVE_ITEM",
+                ),
+                ResourceIdentifier_ExternalResourceId(
+                    external_resource_id="398KAHdfkjsdf09r54UvyslPVWkQFOA0lOiu34in923",
+                    resource_type="GOOGLE_DRIVE_ITEM",
+                ),
+            ],
+        )
         """
         _response = self._raw_client.add_documents_to_collection(
             collection_id=collection_id, resource_identifiers=resource_identifiers, request_options=request_options
@@ -97,11 +115,29 @@ class DocumentCollectionsClient:
 
         Examples
         --------
-        from credal import CredalApi
         import uuid
+
+        from credal import CredalApi
         from credal.common import ResourceIdentifier_ExternalResourceId
-        client = CredalApi(api_key="YOUR_API_KEY", )
-        client.document_collections.remove_documents_from_collection(collection_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), resource_identifiers=[ResourceIdentifier_ExternalResourceId(external_resource_id='170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr', resource_type="GOOGLE_DRIVE_ITEM", ), ResourceIdentifier_ExternalResourceId(external_resource_id='398KAHdfkjsdf09r54UvyslPVWkQFOA0lOiu34in923', resource_type="GOOGLE_DRIVE_ITEM", )], )
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.document_collections.remove_documents_from_collection(
+            collection_id=uuid.UUID(
+                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+            ),
+            resource_identifiers=[
+                ResourceIdentifier_ExternalResourceId(
+                    external_resource_id="170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr",
+                    resource_type="GOOGLE_DRIVE_ITEM",
+                ),
+                ResourceIdentifier_ExternalResourceId(
+                    external_resource_id="398KAHdfkjsdf09r54UvyslPVWkQFOA0lOiu34in923",
+                    resource_type="GOOGLE_DRIVE_ITEM",
+                ),
+            ],
+        )
         """
         _response = self._raw_client.remove_documents_from_collection(
             collection_id=collection_id, resource_identifiers=resource_identifiers, request_options=request_options
@@ -141,8 +177,20 @@ class DocumentCollectionsClient:
         --------
         from credal import CredalApi
         from credal.common import Collaborator
-        client = CredalApi(api_key="YOUR_API_KEY", )
-        client.document_collections.create_collection(name='Customer Collection', description='This collection is used to answer customer requests based on internal documentation.', collaborators=[Collaborator(email='test@gmail.com', role="editor", )], )
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.document_collections.create_collection(
+            name="Customer Collection",
+            description="This collection is used to answer customer requests based on internal documentation.",
+            collaborators=[
+                Collaborator(
+                    email="test@gmail.com",
+                    role="editor",
+                )
+            ],
+        )
         """
         _response = self._raw_client.create_collection(
             name=name, description=description, collaborators=collaborators, request_options=request_options
@@ -168,10 +216,18 @@ class DocumentCollectionsClient:
 
         Examples
         --------
-        from credal import CredalApi
         import uuid
-        client = CredalApi(api_key="YOUR_API_KEY", )
-        client.document_collections.delete_collection(collection_id=uuid.UUID("ac20e6ba-0bae-11ef-b25a-efca73df4c3a", ), )
+
+        from credal import CredalApi
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.document_collections.delete_collection(
+            collection_id=uuid.UUID(
+                "ac20e6ba-0bae-11ef-b25a-efca73df4c3a",
+            ),
+        )
         """
         _response = self._raw_client.delete_collection(collection_id=collection_id, request_options=request_options)
         return _response.data
@@ -204,13 +260,34 @@ class DocumentCollectionsClient:
 
         Examples
         --------
-        from credal import CredalApi
         import uuid
-        from credal.document_collections import MongoCollectionSyncConfig
-        from credal.document_collections import MongoSourceFieldsConfig
-        client = CredalApi(api_key="YOUR_API_KEY", )
-        client.document_collections.create_mongo_collection_sync(mongo_uri='mongodb+srv://cluster0.hzwklqn.mongodb.net/Cluster0?retryWrites=true&w=majority', collection_id=uuid.UUID("ac20e6ba-0bae-11ef-b25a-efca73df4c3a", ), config=MongoCollectionSyncConfig(sync_name='My sales transcripts', collection_name='myCollection', filter_expression={'status': {'$ne': 'disabled'}}
-        , source_fields=MongoSourceFieldsConfig(body='body', source_name='meetingName', source_system_updated='transcriptDatetime', source_url='link', ), ), )
+
+        from credal import CredalApi
+        from credal.document_collections import (
+            MongoCollectionSyncConfig,
+            MongoSourceFieldsConfig,
+        )
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.document_collections.create_mongo_collection_sync(
+            mongo_uri="mongodb+srv://cluster0.hzwklqn.mongodb.net/Cluster0?retryWrites=true&w=majority",
+            collection_id=uuid.UUID(
+                "ac20e6ba-0bae-11ef-b25a-efca73df4c3a",
+            ),
+            config=MongoCollectionSyncConfig(
+                sync_name="My sales transcripts",
+                collection_name="myCollection",
+                filter_expression={"status": {"$ne": "disabled"}},
+                source_fields=MongoSourceFieldsConfig(
+                    body="body",
+                    source_name="meetingName",
+                    source_system_updated="transcriptDatetime",
+                    source_url="link",
+                ),
+            ),
+        )
         """
         _response = self._raw_client.create_mongo_collection_sync(
             collection_id=collection_id, mongo_uri=mongo_uri, config=config, request_options=request_options
@@ -245,13 +322,36 @@ class DocumentCollectionsClient:
 
         Examples
         --------
-        from credal import CredalApi
         import uuid
-        from credal.document_collections import MongoCollectionSyncConfig
-        from credal.document_collections import MongoSourceFieldsConfig
-        client = CredalApi(api_key="YOUR_API_KEY", )
-        client.document_collections.update_mongo_collection_sync(mongo_uri='mongodb+srv://cluster0.hzwklqn.mongodb.net/Cluster0?retryWrites=true&w=majority', mongo_credential_id=uuid.UUID("5988ed76-6ee1-11ef-97dd-1fca54b7c4bc", ), config=MongoCollectionSyncConfig(sync_name='My recent summarized sales transcripts', collection_name='myCollection', filter_expression={'transcriptDatetime': {'$gt': '2023-01-01T00:00:00.000Z'}}
-        , source_fields=MongoSourceFieldsConfig(body='transcriptSummary', source_name='meetingName', source_system_updated='transcriptDatetime', source_url='link', ), ), )
+
+        from credal import CredalApi
+        from credal.document_collections import (
+            MongoCollectionSyncConfig,
+            MongoSourceFieldsConfig,
+        )
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.document_collections.update_mongo_collection_sync(
+            mongo_uri="mongodb+srv://cluster0.hzwklqn.mongodb.net/Cluster0?retryWrites=true&w=majority",
+            mongo_credential_id=uuid.UUID(
+                "5988ed76-6ee1-11ef-97dd-1fca54b7c4bc",
+            ),
+            config=MongoCollectionSyncConfig(
+                sync_name="My recent summarized sales transcripts",
+                collection_name="myCollection",
+                filter_expression={
+                    "transcriptDatetime": {"$gt": "2023-01-01T00:00:00.000Z"}
+                },
+                source_fields=MongoSourceFieldsConfig(
+                    body="transcriptSummary",
+                    source_name="meetingName",
+                    source_system_updated="transcriptDatetime",
+                    source_url="link",
+                ),
+            ),
+        )
         """
         _response = self._raw_client.update_mongo_collection_sync(
             mongo_credential_id=mongo_credential_id, mongo_uri=mongo_uri, config=config, request_options=request_options
@@ -301,13 +401,35 @@ class AsyncDocumentCollectionsClient:
 
         Examples
         --------
-        from credal import AsyncCredalApi
-        import uuid
-        from credal.common import ResourceIdentifier_ExternalResourceId
         import asyncio
-        client = AsyncCredalApi(api_key="YOUR_API_KEY", )
+        import uuid
+
+        from credal import AsyncCredalApi
+        from credal.common import ResourceIdentifier_ExternalResourceId
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.document_collections.add_documents_to_collection(collection_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), resource_identifiers=[ResourceIdentifier_ExternalResourceId(external_resource_id='170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr', resource_type="GOOGLE_DRIVE_ITEM", ), ResourceIdentifier_ExternalResourceId(external_resource_id='398KAHdfkjsdf09r54UvyslPVWkQFOA0lOiu34in923', resource_type="GOOGLE_DRIVE_ITEM", )], )
+            await client.document_collections.add_documents_to_collection(
+                collection_id=uuid.UUID(
+                    "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+                ),
+                resource_identifiers=[
+                    ResourceIdentifier_ExternalResourceId(
+                        external_resource_id="170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr",
+                        resource_type="GOOGLE_DRIVE_ITEM",
+                    ),
+                    ResourceIdentifier_ExternalResourceId(
+                        external_resource_id="398KAHdfkjsdf09r54UvyslPVWkQFOA0lOiu34in923",
+                        resource_type="GOOGLE_DRIVE_ITEM",
+                    ),
+                ],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.add_documents_to_collection(
@@ -342,13 +464,35 @@ class AsyncDocumentCollectionsClient:
 
         Examples
         --------
-        from credal import AsyncCredalApi
-        import uuid
-        from credal.common import ResourceIdentifier_ExternalResourceId
         import asyncio
-        client = AsyncCredalApi(api_key="YOUR_API_KEY", )
+        import uuid
+
+        from credal import AsyncCredalApi
+        from credal.common import ResourceIdentifier_ExternalResourceId
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.document_collections.remove_documents_from_collection(collection_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), resource_identifiers=[ResourceIdentifier_ExternalResourceId(external_resource_id='170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr', resource_type="GOOGLE_DRIVE_ITEM", ), ResourceIdentifier_ExternalResourceId(external_resource_id='398KAHdfkjsdf09r54UvyslPVWkQFOA0lOiu34in923', resource_type="GOOGLE_DRIVE_ITEM", )], )
+            await client.document_collections.remove_documents_from_collection(
+                collection_id=uuid.UUID(
+                    "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+                ),
+                resource_identifiers=[
+                    ResourceIdentifier_ExternalResourceId(
+                        external_resource_id="170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr",
+                        resource_type="GOOGLE_DRIVE_ITEM",
+                    ),
+                    ResourceIdentifier_ExternalResourceId(
+                        external_resource_id="398KAHdfkjsdf09r54UvyslPVWkQFOA0lOiu34in923",
+                        resource_type="GOOGLE_DRIVE_ITEM",
+                    ),
+                ],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.remove_documents_from_collection(
@@ -387,12 +531,29 @@ class AsyncDocumentCollectionsClient:
 
         Examples
         --------
+        import asyncio
+
         from credal import AsyncCredalApi
         from credal.common import Collaborator
-        import asyncio
-        client = AsyncCredalApi(api_key="YOUR_API_KEY", )
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.document_collections.create_collection(name='Customer Collection', description='This collection is used to answer customer requests based on internal documentation.', collaborators=[Collaborator(email='test@gmail.com', role="editor", )], )
+            await client.document_collections.create_collection(
+                name="Customer Collection",
+                description="This collection is used to answer customer requests based on internal documentation.",
+                collaborators=[
+                    Collaborator(
+                        email="test@gmail.com",
+                        role="editor",
+                    )
+                ],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create_collection(
@@ -419,12 +580,24 @@ class AsyncDocumentCollectionsClient:
 
         Examples
         --------
-        from credal import AsyncCredalApi
-        import uuid
         import asyncio
-        client = AsyncCredalApi(api_key="YOUR_API_KEY", )
+        import uuid
+
+        from credal import AsyncCredalApi
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.document_collections.delete_collection(collection_id=uuid.UUID("ac20e6ba-0bae-11ef-b25a-efca73df4c3a", ), )
+            await client.document_collections.delete_collection(
+                collection_id=uuid.UUID(
+                    "ac20e6ba-0bae-11ef-b25a-efca73df4c3a",
+                ),
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_collection(
@@ -460,15 +633,40 @@ class AsyncDocumentCollectionsClient:
 
         Examples
         --------
-        from credal import AsyncCredalApi
-        import uuid
-        from credal.document_collections import MongoCollectionSyncConfig
-        from credal.document_collections import MongoSourceFieldsConfig
         import asyncio
-        client = AsyncCredalApi(api_key="YOUR_API_KEY", )
+        import uuid
+
+        from credal import AsyncCredalApi
+        from credal.document_collections import (
+            MongoCollectionSyncConfig,
+            MongoSourceFieldsConfig,
+        )
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.document_collections.create_mongo_collection_sync(mongo_uri='mongodb+srv://cluster0.hzwklqn.mongodb.net/Cluster0?retryWrites=true&w=majority', collection_id=uuid.UUID("ac20e6ba-0bae-11ef-b25a-efca73df4c3a", ), config=MongoCollectionSyncConfig(sync_name='My sales transcripts', collection_name='myCollection', filter_expression={'status': {'$ne': 'disabled'}}
-            , source_fields=MongoSourceFieldsConfig(body='body', source_name='meetingName', source_system_updated='transcriptDatetime', source_url='link', ), ), )
+            await client.document_collections.create_mongo_collection_sync(
+                mongo_uri="mongodb+srv://cluster0.hzwklqn.mongodb.net/Cluster0?retryWrites=true&w=majority",
+                collection_id=uuid.UUID(
+                    "ac20e6ba-0bae-11ef-b25a-efca73df4c3a",
+                ),
+                config=MongoCollectionSyncConfig(
+                    sync_name="My sales transcripts",
+                    collection_name="myCollection",
+                    filter_expression={"status": {"$ne": "disabled"}},
+                    source_fields=MongoSourceFieldsConfig(
+                        body="body",
+                        source_name="meetingName",
+                        source_system_updated="transcriptDatetime",
+                        source_url="link",
+                    ),
+                ),
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create_mongo_collection_sync(
@@ -504,15 +702,42 @@ class AsyncDocumentCollectionsClient:
 
         Examples
         --------
-        from credal import AsyncCredalApi
-        import uuid
-        from credal.document_collections import MongoCollectionSyncConfig
-        from credal.document_collections import MongoSourceFieldsConfig
         import asyncio
-        client = AsyncCredalApi(api_key="YOUR_API_KEY", )
+        import uuid
+
+        from credal import AsyncCredalApi
+        from credal.document_collections import (
+            MongoCollectionSyncConfig,
+            MongoSourceFieldsConfig,
+        )
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.document_collections.update_mongo_collection_sync(mongo_uri='mongodb+srv://cluster0.hzwklqn.mongodb.net/Cluster0?retryWrites=true&w=majority', mongo_credential_id=uuid.UUID("5988ed76-6ee1-11ef-97dd-1fca54b7c4bc", ), config=MongoCollectionSyncConfig(sync_name='My recent summarized sales transcripts', collection_name='myCollection', filter_expression={'transcriptDatetime': {'$gt': '2023-01-01T00:00:00.000Z'}}
-            , source_fields=MongoSourceFieldsConfig(body='transcriptSummary', source_name='meetingName', source_system_updated='transcriptDatetime', source_url='link', ), ), )
+            await client.document_collections.update_mongo_collection_sync(
+                mongo_uri="mongodb+srv://cluster0.hzwklqn.mongodb.net/Cluster0?retryWrites=true&w=majority",
+                mongo_credential_id=uuid.UUID(
+                    "5988ed76-6ee1-11ef-97dd-1fca54b7c4bc",
+                ),
+                config=MongoCollectionSyncConfig(
+                    sync_name="My recent summarized sales transcripts",
+                    collection_name="myCollection",
+                    filter_expression={
+                        "transcriptDatetime": {"$gt": "2023-01-01T00:00:00.000Z"}
+                    },
+                    source_fields=MongoSourceFieldsConfig(
+                        body="transcriptSummary",
+                        source_name="meetingName",
+                        source_system_updated="transcriptDatetime",
+                        source_url="link",
+                    ),
+                ),
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_mongo_collection_sync(

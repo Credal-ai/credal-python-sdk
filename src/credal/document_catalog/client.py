@@ -86,8 +86,17 @@ class DocumentCatalogClient:
         Examples
         --------
         from credal import CredalApi
-        client = CredalApi(api_key="YOUR_API_KEY", )
-        client.document_catalog.upload_document_contents(document_name='My Document', document_contents='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', document_external_id='73eead26-d124-4940-b329-5f068a0a8db9', allowed_users_email_addresses=['jack@credal.ai', 'ravin@credal.ai'], upload_as_user_email='jack@credal.ai', )
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.document_catalog.upload_document_contents(
+            document_name="My Document",
+            document_contents="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            document_external_id="73eead26-d124-4940-b329-5f068a0a8db9",
+            allowed_users_email_addresses=["jack@credal.ai", "ravin@credal.ai"],
+            upload_as_user_email="jack@credal.ai",
+        )
         """
         _response = self._raw_client.upload_document_contents(
             document_name=document_name,
@@ -126,8 +135,14 @@ class DocumentCatalogClient:
         Examples
         --------
         from credal import CredalApi
-        client = CredalApi(api_key="YOUR_API_KEY", )
-        client.document_catalog.sync_source_by_url(source_url='https://drive.google.com/file/d/123456/view', upload_as_user_email='ria@credal.ai', )
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.document_catalog.sync_source_by_url(
+            source_url="https://drive.google.com/file/d/123456/view",
+            upload_as_user_email="ria@credal.ai",
+        )
         """
         _response = self._raw_client.sync_source_by_url(
             upload_as_user_email=upload_as_user_email, source_url=source_url, request_options=request_options
@@ -160,12 +175,31 @@ class DocumentCatalogClient:
         Examples
         --------
         from credal import CredalApi
-        from credal.document_catalog import DocumentMetadataPatch
         from credal.common import ResourceIdentifier_ExternalResourceId
-        client = CredalApi(api_key="YOUR_API_KEY", )
-        client.document_catalog.metadata(sources=[DocumentMetadataPatch(metadata={'Department': 'HR', 'Country': 'United States'}
-        , resource_identifier=ResourceIdentifier_ExternalResourceId(external_resource_id='170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr', resource_type="GOOGLE_DRIVE_ITEM", ), ), DocumentMetadataPatch(metadata={'Department': 'Sales', 'Vertical': 'Healthcare'}
-        , resource_identifier=ResourceIdentifier_ExternalResourceId(external_resource_id='123456', resource_type="ZENDESK_TICKET", ), )], upload_as_user_email='ben@credal.ai', )
+        from credal.document_catalog import DocumentMetadataPatch
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.document_catalog.metadata(
+            sources=[
+                DocumentMetadataPatch(
+                    metadata={"Department": "HR", "Country": "United States"},
+                    resource_identifier=ResourceIdentifier_ExternalResourceId(
+                        external_resource_id="170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr",
+                        resource_type="GOOGLE_DRIVE_ITEM",
+                    ),
+                ),
+                DocumentMetadataPatch(
+                    metadata={"Department": "Sales", "Vertical": "Healthcare"},
+                    resource_identifier=ResourceIdentifier_ExternalResourceId(
+                        external_resource_id="123456",
+                        resource_type="ZENDESK_TICKET",
+                    ),
+                ),
+            ],
+            upload_as_user_email="ben@credal.ai",
+        )
         """
         _response = self._raw_client.metadata(
             sources=sources, upload_as_user_email=upload_as_user_email, request_options=request_options
@@ -245,11 +279,25 @@ class AsyncDocumentCatalogClient:
 
         Examples
         --------
-        from credal import AsyncCredalApi
         import asyncio
-        client = AsyncCredalApi(api_key="YOUR_API_KEY", )
+
+        from credal import AsyncCredalApi
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.document_catalog.upload_document_contents(document_name='My Document', document_contents='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', document_external_id='73eead26-d124-4940-b329-5f068a0a8db9', allowed_users_email_addresses=['jack@credal.ai', 'ravin@credal.ai'], upload_as_user_email='jack@credal.ai', )
+            await client.document_catalog.upload_document_contents(
+                document_name="My Document",
+                document_contents="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                document_external_id="73eead26-d124-4940-b329-5f068a0a8db9",
+                allowed_users_email_addresses=["jack@credal.ai", "ravin@credal.ai"],
+                upload_as_user_email="jack@credal.ai",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.upload_document_contents(
@@ -288,11 +336,22 @@ class AsyncDocumentCatalogClient:
 
         Examples
         --------
-        from credal import AsyncCredalApi
         import asyncio
-        client = AsyncCredalApi(api_key="YOUR_API_KEY", )
+
+        from credal import AsyncCredalApi
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.document_catalog.sync_source_by_url(source_url='https://drive.google.com/file/d/123456/view', upload_as_user_email='ria@credal.ai', )
+            await client.document_catalog.sync_source_by_url(
+                source_url="https://drive.google.com/file/d/123456/view",
+                upload_as_user_email="ria@credal.ai",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.sync_source_by_url(
@@ -325,15 +384,39 @@ class AsyncDocumentCatalogClient:
 
         Examples
         --------
-        from credal import AsyncCredalApi
-        from credal.document_catalog import DocumentMetadataPatch
-        from credal.common import ResourceIdentifier_ExternalResourceId
         import asyncio
-        client = AsyncCredalApi(api_key="YOUR_API_KEY", )
+
+        from credal import AsyncCredalApi
+        from credal.common import ResourceIdentifier_ExternalResourceId
+        from credal.document_catalog import DocumentMetadataPatch
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.document_catalog.metadata(sources=[DocumentMetadataPatch(metadata={'Department': 'HR', 'Country': 'United States'}
-            , resource_identifier=ResourceIdentifier_ExternalResourceId(external_resource_id='170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr', resource_type="GOOGLE_DRIVE_ITEM", ), ), DocumentMetadataPatch(metadata={'Department': 'Sales', 'Vertical': 'Healthcare'}
-            , resource_identifier=ResourceIdentifier_ExternalResourceId(external_resource_id='123456', resource_type="ZENDESK_TICKET", ), )], upload_as_user_email='ben@credal.ai', )
+            await client.document_catalog.metadata(
+                sources=[
+                    DocumentMetadataPatch(
+                        metadata={"Department": "HR", "Country": "United States"},
+                        resource_identifier=ResourceIdentifier_ExternalResourceId(
+                            external_resource_id="170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr",
+                            resource_type="GOOGLE_DRIVE_ITEM",
+                        ),
+                    ),
+                    DocumentMetadataPatch(
+                        metadata={"Department": "Sales", "Vertical": "Healthcare"},
+                        resource_identifier=ResourceIdentifier_ExternalResourceId(
+                            external_resource_id="123456",
+                            resource_type="ZENDESK_TICKET",
+                        ),
+                    ),
+                ],
+                upload_as_user_email="ben@credal.ai",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.metadata(

@@ -47,10 +47,22 @@ class UsersClient:
         --------
         from credal import CredalApi
         from credal.users import UserMetadataPatch
-        client = CredalApi(api_key="YOUR_API_KEY", )
-        client.users.metadata(request=[UserMetadataPatch(metadata={'State': 'NY', 'Job Role': 'CEO'}
-        , user_email='ravin@credal.ai', ), UserMetadataPatch(metadata={'State': 'NY', 'Department': 'Engineering'}
-        , user_email='jack@credal.ai', )], )
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.users.metadata(
+            request=[
+                UserMetadataPatch(
+                    metadata={"State": "NY", "Job Role": "CEO"},
+                    user_email="ravin@credal.ai",
+                ),
+                UserMetadataPatch(
+                    metadata={"State": "NY", "Department": "Engineering"},
+                    user_email="jack@credal.ai",
+                ),
+            ],
+        )
         """
         _response = self._raw_client.metadata(request=request, request_options=request_options)
         return _response.data
@@ -90,14 +102,31 @@ class AsyncUsersClient:
 
         Examples
         --------
+        import asyncio
+
         from credal import AsyncCredalApi
         from credal.users import UserMetadataPatch
-        import asyncio
-        client = AsyncCredalApi(api_key="YOUR_API_KEY", )
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.users.metadata(request=[UserMetadataPatch(metadata={'State': 'NY', 'Job Role': 'CEO'}
-            , user_email='ravin@credal.ai', ), UserMetadataPatch(metadata={'State': 'NY', 'Department': 'Engineering'}
-            , user_email='jack@credal.ai', )], )
+            await client.users.metadata(
+                request=[
+                    UserMetadataPatch(
+                        metadata={"State": "NY", "Job Role": "CEO"},
+                        user_email="ravin@credal.ai",
+                    ),
+                    UserMetadataPatch(
+                        metadata={"State": "NY", "Department": "Engineering"},
+                        user_email="jack@credal.ai",
+                    ),
+                ],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.metadata(request=request, request_options=request_options)

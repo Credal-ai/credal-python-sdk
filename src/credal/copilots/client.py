@@ -68,8 +68,20 @@ class CopilotsClient:
         --------
         from credal import CredalApi
         from credal.common import Collaborator
-        client = CredalApi(api_key="YOUR_API_KEY", )
-        client.copilots.create_copilot(name='Customer Agent', description='This agent is used to answer customer requests based on internal documentation.', collaborators=[Collaborator(email='test@gmail.com', role="editor", )], )
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.copilots.create_copilot(
+            name="Customer Agent",
+            description="This agent is used to answer customer requests based on internal documentation.",
+            collaborators=[
+                Collaborator(
+                    email="test@gmail.com",
+                    role="editor",
+                )
+            ],
+        )
         """
         _response = self._raw_client.create_copilot(
             name=name, description=description, collaborators=collaborators, request_options=request_options
@@ -99,10 +111,19 @@ class CopilotsClient:
 
         Examples
         --------
-        from credal import CredalApi
         import uuid
-        client = CredalApi(api_key="YOUR_API_KEY", )
-        client.copilots.create_conversation(agent_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), user_email='ravin@credal.ai', )
+
+        from credal import CredalApi
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.copilots.create_conversation(
+            agent_id=uuid.UUID(
+                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+            ),
+            user_email="ravin@credal.ai",
+        )
         """
         _response = self._raw_client.create_conversation(
             agent_id=agent_id, user_email=user_email, request_options=request_options
@@ -142,11 +163,28 @@ class CopilotsClient:
 
         Examples
         --------
-        from credal import CredalApi
         import uuid
+
+        from credal import CredalApi
         from credal.copilots import MessageFeedback
-        client = CredalApi(api_key="YOUR_API_KEY", )
-        client.copilots.provide_message_feedback(user_email='ravin@credal.ai', message_id=uuid.UUID("dd721cd8-4bf2-4b94-9869-258df3dab9dc", ), agent_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), message_feedback=MessageFeedback(feedback="NEGATIVE", suggested_answer='Yes, Credal is SOC 2 compliant.', descriptive_feedback='The response should be extremely clear and concise.', ), )
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.copilots.provide_message_feedback(
+            user_email="ravin@credal.ai",
+            message_id=uuid.UUID(
+                "dd721cd8-4bf2-4b94-9869-258df3dab9dc",
+            ),
+            agent_id=uuid.UUID(
+                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+            ),
+            message_feedback=MessageFeedback(
+                feedback="NEGATIVE",
+                suggested_answer="Yes, Credal is SOC 2 compliant.",
+                descriptive_feedback="The response should be extremely clear and concise.",
+            ),
+        )
         """
         _response = self._raw_client.provide_message_feedback(
             agent_id=agent_id,
@@ -194,11 +232,42 @@ class CopilotsClient:
 
         Examples
         --------
-        from credal import CredalApi
         import uuid
+
+        from credal import CredalApi
         from credal.copilots import InputVariable
-        client = CredalApi(api_key="YOUR_API_KEY", )
-        client.copilots.send_message(agent_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), message='Is Credal SOC 2 compliant?', user_email='ravin@credal.ai', input_variables=[InputVariable(name='input1', ids=[uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", )], ), InputVariable(name='input2', ids=[uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c25", ), uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c26", )], )], )
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.copilots.send_message(
+            agent_id=uuid.UUID(
+                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+            ),
+            message="Is Credal SOC 2 compliant?",
+            user_email="ravin@credal.ai",
+            input_variables=[
+                InputVariable(
+                    name="input1",
+                    ids=[
+                        uuid.UUID(
+                            "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+                        )
+                    ],
+                ),
+                InputVariable(
+                    name="input2",
+                    ids=[
+                        uuid.UUID(
+                            "82e4b12a-6990-45d4-8ebd-85c00e030c25",
+                        ),
+                        uuid.UUID(
+                            "82e4b12a-6990-45d4-8ebd-85c00e030c26",
+                        ),
+                    ],
+                ),
+            ],
+        )
         """
         _response = self._raw_client.send_message(
             agent_id=agent_id,
@@ -250,11 +319,42 @@ class CopilotsClient:
 
         Examples
         --------
-        from credal import CredalApi
         import uuid
+
+        from credal import CredalApi
         from credal.copilots import InputVariable
-        client = CredalApi(api_key="YOUR_API_KEY", )
-        response = client.copilots.stream_message(copilot_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), message='Is Credal SOC 2 compliant?', email='ravin@credal.ai', input_variables=[InputVariable(name='input1', ids=[uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", )], ), InputVariable(name='input2', ids=[uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c25", ), uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c26", )], )], )
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        response = client.copilots.stream_message(
+            copilot_id=uuid.UUID(
+                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+            ),
+            message="Is Credal SOC 2 compliant?",
+            email="ravin@credal.ai",
+            input_variables=[
+                InputVariable(
+                    name="input1",
+                    ids=[
+                        uuid.UUID(
+                            "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+                        )
+                    ],
+                ),
+                InputVariable(
+                    name="input2",
+                    ids=[
+                        uuid.UUID(
+                            "82e4b12a-6990-45d4-8ebd-85c00e030c25",
+                        ),
+                        uuid.UUID(
+                            "82e4b12a-6990-45d4-8ebd-85c00e030c26",
+                        ),
+                    ],
+                ),
+            ],
+        )
         for chunk in response:
             yield chunk
         """
@@ -295,10 +395,21 @@ class CopilotsClient:
 
         Examples
         --------
-        from credal import CredalApi
         import uuid
-        client = CredalApi(api_key="YOUR_API_KEY", )
-        client.copilots.add_collection_to_copilot(copilot_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), collection_id=uuid.UUID("def1055f-83c5-43d6-b558-f7a38e7b299e", ), )
+
+        from credal import CredalApi
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.copilots.add_collection_to_copilot(
+            copilot_id=uuid.UUID(
+                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+            ),
+            collection_id=uuid.UUID(
+                "def1055f-83c5-43d6-b558-f7a38e7b299e",
+            ),
+        )
         """
         _response = self._raw_client.add_collection_to_copilot(
             copilot_id=copilot_id, collection_id=collection_id, request_options=request_options
@@ -332,10 +443,21 @@ class CopilotsClient:
 
         Examples
         --------
-        from credal import CredalApi
         import uuid
-        client = CredalApi(api_key="YOUR_API_KEY", )
-        client.copilots.remove_collection_from_copilot(copilot_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), collection_id=uuid.UUID("def1055f-83c5-43d6-b558-f7a38e7b299e", ), )
+
+        from credal import CredalApi
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.copilots.remove_collection_from_copilot(
+            copilot_id=uuid.UUID(
+                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+            ),
+            collection_id=uuid.UUID(
+                "def1055f-83c5-43d6-b558-f7a38e7b299e",
+            ),
+        )
         """
         _response = self._raw_client.remove_collection_from_copilot(
             copilot_id=copilot_id, collection_id=collection_id, request_options=request_options
@@ -368,12 +490,28 @@ class CopilotsClient:
 
         Examples
         --------
-        from credal import CredalApi
         import uuid
-        from credal.copilots import Configuration
-        from credal.copilots import AiEndpointConfiguration
-        client = CredalApi(api_key="YOUR_API_KEY", )
-        client.copilots.update_configuration(copilot_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), configuration=Configuration(name='Customer Agent', description='This agent is used to answer customer requests based on internal documentation.', prompt='You are a polite, helpful assistant used to answer customer requests.', ai_endpoint_configuration=AiEndpointConfiguration(base_url='https://api.openai.com/v1/', api_key='<YOUR_API_KEY_HERE>', ), ), )
+
+        from credal import CredalApi
+        from credal.copilots import AiEndpointConfiguration, Configuration
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.copilots.update_configuration(
+            copilot_id=uuid.UUID(
+                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+            ),
+            configuration=Configuration(
+                name="Customer Agent",
+                description="This agent is used to answer customer requests based on internal documentation.",
+                prompt="You are a polite, helpful assistant used to answer customer requests.",
+                ai_endpoint_configuration=AiEndpointConfiguration(
+                    base_url="https://api.openai.com/v1/",
+                    api_key="<YOUR_API_KEY_HERE>",
+                ),
+            ),
+        )
         """
         _response = self._raw_client.update_configuration(
             copilot_id=copilot_id, configuration=configuration, request_options=request_options
@@ -398,10 +536,18 @@ class CopilotsClient:
 
         Examples
         --------
-        from credal import CredalApi
         import uuid
-        client = CredalApi(api_key="YOUR_API_KEY", )
-        client.copilots.delete_copilot(id=uuid.UUID("ac20e6ba-0bae-11ef-b25a-efca73df4c3a", ), )
+
+        from credal import CredalApi
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.copilots.delete_copilot(
+            id=uuid.UUID(
+                "ac20e6ba-0bae-11ef-b25a-efca73df4c3a",
+            ),
+        )
         """
         _response = self._raw_client.delete_copilot(id=id, request_options=request_options)
         return _response.data
@@ -453,12 +599,29 @@ class AsyncCopilotsClient:
 
         Examples
         --------
+        import asyncio
+
         from credal import AsyncCredalApi
         from credal.common import Collaborator
-        import asyncio
-        client = AsyncCredalApi(api_key="YOUR_API_KEY", )
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.copilots.create_copilot(name='Customer Agent', description='This agent is used to answer customer requests based on internal documentation.', collaborators=[Collaborator(email='test@gmail.com', role="editor", )], )
+            await client.copilots.create_copilot(
+                name="Customer Agent",
+                description="This agent is used to answer customer requests based on internal documentation.",
+                collaborators=[
+                    Collaborator(
+                        email="test@gmail.com",
+                        role="editor",
+                    )
+                ],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create_copilot(
@@ -489,12 +652,25 @@ class AsyncCopilotsClient:
 
         Examples
         --------
-        from credal import AsyncCredalApi
-        import uuid
         import asyncio
-        client = AsyncCredalApi(api_key="YOUR_API_KEY", )
+        import uuid
+
+        from credal import AsyncCredalApi
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.copilots.create_conversation(agent_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), user_email='ravin@credal.ai', )
+            await client.copilots.create_conversation(
+                agent_id=uuid.UUID(
+                    "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+                ),
+                user_email="ravin@credal.ai",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create_conversation(
@@ -535,13 +711,34 @@ class AsyncCopilotsClient:
 
         Examples
         --------
-        from credal import AsyncCredalApi
-        import uuid
-        from credal.copilots import MessageFeedback
         import asyncio
-        client = AsyncCredalApi(api_key="YOUR_API_KEY", )
+        import uuid
+
+        from credal import AsyncCredalApi
+        from credal.copilots import MessageFeedback
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.copilots.provide_message_feedback(user_email='ravin@credal.ai', message_id=uuid.UUID("dd721cd8-4bf2-4b94-9869-258df3dab9dc", ), agent_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), message_feedback=MessageFeedback(feedback="NEGATIVE", suggested_answer='Yes, Credal is SOC 2 compliant.', descriptive_feedback='The response should be extremely clear and concise.', ), )
+            await client.copilots.provide_message_feedback(
+                user_email="ravin@credal.ai",
+                message_id=uuid.UUID(
+                    "dd721cd8-4bf2-4b94-9869-258df3dab9dc",
+                ),
+                agent_id=uuid.UUID(
+                    "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+                ),
+                message_feedback=MessageFeedback(
+                    feedback="NEGATIVE",
+                    suggested_answer="Yes, Credal is SOC 2 compliant.",
+                    descriptive_feedback="The response should be extremely clear and concise.",
+                ),
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.provide_message_feedback(
@@ -590,13 +787,48 @@ class AsyncCopilotsClient:
 
         Examples
         --------
-        from credal import AsyncCredalApi
-        import uuid
-        from credal.copilots import InputVariable
         import asyncio
-        client = AsyncCredalApi(api_key="YOUR_API_KEY", )
+        import uuid
+
+        from credal import AsyncCredalApi
+        from credal.copilots import InputVariable
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.copilots.send_message(agent_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), message='Is Credal SOC 2 compliant?', user_email='ravin@credal.ai', input_variables=[InputVariable(name='input1', ids=[uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", )], ), InputVariable(name='input2', ids=[uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c25", ), uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c26", )], )], )
+            await client.copilots.send_message(
+                agent_id=uuid.UUID(
+                    "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+                ),
+                message="Is Credal SOC 2 compliant?",
+                user_email="ravin@credal.ai",
+                input_variables=[
+                    InputVariable(
+                        name="input1",
+                        ids=[
+                            uuid.UUID(
+                                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+                            )
+                        ],
+                    ),
+                    InputVariable(
+                        name="input2",
+                        ids=[
+                            uuid.UUID(
+                                "82e4b12a-6990-45d4-8ebd-85c00e030c25",
+                            ),
+                            uuid.UUID(
+                                "82e4b12a-6990-45d4-8ebd-85c00e030c26",
+                            ),
+                        ],
+                    ),
+                ],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.send_message(
@@ -649,15 +881,50 @@ class AsyncCopilotsClient:
 
         Examples
         --------
-        from credal import AsyncCredalApi
-        import uuid
-        from credal.copilots import InputVariable
         import asyncio
-        client = AsyncCredalApi(api_key="YOUR_API_KEY", )
+        import uuid
+
+        from credal import AsyncCredalApi
+        from credal.copilots import InputVariable
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            response = await client.copilots.stream_message(copilot_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), message='Is Credal SOC 2 compliant?', email='ravin@credal.ai', input_variables=[InputVariable(name='input1', ids=[uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", )], ), InputVariable(name='input2', ids=[uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c25", ), uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c26", )], )], )
+            response = await client.copilots.stream_message(
+                copilot_id=uuid.UUID(
+                    "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+                ),
+                message="Is Credal SOC 2 compliant?",
+                email="ravin@credal.ai",
+                input_variables=[
+                    InputVariable(
+                        name="input1",
+                        ids=[
+                            uuid.UUID(
+                                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+                            )
+                        ],
+                    ),
+                    InputVariable(
+                        name="input2",
+                        ids=[
+                            uuid.UUID(
+                                "82e4b12a-6990-45d4-8ebd-85c00e030c25",
+                            ),
+                            uuid.UUID(
+                                "82e4b12a-6990-45d4-8ebd-85c00e030c26",
+                            ),
+                        ],
+                    ),
+                ],
+            )
             async for chunk in response:
                 yield chunk
+
+
         asyncio.run(main())
         """
         async with self._raw_client.stream_message(
@@ -668,8 +935,8 @@ class AsyncCopilotsClient:
             input_variables=input_variables,
             request_options=request_options,
         ) as r:
-            async for data in r.data:
-                yield data
+            async for _chunk in r.data:
+                yield _chunk
 
     async def add_collection_to_copilot(
         self,
@@ -698,12 +965,27 @@ class AsyncCopilotsClient:
 
         Examples
         --------
-        from credal import AsyncCredalApi
-        import uuid
         import asyncio
-        client = AsyncCredalApi(api_key="YOUR_API_KEY", )
+        import uuid
+
+        from credal import AsyncCredalApi
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.copilots.add_collection_to_copilot(copilot_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), collection_id=uuid.UUID("def1055f-83c5-43d6-b558-f7a38e7b299e", ), )
+            await client.copilots.add_collection_to_copilot(
+                copilot_id=uuid.UUID(
+                    "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+                ),
+                collection_id=uuid.UUID(
+                    "def1055f-83c5-43d6-b558-f7a38e7b299e",
+                ),
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.add_collection_to_copilot(
@@ -738,12 +1020,27 @@ class AsyncCopilotsClient:
 
         Examples
         --------
-        from credal import AsyncCredalApi
-        import uuid
         import asyncio
-        client = AsyncCredalApi(api_key="YOUR_API_KEY", )
+        import uuid
+
+        from credal import AsyncCredalApi
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.copilots.remove_collection_from_copilot(copilot_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), collection_id=uuid.UUID("def1055f-83c5-43d6-b558-f7a38e7b299e", ), )
+            await client.copilots.remove_collection_from_copilot(
+                copilot_id=uuid.UUID(
+                    "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+                ),
+                collection_id=uuid.UUID(
+                    "def1055f-83c5-43d6-b558-f7a38e7b299e",
+                ),
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.remove_collection_from_copilot(
@@ -777,14 +1074,34 @@ class AsyncCopilotsClient:
 
         Examples
         --------
-        from credal import AsyncCredalApi
-        import uuid
-        from credal.copilots import Configuration
-        from credal.copilots import AiEndpointConfiguration
         import asyncio
-        client = AsyncCredalApi(api_key="YOUR_API_KEY", )
+        import uuid
+
+        from credal import AsyncCredalApi
+        from credal.copilots import AiEndpointConfiguration, Configuration
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.copilots.update_configuration(copilot_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), configuration=Configuration(name='Customer Agent', description='This agent is used to answer customer requests based on internal documentation.', prompt='You are a polite, helpful assistant used to answer customer requests.', ai_endpoint_configuration=AiEndpointConfiguration(base_url='https://api.openai.com/v1/', api_key='<YOUR_API_KEY_HERE>', ), ), )
+            await client.copilots.update_configuration(
+                copilot_id=uuid.UUID(
+                    "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+                ),
+                configuration=Configuration(
+                    name="Customer Agent",
+                    description="This agent is used to answer customer requests based on internal documentation.",
+                    prompt="You are a polite, helpful assistant used to answer customer requests.",
+                    ai_endpoint_configuration=AiEndpointConfiguration(
+                        base_url="https://api.openai.com/v1/",
+                        api_key="<YOUR_API_KEY_HERE>",
+                    ),
+                ),
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_configuration(
@@ -810,12 +1127,24 @@ class AsyncCopilotsClient:
 
         Examples
         --------
-        from credal import AsyncCredalApi
-        import uuid
         import asyncio
-        client = AsyncCredalApi(api_key="YOUR_API_KEY", )
+        import uuid
+
+        from credal import AsyncCredalApi
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.copilots.delete_copilot(id=uuid.UUID("ac20e6ba-0bae-11ef-b25a-efca73df4c3a", ), )
+            await client.copilots.delete_copilot(
+                id=uuid.UUID(
+                    "ac20e6ba-0bae-11ef-b25a-efca73df4c3a",
+                ),
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_copilot(id=id, request_options=request_options)
