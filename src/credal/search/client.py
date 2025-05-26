@@ -69,12 +69,36 @@ class SearchClient:
 
         Examples
         --------
-        from credal import CredalApi
         import uuid
-        from credal.search import SingleFieldFilter
-        from credal.search import DocumentCollectionSearchOptions
-        client = CredalApi(api_key="YOUR_API_KEY", )
-        client.search.search_document_collection(collection_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), search_query='ABC Corp', structured_query_filters=[SingleFieldFilter(field='status', operator="==", value='Open', )], user_email='jack@credal.ai', search_options=DocumentCollectionSearchOptions(max_chunks=10, merge_contents=True, threshold=0.8, enable_smart_filtering=True, enable_query_extraction=True, enable_reranking=True, ), )
+
+        from credal import CredalApi
+        from credal.search import DocumentCollectionSearchOptions, SingleFieldFilter
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.search.search_document_collection(
+            collection_id=uuid.UUID(
+                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+            ),
+            search_query="ABC Corp",
+            structured_query_filters=[
+                SingleFieldFilter(
+                    field="status",
+                    operator="==",
+                    value="Open",
+                )
+            ],
+            user_email="jack@credal.ai",
+            search_options=DocumentCollectionSearchOptions(
+                max_chunks=10,
+                merge_contents=True,
+                threshold=0.8,
+                enable_smart_filtering=True,
+                enable_query_extraction=True,
+                enable_reranking=True,
+            ),
+        )
         """
         _response = self._raw_client.search_document_collection(
             collection_id=collection_id,
@@ -143,14 +167,42 @@ class AsyncSearchClient:
 
         Examples
         --------
-        from credal import AsyncCredalApi
-        import uuid
-        from credal.search import SingleFieldFilter
-        from credal.search import DocumentCollectionSearchOptions
         import asyncio
-        client = AsyncCredalApi(api_key="YOUR_API_KEY", )
+        import uuid
+
+        from credal import AsyncCredalApi
+        from credal.search import DocumentCollectionSearchOptions, SingleFieldFilter
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.search.search_document_collection(collection_id=uuid.UUID("82e4b12a-6990-45d4-8ebd-85c00e030c24", ), search_query='ABC Corp', structured_query_filters=[SingleFieldFilter(field='status', operator="==", value='Open', )], user_email='jack@credal.ai', search_options=DocumentCollectionSearchOptions(max_chunks=10, merge_contents=True, threshold=0.8, enable_smart_filtering=True, enable_query_extraction=True, enable_reranking=True, ), )
+            await client.search.search_document_collection(
+                collection_id=uuid.UUID(
+                    "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+                ),
+                search_query="ABC Corp",
+                structured_query_filters=[
+                    SingleFieldFilter(
+                        field="status",
+                        operator="==",
+                        value="Open",
+                    )
+                ],
+                user_email="jack@credal.ai",
+                search_options=DocumentCollectionSearchOptions(
+                    max_chunks=10,
+                    merge_contents=True,
+                    threshold=0.8,
+                    enable_smart_filtering=True,
+                    enable_query_extraction=True,
+                    enable_reranking=True,
+                ),
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.search_document_collection(

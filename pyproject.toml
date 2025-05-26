@@ -3,7 +3,7 @@ name = "credal"
 
 [tool.poetry]
 name = "credal"
-version = "0.0.27"
+version = "0.0.28"
 description = ""
 readme = "README.md"
 authors = []

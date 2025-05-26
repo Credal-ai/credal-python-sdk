@@ -27,6 +27,8 @@ class CredalApi:
     environment : CredalApiEnvironment
         The environment to use for requests from the client. from .environment import CredalApiEnvironment
 
+
+
         Defaults to CredalApiEnvironment.PRODUCTION
 
 
@@ -44,7 +46,10 @@ class CredalApi:
     Examples
     --------
     from credal import CredalApi
-    client = CredalApi(api_key="YOUR_API_KEY", )
+
+    client = CredalApi(
+        api_key="YOUR_API_KEY",
+    )
     """
 
     def __init__(
@@ -94,6 +99,8 @@ class AsyncCredalApi:
     environment : CredalApiEnvironment
         The environment to use for requests from the client. from .environment import CredalApiEnvironment
 
+
+
         Defaults to CredalApiEnvironment.PRODUCTION
 
 
@@ -111,7 +118,10 @@ class AsyncCredalApi:
     Examples
     --------
     from credal import AsyncCredalApi
-    client = AsyncCredalApi(api_key="YOUR_API_KEY", )
+
+    client = AsyncCredalApi(
+        api_key="YOUR_API_KEY",
+    )
     """
 
     def __init__(
