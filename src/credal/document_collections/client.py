@@ -272,7 +272,7 @@ class DocumentCollectionsClient:
             api_key="YOUR_API_KEY",
         )
         client.document_collections.create_mongo_collection_sync(
-            mongo_uri="mongodb+srv://cluster0.hzwklqn.mongodb.net/Cluster0?retryWrites=true&w=majority",
+            mongo_uri="mongodb+srv://cluster0.abcdefg.mongodb.net/Cluster0?retryWrites=true&w=majority",
             collection_id=uuid.UUID(
                 "ac20e6ba-0bae-11ef-b25a-efca73df4c3a",
             ),
@@ -334,7 +334,7 @@ class DocumentCollectionsClient:
             api_key="YOUR_API_KEY",
         )
         client.document_collections.update_mongo_collection_sync(
-            mongo_uri="mongodb+srv://cluster0.hzwklqn.mongodb.net/Cluster0?retryWrites=true&w=majority",
+            mongo_uri="mongodb+srv://cluster0.abcdefg.mongodb.net/Cluster0?retryWrites=true&w=majority",
             mongo_credential_id=uuid.UUID(
                 "5988ed76-6ee1-11ef-97dd-1fca54b7c4bc",
             ),
@@ -649,7 +649,7 @@ class AsyncDocumentCollectionsClient:
 
         async def main() -> None:
             await client.document_collections.create_mongo_collection_sync(
-                mongo_uri="mongodb+srv://cluster0.hzwklqn.mongodb.net/Cluster0?retryWrites=true&w=majority",
+                mongo_uri="mongodb+srv://cluster0.abcdefg.mongodb.net/Cluster0?retryWrites=true&w=majority",
                 collection_id=uuid.UUID(
                     "ac20e6ba-0bae-11ef-b25a-efca73df4c3a",
                 ),
@@ -718,7 +718,7 @@ class AsyncDocumentCollectionsClient:
 
         async def main() -> None:
             await client.document_collections.update_mongo_collection_sync(
-                mongo_uri="mongodb+srv://cluster0.hzwklqn.mongodb.net/Cluster0?retryWrites=true&w=majority",
+                mongo_uri="mongodb+srv://cluster0.abcdefg.mongodb.net/Cluster0?retryWrites=true&w=majority",
                 mongo_credential_id=uuid.UUID(
                     "5988ed76-6ee1-11ef-97dd-1fca54b7c4bc",
                 ),

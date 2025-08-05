@@ -862,7 +862,7 @@ client = CredalApi(
 )
 client.document_catalog.upload_document_contents(
     document_name="My Document",
-    document_contents="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    document_contents="Lorem ipsum...",
     document_external_id="73eead26-d124-4940-b329-5f068a0a8db9",
     allowed_users_email_addresses=["jack@credal.ai", "ravin@credal.ai"],
     upload_as_user_email="jack@credal.ai",
@@ -930,7 +930,7 @@ client.document_catalog.upload_document_contents(
 <dl>
 <dd>
 
-**custom_metadata:** `typing.Optional[typing.Optional[typing.Any]]` — Optional JSON representing any custom metdata for this document
+**custom_metadata:** `typing.Optional[typing.Optional[typing.Any]]` — Optional JSON representing any custom metadata for this document
     
 </dd>
 </dl>
@@ -1543,7 +1543,7 @@ client = CredalApi(
     api_key="YOUR_API_KEY",
 )
 client.document_collections.create_mongo_collection_sync(
-    mongo_uri="mongodb+srv://cluster0.hzwklqn.mongodb.net/Cluster0?retryWrites=true&w=majority",
+    mongo_uri="mongodb+srv://cluster0.abcdefg.mongodb.net/Cluster0?retryWrites=true&w=majority",
     collection_id=uuid.UUID(
         "ac20e6ba-0bae-11ef-b25a-efca73df4c3a",
     ),
@@ -1649,7 +1649,7 @@ client = CredalApi(
     api_key="YOUR_API_KEY",
 )
 client.document_collections.update_mongo_collection_sync(
-    mongo_uri="mongodb+srv://cluster0.hzwklqn.mongodb.net/Cluster0?retryWrites=true&w=majority",
+    mongo_uri="mongodb+srv://cluster0.abcdefg.mongodb.net/Cluster0?retryWrites=true&w=majority",
     mongo_credential_id=uuid.UUID(
         "5988ed76-6ee1-11ef-97dd-1fca54b7c4bc",
     ),
