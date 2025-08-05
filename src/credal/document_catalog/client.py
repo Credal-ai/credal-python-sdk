@@ -65,7 +65,7 @@ class DocumentCatalogClient:
             The external URL of the document you want to upload. If provided Credal will link to this URL.
 
         custom_metadata : typing.Optional[typing.Optional[typing.Any]]
-            Optional JSON representing any custom metdata for this document
+            Optional JSON representing any custom metadata for this document
 
         collection_id : typing.Optional[str]
             If specified, document will also be added to a particular document collection
@@ -92,7 +92,7 @@ class DocumentCatalogClient:
         )
         client.document_catalog.upload_document_contents(
             document_name="My Document",
-            document_contents="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            document_contents="Lorem ipsum...",
             document_external_id="73eead26-d124-4940-b329-5f068a0a8db9",
             allowed_users_email_addresses=["jack@credal.ai", "ravin@credal.ai"],
             upload_as_user_email="jack@credal.ai",
@@ -259,7 +259,7 @@ class AsyncDocumentCatalogClient:
             The external URL of the document you want to upload. If provided Credal will link to this URL.
 
         custom_metadata : typing.Optional[typing.Optional[typing.Any]]
-            Optional JSON representing any custom metdata for this document
+            Optional JSON representing any custom metadata for this document
 
         collection_id : typing.Optional[str]
             If specified, document will also be added to a particular document collection
@@ -291,7 +291,7 @@ class AsyncDocumentCatalogClient:
         async def main() -> None:
             await client.document_catalog.upload_document_contents(
                 document_name="My Document",
-                document_contents="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                document_contents="Lorem ipsum...",
                 document_external_id="73eead26-d124-4940-b329-5f068a0a8db9",
                 allowed_users_email_addresses=["jack@credal.ai", "ravin@credal.ai"],
                 upload_as_user_email="jack@credal.ai",

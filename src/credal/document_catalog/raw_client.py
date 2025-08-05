@@ -58,7 +58,7 @@ class RawDocumentCatalogClient:
             The external URL of the document you want to upload. If provided Credal will link to this URL.
 
         custom_metadata : typing.Optional[typing.Optional[typing.Any]]
-            Optional JSON representing any custom metdata for this document
+            Optional JSON representing any custom metadata for this document
 
         collection_id : typing.Optional[str]
             If specified, document will also be added to a particular document collection
@@ -238,7 +238,7 @@ class AsyncRawDocumentCatalogClient:
             The external URL of the document you want to upload. If provided Credal will link to this URL.
 
         custom_metadata : typing.Optional[typing.Optional[typing.Any]]
-            Optional JSON representing any custom metdata for this document
+            Optional JSON representing any custom metadata for this document
 
         collection_id : typing.Optional[str]
             If specified, document will also be added to a particular document collection
