@@ -71,6 +71,7 @@ from .document_catalog import (
 from .document_collections import (
     CreateCollectionResponse,
     DeleteCollectionResponse,
+    ListDocumentsInCollectionResponse,
     MongoCollectionSyncConfig,
     MongoCollectionSyncResponse,
     MongoSourceFieldsConfig,
@@ -142,6 +143,7 @@ __all__ = [
     "InitialChunk",
     "InputVariable",
     "InsertedAuditLog",
+    "ListDocumentsInCollectionResponse",
     "MessageBlocked",
     "MessageFeedback",
     "MessageReply",

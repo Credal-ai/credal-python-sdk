@@ -5,6 +5,7 @@
 from .types import (
     CreateCollectionResponse,
     DeleteCollectionResponse,
+    ListDocumentsInCollectionResponse,
     MongoCollectionSyncConfig,
     MongoCollectionSyncResponse,
     MongoSourceFieldsConfig,
@@ -13,6 +14,7 @@ from .types import (
 __all__ = [
     "CreateCollectionResponse",
     "DeleteCollectionResponse",
+    "ListDocumentsInCollectionResponse",
     "MongoCollectionSyncConfig",
     "MongoCollectionSyncResponse",
     "MongoSourceFieldsConfig",
