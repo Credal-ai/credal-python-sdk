@@ -10,6 +10,7 @@ from ..core.request_options import RequestOptions
 from .raw_client import AsyncRawDocumentCollectionsClient, RawDocumentCollectionsClient
 from .types.create_collection_response import CreateCollectionResponse
 from .types.delete_collection_response import DeleteCollectionResponse
+from .types.list_documents_in_collection_response import ListDocumentsInCollectionResponse
 from .types.mongo_collection_sync_config import MongoCollectionSyncConfig
 from .types.mongo_collection_sync_response import MongoCollectionSyncResponse
 
@@ -141,6 +142,44 @@ class DocumentCollectionsClient:
         """
         _response = self._raw_client.remove_documents_from_collection(
             collection_id=collection_id, resource_identifiers=resource_identifiers, request_options=request_options
+        )
+        return _response.data
+
+    def list_documents_in_collection(
+        self, *, collection_id: uuid.UUID, request_options: typing.Optional[RequestOptions] = None
+    ) -> ListDocumentsInCollectionResponse:
+        """
+        List documents in a collection
+
+        Parameters
+        ----------
+        collection_id : uuid.UUID
+            The ID of the document collection to list documents from.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListDocumentsInCollectionResponse
+
+        Examples
+        --------
+        import uuid
+
+        from credal import CredalApi
+
+        client = CredalApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.document_collections.list_documents_in_collection(
+            collection_id=uuid.UUID(
+                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+            ),
+        )
+        """
+        _response = self._raw_client.list_documents_in_collection(
+            collection_id=collection_id, request_options=request_options
         )
         return _response.data
 
@@ -497,6 +536,51 @@ class AsyncDocumentCollectionsClient:
         """
         _response = await self._raw_client.remove_documents_from_collection(
             collection_id=collection_id, resource_identifiers=resource_identifiers, request_options=request_options
+        )
+        return _response.data
+
+    async def list_documents_in_collection(
+        self, *, collection_id: uuid.UUID, request_options: typing.Optional[RequestOptions] = None
+    ) -> ListDocumentsInCollectionResponse:
+        """
+        List documents in a collection
+
+        Parameters
+        ----------
+        collection_id : uuid.UUID
+            The ID of the document collection to list documents from.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListDocumentsInCollectionResponse
+
+        Examples
+        --------
+        import asyncio
+        import uuid
+
+        from credal import AsyncCredalApi
+
+        client = AsyncCredalApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.document_collections.list_documents_in_collection(
+                collection_id=uuid.UUID(
+                    "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+                ),
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_documents_in_collection(
+            collection_id=collection_id, request_options=request_options
         )
         return _response.data
 

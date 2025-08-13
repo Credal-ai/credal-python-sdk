@@ -14,6 +14,7 @@ from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
 from .types.create_collection_response import CreateCollectionResponse
 from .types.delete_collection_response import DeleteCollectionResponse
+from .types.list_documents_in_collection_response import ListDocumentsInCollectionResponse
 from .types.mongo_collection_sync_config import MongoCollectionSyncConfig
 from .types.mongo_collection_sync_response import MongoCollectionSyncResponse
 
@@ -110,6 +111,47 @@ class RawDocumentCollectionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 return HttpResponse(response=_response, data=None)
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def list_documents_in_collection(
+        self, *, collection_id: uuid.UUID, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[ListDocumentsInCollectionResponse]:
+        """
+        List documents in a collection
+
+        Parameters
+        ----------
+        collection_id : uuid.UUID
+            The ID of the document collection to list documents from.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[ListDocumentsInCollectionResponse]
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "v0/documentCollections/listDocumentsInCollection",
+            method="GET",
+            params={
+                "collectionId": collection_id,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ListDocumentsInCollectionResponse,
+                    parse_obj_as(
+                        type_=ListDocumentsInCollectionResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -411,6 +453,47 @@ class AsyncRawDocumentCollectionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 return AsyncHttpResponse(response=_response, data=None)
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def list_documents_in_collection(
+        self, *, collection_id: uuid.UUID, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[ListDocumentsInCollectionResponse]:
+        """
+        List documents in a collection
+
+        Parameters
+        ----------
+        collection_id : uuid.UUID
+            The ID of the document collection to list documents from.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[ListDocumentsInCollectionResponse]
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "v0/documentCollections/listDocumentsInCollection",
+            method="GET",
+            params={
+                "collectionId": collection_id,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ListDocumentsInCollectionResponse,
+                    parse_obj_as(
+                        type_=ListDocumentsInCollectionResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)

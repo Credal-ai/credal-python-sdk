@@ -1336,6 +1336,80 @@ client.document_collections.remove_documents_from_collection(
 </dl>
 </details>
 
+<details><summary><code>client.document_collections.<a href="src/credal/document_collections/client.py">list_documents_in_collection</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+List documents in a collection
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+import uuid
+
+from credal import CredalApi
+
+client = CredalApi(
+    api_key="YOUR_API_KEY",
+)
+client.document_collections.list_documents_in_collection(
+    collection_id=uuid.UUID(
+        "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**collection_id:** `uuid.UUID` — The ID of the document collection to list documents from.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.document_collections.<a href="src/credal/document_collections/client.py">create_collection</a>(...)</code></summary>
 <dl>
 <dd>
