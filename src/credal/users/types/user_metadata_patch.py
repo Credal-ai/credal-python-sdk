@@ -10,7 +10,7 @@ from ...core.serialization import FieldMetadata
 
 class UserMetadataPatch(UniversalBaseModel):
     user_email: typing_extensions.Annotated[str, FieldMetadata(alias="userEmail")]
-    metadata: typing.Optional[typing.Any] = pydantic.Field(default=None)
+    metadata: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
     """
     Key-value object of metadata for user. Keys will be merged with any existing values but can also be set to `null` to effectively remove
     """

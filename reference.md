@@ -930,7 +930,7 @@ client.document_catalog.upload_document_contents(
 <dl>
 <dd>
 
-**custom_metadata:** `typing.Optional[typing.Optional[typing.Any]]` — Optional JSON representing any custom metadata for this document
+**custom_metadata:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — Optional JSON representing any custom metadata for this document
     
 </dd>
 </dl>
