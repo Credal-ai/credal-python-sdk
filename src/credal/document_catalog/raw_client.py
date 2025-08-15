@@ -30,7 +30,7 @@ class RawDocumentCatalogClient:
         upload_as_user_email: str,
         document_external_id: str,
         document_external_url: typing.Optional[str] = OMIT,
-        custom_metadata: typing.Optional[typing.Optional[typing.Any]] = OMIT,
+        custom_metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         collection_id: typing.Optional[str] = OMIT,
         force_update: typing.Optional[bool] = OMIT,
         internal_public: typing.Optional[bool] = OMIT,
@@ -57,7 +57,7 @@ class RawDocumentCatalogClient:
         document_external_url : typing.Optional[str]
             The external URL of the document you want to upload. If provided Credal will link to this URL.
 
-        custom_metadata : typing.Optional[typing.Optional[typing.Any]]
+        custom_metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
             Optional JSON representing any custom metadata for this document
 
         collection_id : typing.Optional[str]
@@ -210,7 +210,7 @@ class AsyncRawDocumentCatalogClient:
         upload_as_user_email: str,
         document_external_id: str,
         document_external_url: typing.Optional[str] = OMIT,
-        custom_metadata: typing.Optional[typing.Optional[typing.Any]] = OMIT,
+        custom_metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         collection_id: typing.Optional[str] = OMIT,
         force_update: typing.Optional[bool] = OMIT,
         internal_public: typing.Optional[bool] = OMIT,
@@ -237,7 +237,7 @@ class AsyncRawDocumentCatalogClient:
         document_external_url : typing.Optional[str]
             The external URL of the document you want to upload. If provided Credal will link to this URL.
 
-        custom_metadata : typing.Optional[typing.Optional[typing.Any]]
+        custom_metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
             Optional JSON representing any custom metadata for this document
 
         collection_id : typing.Optional[str]
