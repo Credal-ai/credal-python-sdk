@@ -930,7 +930,7 @@ client.document_catalog.upload_document_contents(
 <dl>
 <dd>
 
-**custom_metadata:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — Optional JSON representing any custom metadata for this document
+**custom_metadata:** `typing.Optional[typing.Dict[str, CustomMetadataValue]]` — Optional JSON representing any custom metadata for this document
     
 </dd>
 </dl>
@@ -938,7 +938,7 @@ client.document_catalog.upload_document_contents(
 <dl>
 <dd>
 
-**collection_id:** `typing.Optional[str]` — If specified, document will also be added to a particular document collection
+**collection_id:** `typing.Optional[str]` — If specified, the document will also be added to the provided document collection. The document does not immediately start appearing in searches of that collection due to an asynchronous embedding process. To await this process and have this endpoint return only when that embedding process is complete, use the `awaitVectorStoreSync` parameter.
     
 </dd>
 </dl>
@@ -955,6 +955,14 @@ client.document_catalog.upload_document_contents(
 <dd>
 
 **internal_public:** `typing.Optional[bool]` — If specified, document will be accessible to everyone within the organization of the uploader
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**await_vector_store_sync:** `typing.Optional[bool]` — If specified, the API will wait for the vector store to be updated before returning. This is useful if you want to ensure that the document is immediately searchable after this call returns.
     
 </dd>
 </dl>
@@ -1773,291 +1781,6 @@ client.document_collections.update_mongo_collection_sync(
 <dd>
 
 **config:** `MongoCollectionSyncConfig` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## PermissionsService
-<details><summary><code>client.permissions_service.<a href="src/credal/permissions_service/client.py">check_resource_authorization_for_user</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Admin endpoint to check whether the specified user is authorized to read the specified resource.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from credal import CredalApi
-from credal.common import ResourceIdentifier_ExternalResourceId
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-client.permissions_service.check_resource_authorization_for_user(
-    resource_identifier=ResourceIdentifier_ExternalResourceId(
-        external_resource_id="170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr",
-        resource_type="GOOGLE_DRIVE_ITEM",
-    ),
-    user_email="john.smith@foo.com",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**resource_identifier:** `ResourceIdentifier` — The resource identifier for which you want to check authorization.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**user_email:** `str` — The user email to check authorization for.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**disable_cache:** `typing.Optional[bool]` — If specified, Credal will bypass the permissions cache and check current permissions for this resource
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.permissions_service.<a href="src/credal/permissions_service/client.py">check_bulk_resources_authorization_for_user</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Admin endpoint to check whether the specified user is authorized to read the specified set of resources.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from credal import CredalApi
-from credal.common import (
-    ResourceIdentifier_ExternalResourceId,
-    ResourceIdentifier_Url,
-)
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-client.permissions_service.check_bulk_resources_authorization_for_user(
-    resource_identifiers=[
-        ResourceIdentifier_Url(
-            url="https://docs.google.com/document/d/170NrBm0Do7gdzvr54UvyslPVWkQFOA0lgNycFmdZJQr/edit",
-        ),
-        ResourceIdentifier_ExternalResourceId(
-            external_resource_id="sfsdfvr54UvyslPVWkQFOA0dfsdfsdflgNycFmdZJQr",
-            resource_type="ZENDESK_TICKET",
-        ),
-    ],
-    user_email="john.smith@foo.com",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**resource_identifiers:** `typing.Sequence[ResourceIdentifier]` — The set of resource identifier for which you want to check authorization. Currently limited to 20 resources.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**user_email:** `str` — The user email to check authorization for.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**disable_cache:** `typing.Optional[bool]` — If specified, Credal will bypass the permissions cache and check current permissions for all resources specified.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.permissions_service.<a href="src/credal/permissions_service/client.py">list_cached_authorized_resources_for_user</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Admin endpoint to list all resources that the specified user is authorized to read. Note this endpoint returns cached results and may not be up-to-date. You can use the checkResourceAuthorizationForUser endpoint with disableCache set to true to get the most up-to-date results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from credal import CredalApi
-
-client = CredalApi(
-    api_key="YOUR_API_KEY",
-)
-client.permissions_service.list_cached_authorized_resources_for_user(
-    user_email="john.smith@foo.com",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**user_email:** `str` — The user email to list authorized resources for.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**resource_type:** `typing.Optional[ResourceType]` — The type of resource you want to list. If not specified, all resource types will be listed.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limit:** `typing.Optional[int]` — The maximum number of resources to return. Defaults to 100.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**offset:** `typing.Optional[int]` — The offset to use for pagination. If not specified, the first page of results will be returned.
     
 </dd>
 </dl>
