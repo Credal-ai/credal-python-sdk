@@ -3,6 +3,7 @@
 import typing
 from json.decoder import JSONDecodeError
 
+from ..common.types.custom_metadata_value import CustomMetadataValue
 from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
@@ -30,10 +31,11 @@ class RawDocumentCatalogClient:
         upload_as_user_email: str,
         document_external_id: str,
         document_external_url: typing.Optional[str] = OMIT,
-        custom_metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        custom_metadata: typing.Optional[typing.Dict[str, CustomMetadataValue]] = OMIT,
         collection_id: typing.Optional[str] = OMIT,
         force_update: typing.Optional[bool] = OMIT,
         internal_public: typing.Optional[bool] = OMIT,
+        await_vector_store_sync: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UploadDocumentResponse]:
         """
@@ -57,17 +59,20 @@ class RawDocumentCatalogClient:
         document_external_url : typing.Optional[str]
             The external URL of the document you want to upload. If provided Credal will link to this URL.
 
-        custom_metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        custom_metadata : typing.Optional[typing.Dict[str, CustomMetadataValue]]
             Optional JSON representing any custom metadata for this document
 
         collection_id : typing.Optional[str]
-            If specified, document will also be added to a particular document collection
+            If specified, the document will also be added to the provided document collection. The document does not immediately start appearing in searches of that collection due to an asynchronous embedding process. To await this process and have this endpoint return only when that embedding process is complete, use the `awaitVectorStoreSync` parameter.
 
         force_update : typing.Optional[bool]
             If specified, document contents will be re-uploaded and re-embedded even if the document already exists in Credal
 
         internal_public : typing.Optional[bool]
             If specified, document will be accessible to everyone within the organization of the uploader
+
+        await_vector_store_sync : typing.Optional[bool]
+            If specified, the API will wait for the vector store to be updated before returning. This is useful if you want to ensure that the document is immediately searchable after this call returns.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -86,10 +91,13 @@ class RawDocumentCatalogClient:
                 "uploadAsUserEmail": upload_as_user_email,
                 "documentExternalId": document_external_id,
                 "documentExternalUrl": document_external_url,
-                "customMetadata": custom_metadata,
+                "customMetadata": convert_and_respect_annotation_metadata(
+                    object_=custom_metadata, annotation=typing.Dict[str, CustomMetadataValue], direction="write"
+                ),
                 "collectionId": collection_id,
                 "forceUpdate": force_update,
                 "internalPublic": internal_public,
+                "awaitVectorStoreSync": await_vector_store_sync,
             },
             request_options=request_options,
             omit=OMIT,
@@ -210,10 +218,11 @@ class AsyncRawDocumentCatalogClient:
         upload_as_user_email: str,
         document_external_id: str,
         document_external_url: typing.Optional[str] = OMIT,
-        custom_metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        custom_metadata: typing.Optional[typing.Dict[str, CustomMetadataValue]] = OMIT,
         collection_id: typing.Optional[str] = OMIT,
         force_update: typing.Optional[bool] = OMIT,
         internal_public: typing.Optional[bool] = OMIT,
+        await_vector_store_sync: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UploadDocumentResponse]:
         """
@@ -237,17 +246,20 @@ class AsyncRawDocumentCatalogClient:
         document_external_url : typing.Optional[str]
             The external URL of the document you want to upload. If provided Credal will link to this URL.
 
-        custom_metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        custom_metadata : typing.Optional[typing.Dict[str, CustomMetadataValue]]
             Optional JSON representing any custom metadata for this document
 
         collection_id : typing.Optional[str]
-            If specified, document will also be added to a particular document collection
+            If specified, the document will also be added to the provided document collection. The document does not immediately start appearing in searches of that collection due to an asynchronous embedding process. To await this process and have this endpoint return only when that embedding process is complete, use the `awaitVectorStoreSync` parameter.
 
         force_update : typing.Optional[bool]
             If specified, document contents will be re-uploaded and re-embedded even if the document already exists in Credal
 
         internal_public : typing.Optional[bool]
             If specified, document will be accessible to everyone within the organization of the uploader
+
+        await_vector_store_sync : typing.Optional[bool]
+            If specified, the API will wait for the vector store to be updated before returning. This is useful if you want to ensure that the document is immediately searchable after this call returns.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -266,10 +278,13 @@ class AsyncRawDocumentCatalogClient:
                 "uploadAsUserEmail": upload_as_user_email,
                 "documentExternalId": document_external_id,
                 "documentExternalUrl": document_external_url,
-                "customMetadata": custom_metadata,
+                "customMetadata": convert_and_respect_annotation_metadata(
+                    object_=custom_metadata, annotation=typing.Dict[str, CustomMetadataValue], direction="write"
+                ),
                 "collectionId": collection_id,
                 "forceUpdate": force_update,
                 "internalPublic": internal_public,
+                "awaitVectorStoreSync": await_vector_store_sync,
             },
             request_options=request_options,
             omit=OMIT,
