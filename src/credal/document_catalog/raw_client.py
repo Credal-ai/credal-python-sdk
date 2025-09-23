@@ -63,7 +63,7 @@ class RawDocumentCatalogClient:
             Optional JSON representing any custom metadata for this document
 
         collection_id : typing.Optional[str]
-            If specified, the document will also be added to the provided document collection. The document does not immediately start appearing in searches of that collection due to an asynchronous embedding process. To await this process and have this endpoint return only when that embedding process is complete, use the `awaitVectorStoreSync` parameter.
+            If specified, the document will also be added to the provided document collection. This operation is eventually consistent, meaning the document does not immediately start appearing in searches of that collection due to an asynchronous embedding process. To achieve strong consistency use the `awaitVectorStoreSync` parameter.
 
         force_update : typing.Optional[bool]
             If specified, document contents will be re-uploaded and re-embedded even if the document already exists in Credal
@@ -72,7 +72,7 @@ class RawDocumentCatalogClient:
             If specified, document will be accessible to everyone within the organization of the uploader
 
         await_vector_store_sync : typing.Optional[bool]
-            If specified, the API will wait for the vector store to be updated before returning. This is useful if you want to ensure that the document is immediately searchable after this call returns.
+            Document uploads are eventually consistent by default. If specified `true` the API will wait for the vector store to be updated before returning. This is useful if you want to ensure that the document is immediately searchable after this call returns.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -250,7 +250,7 @@ class AsyncRawDocumentCatalogClient:
             Optional JSON representing any custom metadata for this document
 
         collection_id : typing.Optional[str]
-            If specified, the document will also be added to the provided document collection. The document does not immediately start appearing in searches of that collection due to an asynchronous embedding process. To await this process and have this endpoint return only when that embedding process is complete, use the `awaitVectorStoreSync` parameter.
+            If specified, the document will also be added to the provided document collection. This operation is eventually consistent, meaning the document does not immediately start appearing in searches of that collection due to an asynchronous embedding process. To achieve strong consistency use the `awaitVectorStoreSync` parameter.
 
         force_update : typing.Optional[bool]
             If specified, document contents will be re-uploaded and re-embedded even if the document already exists in Credal
@@ -259,7 +259,7 @@ class AsyncRawDocumentCatalogClient:
             If specified, document will be accessible to everyone within the organization of the uploader
 
         await_vector_store_sync : typing.Optional[bool]
-            If specified, the API will wait for the vector store to be updated before returning. This is useful if you want to ensure that the document is immediately searchable after this call returns.
+            Document uploads are eventually consistent by default. If specified `true` the API will wait for the vector store to be updated before returning. This is useful if you want to ensure that the document is immediately searchable after this call returns.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

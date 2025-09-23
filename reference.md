@@ -938,7 +938,7 @@ client.document_catalog.upload_document_contents(
 <dl>
 <dd>
 
-**collection_id:** `typing.Optional[str]` — If specified, the document will also be added to the provided document collection. The document does not immediately start appearing in searches of that collection due to an asynchronous embedding process. To await this process and have this endpoint return only when that embedding process is complete, use the `awaitVectorStoreSync` parameter.
+**collection_id:** `typing.Optional[str]` — If specified, the document will also be added to the provided document collection. This operation is eventually consistent, meaning the document does not immediately start appearing in searches of that collection due to an asynchronous embedding process. To achieve strong consistency use the `awaitVectorStoreSync` parameter.
     
 </dd>
 </dl>
@@ -962,7 +962,7 @@ client.document_catalog.upload_document_contents(
 <dl>
 <dd>
 
-**await_vector_store_sync:** `typing.Optional[bool]` — If specified, the API will wait for the vector store to be updated before returning. This is useful if you want to ensure that the document is immediately searchable after this call returns.
+**await_vector_store_sync:** `typing.Optional[bool]` — Document uploads are eventually consistent by default. If specified `true` the API will wait for the vector store to be updated before returning. This is useful if you want to ensure that the document is immediately searchable after this call returns.
     
 </dd>
 </dl>
