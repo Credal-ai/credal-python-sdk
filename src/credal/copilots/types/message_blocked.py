@@ -8,11 +8,9 @@ import typing_extensions
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...core.serialization import FieldMetadata
 from .inserted_audit_log import InsertedAuditLog
-from .policy_trigger import PolicyTrigger
 
 
 class MessageBlocked(UniversalBaseModel):
-    policy_triggers: typing.List[PolicyTrigger]
     conversation_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="conversationId")]
     blocks: typing.List[str]
     warnings: typing.List[str]
