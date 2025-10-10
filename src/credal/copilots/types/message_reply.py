@@ -8,14 +8,12 @@ import typing_extensions
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...core.serialization import FieldMetadata
 from .inserted_audit_log import InsertedAuditLog
-from .policy_trigger import PolicyTrigger
 from .referenced_source import ReferencedSource
 from .response_chunk import ResponseChunk
 from .web_search_result import WebSearchResult
 
 
 class MessageReply(UniversalBaseModel):
-    policy_triggers: typing.List[PolicyTrigger]
     conversation_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="conversationId")]
     response: ResponseChunk
     warnings: typing.List[str]

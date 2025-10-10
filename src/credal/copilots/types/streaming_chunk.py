@@ -11,7 +11,6 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...core.serialization import FieldMetadata
 from .data_filter import DataFilter
 from .error_chunk_data import ErrorChunkData
-from .policy_trigger import PolicyTrigger
 from .referenced_source import ReferencedSource
 from .web_search_result import WebSearchResult
 
@@ -81,7 +80,6 @@ class StreamingChunk_Blocked(UniversalBaseModel):
     conversation_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="conversationId")]
     warnings: typing.List[str]
     blocks: typing.List[str]
-    policy_triggers: typing_extensions.Annotated[typing.List[PolicyTrigger], FieldMetadata(alias="policyTriggers")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

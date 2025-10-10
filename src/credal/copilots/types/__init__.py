@@ -30,7 +30,6 @@ if typing.TYPE_CHECKING:
     from .message_feedback import MessageFeedback
     from .message_reply import MessageReply
     from .number_field_schema import NumberFieldSchema
-    from .policy_trigger import PolicyTrigger
     from .referenced_source import ReferencedSource
     from .response_chunk import ResponseChunk
     from .send_agent_message_response import SendAgentMessageResponse
@@ -79,7 +78,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "MessageFeedback": ".message_feedback",
     "MessageReply": ".message_reply",
     "NumberFieldSchema": ".number_field_schema",
-    "PolicyTrigger": ".policy_trigger",
     "ReferencedSource": ".referenced_source",
     "ResponseChunk": ".response_chunk",
     "SendAgentMessageResponse": ".send_agent_message_response",
@@ -148,7 +146,6 @@ __all__ = [
     "MessageFeedback",
     "MessageReply",
     "NumberFieldSchema",
-    "PolicyTrigger",
     "ReferencedSource",
     "ResponseChunk",
     "SendAgentMessageResponse",
