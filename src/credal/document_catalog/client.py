@@ -2,6 +2,7 @@
 
 import typing
 
+from .. import core
 from ..common.types.custom_metadata_value import CustomMetadataValue
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
@@ -114,6 +115,88 @@ class DocumentCatalogClient:
             collection_id=collection_id,
             force_update=force_update,
             internal_public=internal_public,
+            await_vector_store_sync=await_vector_store_sync,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def upload_file(
+        self,
+        *,
+        file: core.File,
+        upload_as_user_email: str,
+        document_external_id: str,
+        document_name: typing.Optional[str] = OMIT,
+        allowed_users_email_addresses: typing.Optional[str] = OMIT,
+        document_external_url: typing.Optional[str] = OMIT,
+        custom_metadata: typing.Optional[str] = OMIT,
+        collection_id: typing.Optional[str] = OMIT,
+        force_update: typing.Optional[str] = OMIT,
+        internal_public: typing.Optional[str] = OMIT,
+        source_system_updated: typing.Optional[str] = OMIT,
+        await_vector_store_sync: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UploadDocumentResponse:
+        """
+        Upload a file (PDF, Word, Excel, CSV, PowerPoint) to Credal. Unlike uploadDocumentContents which requires pre-parsed text, this endpoint accepts actual file uploads and automatically parses them using Credal's parsing service.
+
+        Parameters
+        ----------
+        file : core.File
+            See core.File for more documentation
+
+        upload_as_user_email : str
+            [Legacy] The user on behalf of whom the document should be uploaded. In most cases, this can simply be the email of the developer making the API call. This field will be removed in the future in favor of purely specifying permissions via allowedUsersEmailAddresses.
+
+        document_external_id : str
+            The external ID of the document. This is typically the ID as it exists in its original external system. Uploads to the same external ID will update the document in Credal.
+
+        document_name : typing.Optional[str]
+            The name of the document you want to upload. If not provided, the original filename will be used.
+
+        allowed_users_email_addresses : typing.Optional[str]
+            Users allowed to access the document. Can be provided as a JSON array string (e.g., ["user1@example.com","user2@example.com"]) or comma-separated list (e.g., "user1@example.com,user2@example.com"). Unlike Credal's out of the box connectors which reconcile various permissions models from 3rd party software, for custom uploads the caller is responsible for specifying who can access the document and currently flattening groups if applicable. Documents can also be marked as internal public.
+
+        document_external_url : typing.Optional[str]
+            The external URL of the document you want to upload. If provided Credal will link to this URL.
+
+        custom_metadata : typing.Optional[str]
+            Optional JSON string representing any custom metadata for this document (e.g., '{"key1":"value1","key2":"value2"}').
+
+        collection_id : typing.Optional[str]
+            If specified, the document will also be added to the provided document collection. This operation is eventually consistent, meaning the document does not immediately start appearing in searches of that collection due to an asynchronous embedding process. To achieve strong consistency use the `awaitVectorStoreSync` parameter.
+
+        force_update : typing.Optional[str]
+            If set to "true", document contents will be re-uploaded and re-embedded even if the document already exists in Credal.
+
+        internal_public : typing.Optional[str]
+            If set to "true", document will be accessible to everyone within the organization of the uploader.
+
+        source_system_updated : typing.Optional[str]
+            ISO 8601 date string indicating when the document was last updated in the source system (e.g., "2025-11-03T21:15:00Z").
+
+        await_vector_store_sync : typing.Optional[str]
+            Document uploads are eventually consistent by default. If set to "true" the API will wait for the vector store to be updated before returning. This is useful if you want to ensure that the document is immediately searchable after this call returns.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UploadDocumentResponse
+        """
+        _response = self._raw_client.upload_file(
+            file=file,
+            upload_as_user_email=upload_as_user_email,
+            document_external_id=document_external_id,
+            document_name=document_name,
+            allowed_users_email_addresses=allowed_users_email_addresses,
+            document_external_url=document_external_url,
+            custom_metadata=custom_metadata,
+            collection_id=collection_id,
+            force_update=force_update,
+            internal_public=internal_public,
+            source_system_updated=source_system_updated,
             await_vector_store_sync=await_vector_store_sync,
             request_options=request_options,
         )
@@ -321,6 +404,88 @@ class AsyncDocumentCatalogClient:
             collection_id=collection_id,
             force_update=force_update,
             internal_public=internal_public,
+            await_vector_store_sync=await_vector_store_sync,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def upload_file(
+        self,
+        *,
+        file: core.File,
+        upload_as_user_email: str,
+        document_external_id: str,
+        document_name: typing.Optional[str] = OMIT,
+        allowed_users_email_addresses: typing.Optional[str] = OMIT,
+        document_external_url: typing.Optional[str] = OMIT,
+        custom_metadata: typing.Optional[str] = OMIT,
+        collection_id: typing.Optional[str] = OMIT,
+        force_update: typing.Optional[str] = OMIT,
+        internal_public: typing.Optional[str] = OMIT,
+        source_system_updated: typing.Optional[str] = OMIT,
+        await_vector_store_sync: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UploadDocumentResponse:
+        """
+        Upload a file (PDF, Word, Excel, CSV, PowerPoint) to Credal. Unlike uploadDocumentContents which requires pre-parsed text, this endpoint accepts actual file uploads and automatically parses them using Credal's parsing service.
+
+        Parameters
+        ----------
+        file : core.File
+            See core.File for more documentation
+
+        upload_as_user_email : str
+            [Legacy] The user on behalf of whom the document should be uploaded. In most cases, this can simply be the email of the developer making the API call. This field will be removed in the future in favor of purely specifying permissions via allowedUsersEmailAddresses.
+
+        document_external_id : str
+            The external ID of the document. This is typically the ID as it exists in its original external system. Uploads to the same external ID will update the document in Credal.
+
+        document_name : typing.Optional[str]
+            The name of the document you want to upload. If not provided, the original filename will be used.
+
+        allowed_users_email_addresses : typing.Optional[str]
+            Users allowed to access the document. Can be provided as a JSON array string (e.g., ["user1@example.com","user2@example.com"]) or comma-separated list (e.g., "user1@example.com,user2@example.com"). Unlike Credal's out of the box connectors which reconcile various permissions models from 3rd party software, for custom uploads the caller is responsible for specifying who can access the document and currently flattening groups if applicable. Documents can also be marked as internal public.
+
+        document_external_url : typing.Optional[str]
+            The external URL of the document you want to upload. If provided Credal will link to this URL.
+
+        custom_metadata : typing.Optional[str]
+            Optional JSON string representing any custom metadata for this document (e.g., '{"key1":"value1","key2":"value2"}').
+
+        collection_id : typing.Optional[str]
+            If specified, the document will also be added to the provided document collection. This operation is eventually consistent, meaning the document does not immediately start appearing in searches of that collection due to an asynchronous embedding process. To achieve strong consistency use the `awaitVectorStoreSync` parameter.
+
+        force_update : typing.Optional[str]
+            If set to "true", document contents will be re-uploaded and re-embedded even if the document already exists in Credal.
+
+        internal_public : typing.Optional[str]
+            If set to "true", document will be accessible to everyone within the organization of the uploader.
+
+        source_system_updated : typing.Optional[str]
+            ISO 8601 date string indicating when the document was last updated in the source system (e.g., "2025-11-03T21:15:00Z").
+
+        await_vector_store_sync : typing.Optional[str]
+            Document uploads are eventually consistent by default. If set to "true" the API will wait for the vector store to be updated before returning. This is useful if you want to ensure that the document is immediately searchable after this call returns.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UploadDocumentResponse
+        """
+        _response = await self._raw_client.upload_file(
+            file=file,
+            upload_as_user_email=upload_as_user_email,
+            document_external_id=document_external_id,
+            document_name=document_name,
+            allowed_users_email_addresses=allowed_users_email_addresses,
+            document_external_url=document_external_url,
+            custom_metadata=custom_metadata,
+            collection_id=collection_id,
+            force_update=force_update,
+            internal_public=internal_public,
+            source_system_updated=source_system_updated,
             await_vector_store_sync=await_vector_store_sync,
             request_options=request_options,
         )
