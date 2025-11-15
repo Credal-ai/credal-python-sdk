@@ -12,7 +12,7 @@ class ResponseChunk(UniversalBaseModel):
     message: str
     data_chunk: typing_extensions.Annotated[str, FieldMetadata(alias="dataChunk")]
     structured_output: typing_extensions.Annotated[
-        typing.Optional[typing.Optional[typing.Any]], FieldMetadata(alias="structuredOutput")
+        typing.Optional[typing.Any], FieldMetadata(alias="structuredOutput")
     ] = None
 
     if IS_PYDANTIC_V2:

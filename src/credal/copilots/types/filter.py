@@ -76,4 +76,7 @@ class Filter_Datetime(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
-Filter = typing.Union[Filter_String, Filter_Number, Filter_Boolean, Filter_Datetime]
+Filter = typing_extensions.Annotated[
+    typing.Union[Filter_String, Filter_Number, Filter_Boolean, Filter_Datetime],
+    pydantic.Field(discriminator="fieldType"),
+]

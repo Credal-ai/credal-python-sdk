@@ -105,11 +105,14 @@ class StreamingChunk_ErrorChunk(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
-StreamingChunk = typing.Union[
-    StreamingChunk_Initial,
-    StreamingChunk_DataChunk,
-    StreamingChunk_EndOfMessage,
-    StreamingChunk_FinalChunk,
-    StreamingChunk_Blocked,
-    StreamingChunk_ErrorChunk,
+StreamingChunk = typing_extensions.Annotated[
+    typing.Union[
+        StreamingChunk_Initial,
+        StreamingChunk_DataChunk,
+        StreamingChunk_EndOfMessage,
+        StreamingChunk_FinalChunk,
+        StreamingChunk_Blocked,
+        StreamingChunk_ErrorChunk,
+    ],
+    pydantic.Field(discriminator="event"),
 ]

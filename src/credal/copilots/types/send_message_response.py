@@ -59,4 +59,7 @@ class SendMessageResponse_BlockedResult(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
-SendMessageResponse = typing.Union[SendMessageResponse_AiResponseResult, SendMessageResponse_BlockedResult]
+SendMessageResponse = typing_extensions.Annotated[
+    typing.Union[SendMessageResponse_AiResponseResult, SendMessageResponse_BlockedResult],
+    pydantic.Field(discriminator="type"),
+]
