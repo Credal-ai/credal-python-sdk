@@ -17,7 +17,7 @@ class DocumentMetadataPatch(UniversalBaseModel):
     The identifier for the resource you want to patch
     """
 
-    metadata: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    metadata: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Key-value object of metadata for document. Keys will be merged with any existing values but can also be set to `null` to effectively remove
     """

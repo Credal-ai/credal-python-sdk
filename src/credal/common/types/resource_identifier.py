@@ -40,4 +40,6 @@ class ResourceIdentifier_Url(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
-ResourceIdentifier = typing.Union[ResourceIdentifier_ExternalResourceId, ResourceIdentifier_Url]
+ResourceIdentifier = typing_extensions.Annotated[
+    typing.Union[ResourceIdentifier_ExternalResourceId, ResourceIdentifier_Url], pydantic.Field(discriminator="type")
+]
