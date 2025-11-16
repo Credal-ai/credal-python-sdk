@@ -1,3 +1,5 @@
 # Specify files that shouldn't be modified by Fern
 README.md
 credal-dark-logo.svg
+
+tests/custom/
