@@ -841,6 +841,129 @@ client.copilots.delete_copilot(
 </dl>
 </details>
 
+<details><summary><code>client.copilots.<a href="src/credal/copilots/client.py">export</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Export copilot configurations for backup or migration purposes.
+
+**IMPORTANT**: This endpoint requires:
+- Admin privileges
+- The 'ai-usage-analytics-log.export' scope on the API key
+
+Returns all deployed copilots with their full configuration including model settings, tools, and deployment details. Optional date filters can be applied to narrow down results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+import datetime
+
+from credal import CredalApi
+
+client = CredalApi(
+    api_key="YOUR_API_KEY",
+)
+client.copilots.export(
+    agent_created_from=datetime.datetime.fromisoformat(
+        "2024-01-01 00:00:00+00:00",
+    ),
+    agent_created_to=datetime.datetime.fromisoformat(
+        "2024-12-31 23:59:59+00:00",
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**agent_created_from:** `typing.Optional[dt.datetime]` — Filter copilots created on or after this datetime (ISO 8601 format).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**agent_created_to:** `typing.Optional[dt.datetime]` — Filter copilots created before or on this datetime (ISO 8601 format).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**version_created_from:** `typing.Optional[dt.datetime]` — Filter copilot versions created on or after this datetime (ISO 8601 format).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**version_created_to:** `typing.Optional[dt.datetime]` — Filter copilot versions created before or on this datetime (ISO 8601 format).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Maximum number of copilots to return. Must be a positive integer with a maximum value of 1000. Defaults to 100.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cursor:** `typing.Optional[str]` — Cursor for pagination. Use the cursor returned in the previous response to fetch the next page of results. If not provided, returns the first page.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## DocumentCatalog
 <details><summary><code>client.document_catalog.<a href="src/credal/document_catalog/client.py">upload_document_contents</a>(...)</code></summary>
 <dl>
