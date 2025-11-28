@@ -20,6 +20,8 @@ if typing.TYPE_CHECKING:
     from .end_of_message_chunk import EndOfMessageChunk
     from .error_chunk import ErrorChunk
     from .error_chunk_data import ErrorChunkData
+    from .export_copilots_response import ExportCopilotsResponse
+    from .exported_copilot import ExportedCopilot
     from .feedback_enum import FeedbackEnum
     from .filter import Filter, Filter_Boolean, Filter_Datetime, Filter_Number, Filter_String
     from .final_chunk import FinalChunk
@@ -64,6 +66,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "EndOfMessageChunk": ".end_of_message_chunk",
     "ErrorChunk": ".error_chunk",
     "ErrorChunkData": ".error_chunk_data",
+    "ExportCopilotsResponse": ".export_copilots_response",
+    "ExportedCopilot": ".exported_copilot",
     "FeedbackEnum": ".feedback_enum",
     "Filter": ".filter",
     "Filter_Boolean": ".filter",
@@ -132,6 +136,8 @@ __all__ = [
     "EndOfMessageChunk",
     "ErrorChunk",
     "ErrorChunkData",
+    "ExportCopilotsResponse",
+    "ExportedCopilot",
     "FeedbackEnum",
     "Filter",
     "Filter_Boolean",
