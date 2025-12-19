@@ -1,6 +1,6 @@
 # Reference
 ## Copilots
-<details><summary><code>client.copilots.<a href="src/credal/copilots/client.py">create_copilot</a>(...)</code></summary>
+<details><summary><code>client.copilots.<a href="src/credal/copilots/client.py">create_copilot</a>(...) -> AsyncHttpResponse[CreateCopilotResponse]</code></summary>
 <dl>
 <dd>
 
@@ -94,7 +94,7 @@ client.copilots.create_copilot(
 </dl>
 </details>
 
-<details><summary><code>client.copilots.<a href="src/credal/copilots/client.py">create_conversation</a>(...)</code></summary>
+<details><summary><code>client.copilots.<a href="src/credal/copilots/client.py">create_conversation</a>(...) -> AsyncHttpResponse[CreateConversationResponse]</code></summary>
 <dl>
 <dd>
 
@@ -177,7 +177,7 @@ client.copilots.create_conversation(
 </dl>
 </details>
 
-<details><summary><code>client.copilots.<a href="src/credal/copilots/client.py">provide_message_feedback</a>(...)</code></summary>
+<details><summary><code>client.copilots.<a href="src/credal/copilots/client.py">provide_message_feedback</a>(...) -> AsyncHttpResponse[None]</code></summary>
 <dl>
 <dd>
 
@@ -271,7 +271,7 @@ client.copilots.provide_message_feedback(
 </dl>
 </details>
 
-<details><summary><code>client.copilots.<a href="src/credal/copilots/client.py">send_message</a>(...)</code></summary>
+<details><summary><code>client.copilots.<a href="src/credal/copilots/client.py">send_message</a>(...) -> AsyncHttpResponse[SendAgentMessageResponse]</code></summary>
 <dl>
 <dd>
 
@@ -387,7 +387,7 @@ client.copilots.send_message(
 </dl>
 </details>
 
-<details><summary><code>client.copilots.<a href="src/credal/copilots/client.py">stream_message</a>(...)</code></summary>
+<details><summary><code>client.copilots.<a href="src/credal/copilots/client.py">stream_message</a>(...) -> typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[StreamingChunk]]]</code></summary>
 <dl>
 <dd>
 
@@ -519,7 +519,7 @@ for chunk in response.data:
 </dl>
 </details>
 
-<details><summary><code>client.copilots.<a href="src/credal/copilots/client.py">add_collection_to_copilot</a>(...)</code></summary>
+<details><summary><code>client.copilots.<a href="src/credal/copilots/client.py">add_collection_to_copilot</a>(...) -> AsyncHttpResponse[None]</code></summary>
 <dl>
 <dd>
 
@@ -604,7 +604,7 @@ client.copilots.add_collection_to_copilot(
 </dl>
 </details>
 
-<details><summary><code>client.copilots.<a href="src/credal/copilots/client.py">remove_collection_from_copilot</a>(...)</code></summary>
+<details><summary><code>client.copilots.<a href="src/credal/copilots/client.py">remove_collection_from_copilot</a>(...) -> AsyncHttpResponse[None]</code></summary>
 <dl>
 <dd>
 
@@ -689,7 +689,7 @@ client.copilots.remove_collection_from_copilot(
 </dl>
 </details>
 
-<details><summary><code>client.copilots.<a href="src/credal/copilots/client.py">update_configuration</a>(...)</code></summary>
+<details><summary><code>client.copilots.<a href="src/credal/copilots/client.py">update_configuration</a>(...) -> AsyncHttpResponse[None]</code></summary>
 <dl>
 <dd>
 
@@ -781,7 +781,7 @@ client.copilots.update_configuration(
 </dl>
 </details>
 
-<details><summary><code>client.copilots.<a href="src/credal/copilots/client.py">delete_copilot</a>(...)</code></summary>
+<details><summary><code>client.copilots.<a href="src/credal/copilots/client.py">delete_copilot</a>(...) -> AsyncHttpResponse[DeleteCopilotResponse]</code></summary>
 <dl>
 <dd>
 
@@ -841,7 +841,7 @@ client.copilots.delete_copilot(
 </dl>
 </details>
 
-<details><summary><code>client.copilots.<a href="src/credal/copilots/client.py">export</a>(...)</code></summary>
+<details><summary><code>client.copilots.<a href="src/credal/copilots/client.py">export</a>(...) -> AsyncHttpResponse[ExportCopilotsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -965,7 +965,7 @@ client.copilots.export(
 </details>
 
 ## DocumentCatalog
-<details><summary><code>client.document_catalog.<a href="src/credal/document_catalog/client.py">upload_document_contents</a>(...)</code></summary>
+<details><summary><code>client.document_catalog.<a href="src/credal/document_catalog/client.py">upload_document_contents</a>(...) -> AsyncHttpResponse[UploadDocumentResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1105,7 +1105,7 @@ client.document_catalog.upload_document_contents(
 </dl>
 </details>
 
-<details><summary><code>client.document_catalog.<a href="src/credal/document_catalog/client.py">sync_source_by_url</a>(...)</code></summary>
+<details><summary><code>client.document_catalog.<a href="src/credal/document_catalog/client.py">sync_source_by_url</a>(...) -> AsyncHttpResponse[SyncSourceByUrlResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1184,7 +1184,7 @@ client.document_catalog.sync_source_by_url(
 </dl>
 </details>
 
-<details><summary><code>client.document_catalog.<a href="src/credal/document_catalog/client.py">metadata</a>(...)</code></summary>
+<details><summary><code>client.document_catalog.<a href="src/credal/document_catalog/client.py">metadata</a>(...) -> AsyncHttpResponse[None]</code></summary>
 <dl>
 <dd>
 
@@ -1281,7 +1281,7 @@ client.document_catalog.metadata(
 </details>
 
 ## DocumentCollections
-<details><summary><code>client.document_collections.<a href="src/credal/document_collections/client.py">add_documents_to_collection</a>(...)</code></summary>
+<details><summary><code>client.document_collections.<a href="src/credal/document_collections/client.py">add_documents_to_collection</a>(...) -> AsyncHttpResponse[None]</code></summary>
 <dl>
 <dd>
 
@@ -1374,7 +1374,7 @@ client.document_collections.add_documents_to_collection(
 </dl>
 </details>
 
-<details><summary><code>client.document_collections.<a href="src/credal/document_collections/client.py">remove_documents_from_collection</a>(...)</code></summary>
+<details><summary><code>client.document_collections.<a href="src/credal/document_collections/client.py">remove_documents_from_collection</a>(...) -> AsyncHttpResponse[None]</code></summary>
 <dl>
 <dd>
 
@@ -1467,7 +1467,7 @@ client.document_collections.remove_documents_from_collection(
 </dl>
 </details>
 
-<details><summary><code>client.document_collections.<a href="src/credal/document_collections/client.py">list_documents_in_collection</a>(...)</code></summary>
+<details><summary><code>client.document_collections.<a href="src/credal/document_collections/client.py">list_documents_in_collection</a>(...) -> AsyncHttpResponse[ListDocumentsInCollectionResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1541,7 +1541,7 @@ client.document_collections.list_documents_in_collection(
 </dl>
 </details>
 
-<details><summary><code>client.document_collections.<a href="src/credal/document_collections/client.py">create_collection</a>(...)</code></summary>
+<details><summary><code>client.document_collections.<a href="src/credal/document_collections/client.py">create_collection</a>(...) -> AsyncHttpResponse[CreateCollectionResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1635,7 +1635,7 @@ client.document_collections.create_collection(
 </dl>
 </details>
 
-<details><summary><code>client.document_collections.<a href="src/credal/document_collections/client.py">delete_collection</a>(...)</code></summary>
+<details><summary><code>client.document_collections.<a href="src/credal/document_collections/client.py">delete_collection</a>(...) -> AsyncHttpResponse[DeleteCollectionResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1709,7 +1709,7 @@ client.document_collections.delete_collection(
 </dl>
 </details>
 
-<details><summary><code>client.document_collections.<a href="src/credal/document_collections/client.py">create_mongo_collection_sync</a>(...)</code></summary>
+<details><summary><code>client.document_collections.<a href="src/credal/document_collections/client.py">create_mongo_collection_sync</a>(...) -> AsyncHttpResponse[MongoCollectionSyncResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1815,7 +1815,7 @@ client.document_collections.create_mongo_collection_sync(
 </dl>
 </details>
 
-<details><summary><code>client.document_collections.<a href="src/credal/document_collections/client.py">update_mongo_collection_sync</a>(...)</code></summary>
+<details><summary><code>client.document_collections.<a href="src/credal/document_collections/client.py">update_mongo_collection_sync</a>(...) -> AsyncHttpResponse[MongoCollectionSyncResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1924,7 +1924,7 @@ client.document_collections.update_mongo_collection_sync(
 </details>
 
 ## Search
-<details><summary><code>client.search.<a href="src/credal/search/client.py">search_document_collection</a>(...)</code></summary>
+<details><summary><code>client.search.<a href="src/credal/search/client.py">search_document_collection</a>(...) -> AsyncHttpResponse[SearchDocumentCollectionResponse]</code></summary>
 <dl>
 <dd>
 
@@ -2057,7 +2057,7 @@ client.search.search_document_collection(
 </details>
 
 ## Users
-<details><summary><code>client.users.<a href="src/credal/users/client.py">metadata</a>(...)</code></summary>
+<details><summary><code>client.users.<a href="src/credal/users/client.py">metadata</a>(...) -> AsyncHttpResponse[None]</code></summary>
 <dl>
 <dd>
 
