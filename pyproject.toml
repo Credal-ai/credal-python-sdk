@@ -1,5 +1,6 @@
 [project]
 name = "credal"
+dynamic = ["version"]
 
 [tool.poetry]
 name = "credal"
