@@ -10,7 +10,9 @@ from ...core.serialization import FieldMetadata
 
 
 class SyncSourceByUrlResponse(UniversalBaseModel):
-    source_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="sourceId")]
+    source_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="sourceId")] = pydantic.Field(
+        alias="sourceId"
+    )
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

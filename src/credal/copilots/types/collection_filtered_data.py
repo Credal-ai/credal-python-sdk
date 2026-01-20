@@ -11,8 +11,12 @@ from .filter import Filter
 
 
 class CollectionFilteredData(UniversalBaseModel):
-    collection_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="collectionId")]
-    filtered_data_ids: typing_extensions.Annotated[typing.List[uuid.UUID], FieldMetadata(alias="filteredDataIds")]
+    collection_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="collectionId")] = pydantic.Field(
+        alias="collectionId"
+    )
+    filtered_data_ids: typing_extensions.Annotated[typing.List[uuid.UUID], FieldMetadata(alias="filteredDataIds")] = (
+        pydantic.Field(alias="filteredDataIds")
+    )
     filters: typing.List[Filter]
 
     if IS_PYDANTIC_V2:

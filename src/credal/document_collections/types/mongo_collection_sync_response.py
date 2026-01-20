@@ -10,9 +10,15 @@ from ...core.serialization import FieldMetadata
 
 
 class MongoCollectionSyncResponse(UniversalBaseModel):
-    mongo_credential_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="mongoCredentialId")]
-    resource_id: typing_extensions.Annotated[str, FieldMetadata(alias="resourceId")]
-    sync_launched: typing_extensions.Annotated[bool, FieldMetadata(alias="syncLaunched")]
+    mongo_credential_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="mongoCredentialId")] = (
+        pydantic.Field(alias="mongoCredentialId")
+    )
+    resource_id: typing_extensions.Annotated[str, FieldMetadata(alias="resourceId")] = pydantic.Field(
+        alias="resourceId"
+    )
+    sync_launched: typing_extensions.Annotated[bool, FieldMetadata(alias="syncLaunched")] = pydantic.Field(
+        alias="syncLaunched"
+    )
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

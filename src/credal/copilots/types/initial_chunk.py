@@ -11,12 +11,16 @@ from .web_search_result import WebSearchResult
 
 
 class InitialChunk(UniversalBaseModel):
-    conversation_id: typing_extensions.Annotated[str, FieldMetadata(alias="conversationId")]
+    conversation_id: typing_extensions.Annotated[str, FieldMetadata(alias="conversationId")] = pydantic.Field(
+        alias="conversationId"
+    )
     warnings: typing.List[str]
     web_search_results: typing_extensions.Annotated[
         typing.List[WebSearchResult], FieldMetadata(alias="webSearchResults")
-    ]
-    data_filters: typing_extensions.Annotated[typing.Optional[DataFilter], FieldMetadata(alias="dataFilters")] = None
+    ] = pydantic.Field(alias="webSearchResults")
+    data_filters: typing_extensions.Annotated[typing.Optional[DataFilter], FieldMetadata(alias="dataFilters")] = (
+        pydantic.Field(alias="dataFilters", default=None)
+    )
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

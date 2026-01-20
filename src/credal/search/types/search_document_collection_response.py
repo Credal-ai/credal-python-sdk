@@ -12,11 +12,15 @@ from .single_field_filter import SingleFieldFilter
 
 
 class SearchDocumentCollectionResponse(UniversalBaseModel):
-    search_terms_used: typing_extensions.Annotated[typing.List[str], FieldMetadata(alias="searchTermsUsed")]
+    search_terms_used: typing_extensions.Annotated[typing.List[str], FieldMetadata(alias="searchTermsUsed")] = (
+        pydantic.Field(alias="searchTermsUsed")
+    )
     structured_filters_applied: typing_extensions.Annotated[
         typing.List[SingleFieldFilter], FieldMetadata(alias="structuredFiltersApplied")
-    ]
-    search_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="searchId")]
+    ] = pydantic.Field(alias="structuredFiltersApplied")
+    search_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="searchId")] = pydantic.Field(
+        alias="searchId"
+    )
     results: typing.List[DocumentCollectionSearchResult]
 
     if IS_PYDANTIC_V2:

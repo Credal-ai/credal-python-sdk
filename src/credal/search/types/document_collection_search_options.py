@@ -10,14 +10,14 @@ from ...core.serialization import FieldMetadata
 
 class DocumentCollectionSearchOptions(UniversalBaseModel):
     max_chunks: typing_extensions.Annotated[typing.Optional[int], FieldMetadata(alias="maxChunks")] = pydantic.Field(
-        default=None
+        alias="maxChunks", default=None
     )
     """
     The maximum number of chunks to return. Defaults to 10.
     """
 
     merge_contents: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="mergeContents")] = (
-        pydantic.Field(default=None)
+        pydantic.Field(alias="mergeContents", default=None)
     )
     """
     Whether to merge the chunks for a document and just return one result per document. Defaults to false.
@@ -31,20 +31,20 @@ class DocumentCollectionSearchOptions(UniversalBaseModel):
 
     enable_smart_filtering: typing_extensions.Annotated[
         typing.Optional[bool], FieldMetadata(alias="enableSmartFiltering")
-    ] = pydantic.Field(default=None)
+    ] = pydantic.Field(alias="enableSmartFiltering", default=None)
     """
     Whether to automatically filter the search results based on the user query and available metadata on the collection. Defaults to false.
     """
 
     enable_query_extraction: typing_extensions.Annotated[
         typing.Optional[bool], FieldMetadata(alias="enableQueryExtraction")
-    ] = pydantic.Field(default=None)
+    ] = pydantic.Field(alias="enableQueryExtraction", default=None)
     """
     / Whether to extract search terms from the user query and use them for semantic search. Defaults to false.
     """
 
     enable_reranking: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="enableReranking")] = (
-        pydantic.Field(default=None)
+        pydantic.Field(alias="enableReranking", default=None)
     )
     """
     Whether to rerank the search results after the initial semantic search query. Defaults to false.

@@ -10,11 +10,15 @@ from .collection_filtered_data import CollectionFilteredData
 
 
 class DataFilter(UniversalBaseModel):
-    semantic_search_terms: typing_extensions.Annotated[typing.List[str], FieldMetadata(alias="semanticSearchTerms")]
-    web_search_term: typing_extensions.Annotated[typing.List[str], FieldMetadata(alias="webSearchTerm")]
+    semantic_search_terms: typing_extensions.Annotated[typing.List[str], FieldMetadata(alias="semanticSearchTerms")] = (
+        pydantic.Field(alias="semanticSearchTerms")
+    )
+    web_search_term: typing_extensions.Annotated[typing.List[str], FieldMetadata(alias="webSearchTerm")] = (
+        pydantic.Field(alias="webSearchTerm")
+    )
     filtered_data_sources_per_collection: typing_extensions.Annotated[
         typing.List[CollectionFilteredData], FieldMetadata(alias="filteredDataSourcesPerCollection")
-    ]
+    ] = pydantic.Field(alias="filteredDataSourcesPerCollection")
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

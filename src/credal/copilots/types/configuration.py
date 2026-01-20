@@ -12,7 +12,7 @@ from .ai_endpoint_configuration import AiEndpointConfiguration
 class Configuration(UniversalBaseModel):
     ai_endpoint_configuration: typing_extensions.Annotated[
         typing.Optional[AiEndpointConfiguration], FieldMetadata(alias="aiEndpointConfiguration")
-    ] = None
+    ] = pydantic.Field(alias="aiEndpointConfiguration", default=None)
     name: typing.Optional[str] = None
     description: typing.Optional[str] = None
     prompt: typing.Optional[str] = None

@@ -10,11 +10,15 @@ from ...core.serialization import FieldMetadata
 
 class MongoSourceFieldsConfig(UniversalBaseModel):
     body: str
-    source_name: typing_extensions.Annotated[str, FieldMetadata(alias="sourceName")]
+    source_name: typing_extensions.Annotated[str, FieldMetadata(alias="sourceName")] = pydantic.Field(
+        alias="sourceName"
+    )
     source_system_updated: typing_extensions.Annotated[
         typing.Optional[str], FieldMetadata(alias="sourceSystemUpdated")
-    ] = None
-    source_url: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="sourceUrl")] = None
+    ] = pydantic.Field(alias="sourceSystemUpdated", default=None)
+    source_url: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="sourceUrl")] = pydantic.Field(
+        alias="sourceUrl", default=None
+    )
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

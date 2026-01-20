@@ -11,7 +11,9 @@ from .inserted_audit_log import InsertedAuditLog
 
 
 class MessageBlocked(UniversalBaseModel):
-    conversation_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="conversationId")]
+    conversation_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="conversationId")] = pydantic.Field(
+        alias="conversationId"
+    )
     blocks: typing.List[str]
     warnings: typing.List[str]
     inserted_audit_log: InsertedAuditLog

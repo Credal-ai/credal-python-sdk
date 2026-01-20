@@ -9,8 +9,10 @@ from ...core.serialization import FieldMetadata
 
 
 class SyncSourceByUrlRequest(UniversalBaseModel):
-    upload_as_user_email: typing_extensions.Annotated[str, FieldMetadata(alias="uploadAsUserEmail")]
-    source_url: typing_extensions.Annotated[str, FieldMetadata(alias="sourceUrl")]
+    upload_as_user_email: typing_extensions.Annotated[str, FieldMetadata(alias="uploadAsUserEmail")] = pydantic.Field(
+        alias="uploadAsUserEmail"
+    )
+    source_url: typing_extensions.Annotated[str, FieldMetadata(alias="sourceUrl")] = pydantic.Field(alias="sourceUrl")
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

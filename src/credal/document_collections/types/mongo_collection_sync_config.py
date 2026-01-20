@@ -10,10 +10,16 @@ from .mongo_source_fields_config import MongoSourceFieldsConfig
 
 
 class MongoCollectionSyncConfig(UniversalBaseModel):
-    sync_name: typing_extensions.Annotated[str, FieldMetadata(alias="syncName")]
-    collection_name: typing_extensions.Annotated[str, FieldMetadata(alias="collectionName")]
-    filter_expression: typing_extensions.Annotated[typing.Any, FieldMetadata(alias="filterExpression")]
-    source_fields: typing_extensions.Annotated[MongoSourceFieldsConfig, FieldMetadata(alias="sourceFields")]
+    sync_name: typing_extensions.Annotated[str, FieldMetadata(alias="syncName")] = pydantic.Field(alias="syncName")
+    collection_name: typing_extensions.Annotated[str, FieldMetadata(alias="collectionName")] = pydantic.Field(
+        alias="collectionName"
+    )
+    filter_expression: typing_extensions.Annotated[typing.Any, FieldMetadata(alias="filterExpression")] = (
+        pydantic.Field(alias="filterExpression")
+    )
+    source_fields: typing_extensions.Annotated[MongoSourceFieldsConfig, FieldMetadata(alias="sourceFields")] = (
+        pydantic.Field(alias="sourceFields")
+    )
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

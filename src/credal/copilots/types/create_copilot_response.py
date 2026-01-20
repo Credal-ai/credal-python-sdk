@@ -10,7 +10,7 @@ from ...core.serialization import FieldMetadata
 
 
 class CreateCopilotResponse(UniversalBaseModel):
-    agent_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="agentId")]
+    agent_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="agentId")] = pydantic.Field(alias="agentId")
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

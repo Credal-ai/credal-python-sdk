@@ -10,10 +10,10 @@ from ...core.serialization import FieldMetadata
 
 class ResponseChunk(UniversalBaseModel):
     message: str
-    data_chunk: typing_extensions.Annotated[str, FieldMetadata(alias="dataChunk")]
+    data_chunk: typing_extensions.Annotated[str, FieldMetadata(alias="dataChunk")] = pydantic.Field(alias="dataChunk")
     structured_output: typing_extensions.Annotated[
         typing.Optional[typing.Any], FieldMetadata(alias="structuredOutput")
-    ] = None
+    ] = pydantic.Field(alias="structuredOutput", default=None)
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

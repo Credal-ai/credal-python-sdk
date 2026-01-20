@@ -10,8 +10,10 @@ from ...core.serialization import FieldMetadata
 
 
 class SearchResultChunk(UniversalBaseModel):
-    chunk_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="chunkId")]
-    chunk_index: typing_extensions.Annotated[int, FieldMetadata(alias="chunkIndex")]
+    chunk_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="chunkId")] = pydantic.Field(alias="chunkId")
+    chunk_index: typing_extensions.Annotated[int, FieldMetadata(alias="chunkIndex")] = pydantic.Field(
+        alias="chunkIndex"
+    )
     text: str
     score: float = pydantic.Field()
     """

@@ -10,7 +10,9 @@ from ...core.serialization import FieldMetadata
 
 
 class CreateCollectionResponse(UniversalBaseModel):
-    collection_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="collectionId")]
+    collection_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="collectionId")] = pydantic.Field(
+        alias="collectionId"
+    )
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

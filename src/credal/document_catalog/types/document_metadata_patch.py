@@ -11,7 +11,7 @@ from ...core.serialization import FieldMetadata
 
 class DocumentMetadataPatch(UniversalBaseModel):
     resource_identifier: typing_extensions.Annotated[ResourceIdentifier, FieldMetadata(alias="resourceIdentifier")] = (
-        pydantic.Field()
+        pydantic.Field(alias="resourceIdentifier")
     )
     """
     The identifier for the resource you want to patch

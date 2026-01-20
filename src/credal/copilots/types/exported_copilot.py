@@ -27,7 +27,7 @@ class ExportedCopilot(UniversalBaseModel):
     """
 
     model_configuration: typing_extensions.Annotated[typing.Any, FieldMetadata(alias="modelConfiguration")] = (
-        pydantic.Field()
+        pydantic.Field(alias="modelConfiguration")
     )
     """
     Model configuration including provider, model name, temperature, and other settings.
@@ -35,13 +35,13 @@ class ExportedCopilot(UniversalBaseModel):
 
     ai_endpoint_configuration: typing_extensions.Annotated[
         typing.Any, FieldMetadata(alias="aiEndpointConfiguration")
-    ] = pydantic.Field()
+    ] = pydantic.Field(alias="aiEndpointConfiguration")
     """
     AI endpoint configuration including base URL and authentication details.
     """
 
     tool_configurations: typing_extensions.Annotated[typing.Any, FieldMetadata(alias="toolConfigurations")] = (
-        pydantic.Field()
+        pydantic.Field(alias="toolConfigurations")
     )
     """
     List of tool configurations available to the copilot.
@@ -54,13 +54,13 @@ class ExportedCopilot(UniversalBaseModel):
 
     deployment_configuration: typing_extensions.Annotated[
         typing.Any, FieldMetadata(alias="deploymentConfiguration")
-    ] = pydantic.Field()
+    ] = pydantic.Field(alias="deploymentConfiguration")
     """
     Deployment settings and configuration.
     """
 
     agent_created_datetime: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="agentCreatedDatetime")] = (
-        pydantic.Field()
+        pydantic.Field(alias="agentCreatedDatetime")
     )
     """
     ISO 8601 timestamp when the copilot was originally created.
@@ -68,12 +68,14 @@ class ExportedCopilot(UniversalBaseModel):
 
     version_created_datetime: typing_extensions.Annotated[
         dt.datetime, FieldMetadata(alias="versionCreatedDatetime")
-    ] = pydantic.Field()
+    ] = pydantic.Field(alias="versionCreatedDatetime")
     """
     ISO 8601 timestamp when the deployed version was created.
     """
 
-    is_deployed: typing_extensions.Annotated[bool, FieldMetadata(alias="isDeployed")] = pydantic.Field()
+    is_deployed: typing_extensions.Annotated[bool, FieldMetadata(alias="isDeployed")] = pydantic.Field(
+        alias="isDeployed"
+    )
     """
     Indicates if the copilot is currently deployed (always true for export results).
     """
