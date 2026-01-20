@@ -13,7 +13,9 @@ from ...core.serialization import FieldMetadata
 
 
 class Filter_String(UniversalBaseModel):
-    field_type: typing_extensions.Annotated[typing.Literal["string"], FieldMetadata(alias="fieldType")] = "string"
+    field_type: typing_extensions.Annotated[typing.Literal["string"], FieldMetadata(alias="fieldType")] = (
+        pydantic.Field(alias="fieldType", default="string")
+    )
     field: str
     operator: Operator
     value: str
@@ -29,7 +31,9 @@ class Filter_String(UniversalBaseModel):
 
 
 class Filter_Number(UniversalBaseModel):
-    field_type: typing_extensions.Annotated[typing.Literal["number"], FieldMetadata(alias="fieldType")] = "number"
+    field_type: typing_extensions.Annotated[typing.Literal["number"], FieldMetadata(alias="fieldType")] = (
+        pydantic.Field(alias="fieldType", default="number")
+    )
     field: str
     operator: Operator
     value: int
@@ -45,7 +49,9 @@ class Filter_Number(UniversalBaseModel):
 
 
 class Filter_Boolean(UniversalBaseModel):
-    field_type: typing_extensions.Annotated[typing.Literal["boolean"], FieldMetadata(alias="fieldType")] = "boolean"
+    field_type: typing_extensions.Annotated[typing.Literal["boolean"], FieldMetadata(alias="fieldType")] = (
+        pydantic.Field(alias="fieldType", default="boolean")
+    )
     field: str
     operator: typing.Literal["=="] = "=="
     value: bool
@@ -61,7 +67,9 @@ class Filter_Boolean(UniversalBaseModel):
 
 
 class Filter_Datetime(UniversalBaseModel):
-    field_type: typing_extensions.Annotated[typing.Literal["datetime"], FieldMetadata(alias="fieldType")] = "datetime"
+    field_type: typing_extensions.Annotated[typing.Literal["datetime"], FieldMetadata(alias="fieldType")] = (
+        pydantic.Field(alias="fieldType", default="datetime")
+    )
     field: str
     operator: Operator
     value: dt.date

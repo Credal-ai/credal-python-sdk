@@ -10,7 +10,9 @@ from ...core.serialization import FieldMetadata
 
 
 class BlockedChunk(UniversalBaseModel):
-    conversation_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="conversationId")]
+    conversation_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="conversationId")] = pydantic.Field(
+        alias="conversationId"
+    )
     warnings: typing.List[str]
     blocks: typing.List[str]
 

@@ -10,7 +10,9 @@ from ...core.serialization import FieldMetadata
 
 
 class UploadDocumentResponse(UniversalBaseModel):
-    document_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="documentId")]
+    document_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="documentId")] = pydantic.Field(
+        alias="documentId"
+    )
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

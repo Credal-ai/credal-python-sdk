@@ -11,7 +11,9 @@ from ...core.serialization import FieldMetadata
 
 class ReferencedSource(UniversalBaseModel):
     id: str
-    external_resource_id: typing_extensions.Annotated[ExternalResourceId, FieldMetadata(alias="externalResourceId")]
+    external_resource_id: typing_extensions.Annotated[ExternalResourceId, FieldMetadata(alias="externalResourceId")] = (
+        pydantic.Field(alias="externalResourceId")
+    )
     name: str
     url: typing.Optional[str] = None
 

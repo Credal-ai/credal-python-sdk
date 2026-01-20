@@ -11,13 +11,25 @@ from .search_result_chunk import SearchResultChunk
 
 
 class DocumentCollectionSearchResult(UniversalBaseModel):
-    document_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="documentId")]
-    document_name: typing_extensions.Annotated[str, FieldMetadata(alias="documentName")]
-    document_url: typing_extensions.Annotated[str, FieldMetadata(alias="documentUrl")]
-    document_external_id: typing_extensions.Annotated[str, FieldMetadata(alias="documentExternalId")]
-    document_metadata: typing_extensions.Annotated[typing.Dict[str, str], FieldMetadata(alias="documentMetadata")]
+    document_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="documentId")] = pydantic.Field(
+        alias="documentId"
+    )
+    document_name: typing_extensions.Annotated[str, FieldMetadata(alias="documentName")] = pydantic.Field(
+        alias="documentName"
+    )
+    document_url: typing_extensions.Annotated[str, FieldMetadata(alias="documentUrl")] = pydantic.Field(
+        alias="documentUrl"
+    )
+    document_external_id: typing_extensions.Annotated[str, FieldMetadata(alias="documentExternalId")] = pydantic.Field(
+        alias="documentExternalId"
+    )
+    document_metadata: typing_extensions.Annotated[typing.Dict[str, str], FieldMetadata(alias="documentMetadata")] = (
+        pydantic.Field(alias="documentMetadata")
+    )
     chunks: typing.List[SearchResultChunk]
-    merged_contents: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="mergedContents")] = None
+    merged_contents: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="mergedContents")] = (
+        pydantic.Field(alias="mergedContents", default=None)
+    )
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

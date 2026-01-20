@@ -9,8 +9,8 @@ from ...core.serialization import FieldMetadata
 
 
 class AiEndpointConfiguration(UniversalBaseModel):
-    base_url: typing_extensions.Annotated[str, FieldMetadata(alias="baseUrl")]
-    api_key: typing_extensions.Annotated[str, FieldMetadata(alias="apiKey")]
+    base_url: typing_extensions.Annotated[str, FieldMetadata(alias="baseUrl")] = pydantic.Field(alias="baseUrl")
+    api_key: typing_extensions.Annotated[str, FieldMetadata(alias="apiKey")] = pydantic.Field(alias="apiKey")
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

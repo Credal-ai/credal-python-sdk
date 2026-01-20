@@ -15,13 +15,13 @@ class ExportCopilotsResponse(UniversalBaseModel):
     List of exported copilots matching the query filters.
     """
 
-    has_more: typing_extensions.Annotated[bool, FieldMetadata(alias="hasMore")] = pydantic.Field()
+    has_more: typing_extensions.Annotated[bool, FieldMetadata(alias="hasMore")] = pydantic.Field(alias="hasMore")
     """
     Indicates whether there are more results available for pagination.
     """
 
     next_cursor: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="nextCursor")] = pydantic.Field(
-        default=None
+        alias="nextCursor", default=None
     )
     """
     Cursor to use for fetching the next page of results. This is a UUID string. If null or not present, there are no more results.

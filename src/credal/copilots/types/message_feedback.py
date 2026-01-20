@@ -11,10 +11,12 @@ from .feedback_enum import FeedbackEnum
 
 class MessageFeedback(UniversalBaseModel):
     feedback: FeedbackEnum
-    suggested_answer: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="suggestedAnswer")] = None
+    suggested_answer: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="suggestedAnswer")] = (
+        pydantic.Field(alias="suggestedAnswer", default=None)
+    )
     descriptive_feedback: typing_extensions.Annotated[
         typing.Optional[str], FieldMetadata(alias="descriptiveFeedback")
-    ] = None
+    ] = pydantic.Field(alias="descriptiveFeedback", default=None)
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

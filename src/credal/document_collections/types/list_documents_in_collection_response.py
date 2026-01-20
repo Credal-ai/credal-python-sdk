@@ -12,7 +12,7 @@ from ...core.serialization import FieldMetadata
 class ListDocumentsInCollectionResponse(UniversalBaseModel):
     resource_identifiers: typing_extensions.Annotated[
         typing.List[ResourceIdentifier], FieldMetadata(alias="resourceIdentifiers")
-    ]
+    ] = pydantic.Field(alias="resourceIdentifiers")
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

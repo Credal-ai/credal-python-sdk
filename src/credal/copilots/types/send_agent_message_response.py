@@ -10,7 +10,9 @@ from .send_message_response import SendMessageResponse
 
 
 class SendAgentMessageResponse(UniversalBaseModel):
-    send_chat_result: typing_extensions.Annotated[SendMessageResponse, FieldMetadata(alias="sendChatResult")]
+    send_chat_result: typing_extensions.Annotated[SendMessageResponse, FieldMetadata(alias="sendChatResult")] = (
+        pydantic.Field(alias="sendChatResult")
+    )
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

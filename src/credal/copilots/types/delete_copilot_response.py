@@ -10,7 +10,9 @@ from ...core.serialization import FieldMetadata
 
 
 class DeleteCopilotResponse(UniversalBaseModel):
-    copilot_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="copilotId")]
+    copilot_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="copilotId")] = pydantic.Field(
+        alias="copilotId"
+    )
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

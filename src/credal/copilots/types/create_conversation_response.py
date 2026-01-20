@@ -10,7 +10,9 @@ from ...core.serialization import FieldMetadata
 
 
 class CreateConversationResponse(UniversalBaseModel):
-    conversation_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="conversationId")]
+    conversation_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="conversationId")] = pydantic.Field(
+        alias="conversationId"
+    )
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

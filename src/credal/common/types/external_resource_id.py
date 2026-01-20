@@ -10,8 +10,12 @@ from .resource_type import ResourceType
 
 
 class ExternalResourceId(UniversalBaseModel):
-    external_resource_id: typing_extensions.Annotated[str, FieldMetadata(alias="externalResourceId")]
-    resource_type: typing_extensions.Annotated[ResourceType, FieldMetadata(alias="resourceType")]
+    external_resource_id: typing_extensions.Annotated[str, FieldMetadata(alias="externalResourceId")] = pydantic.Field(
+        alias="externalResourceId"
+    )
+    resource_type: typing_extensions.Annotated[ResourceType, FieldMetadata(alias="resourceType")] = pydantic.Field(
+        alias="resourceType"
+    )
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

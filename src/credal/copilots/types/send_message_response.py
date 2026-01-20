@@ -17,20 +17,24 @@ from .web_search_result import WebSearchResult
 
 class SendMessageResponse_AiResponseResult(UniversalBaseModel):
     type: typing.Literal["ai_response_result"] = "ai_response_result"
-    conversation_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="conversationId")]
+    conversation_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="conversationId")] = pydantic.Field(
+        alias="conversationId"
+    )
     response: ResponseChunk
     warnings: typing.List[str]
     inserted_audit_log: InsertedAuditLog
     referenced_sources: typing_extensions.Annotated[
         typing.List[ReferencedSource], FieldMetadata(alias="referencedSources")
-    ]
+    ] = pydantic.Field(alias="referencedSources")
     sources_in_data_context: typing_extensions.Annotated[
         typing.List[ReferencedSource], FieldMetadata(alias="sourcesInDataContext")
-    ]
+    ] = pydantic.Field(alias="sourcesInDataContext")
     web_search_results: typing_extensions.Annotated[
         typing.List[WebSearchResult], FieldMetadata(alias="webSearchResults")
-    ]
-    message_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="messageId")]
+    ] = pydantic.Field(alias="webSearchResults")
+    message_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="messageId")] = pydantic.Field(
+        alias="messageId"
+    )
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -44,7 +48,9 @@ class SendMessageResponse_AiResponseResult(UniversalBaseModel):
 
 class SendMessageResponse_BlockedResult(UniversalBaseModel):
     type: typing.Literal["blocked_result"] = "blocked_result"
-    conversation_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="conversationId")]
+    conversation_id: typing_extensions.Annotated[uuid.UUID, FieldMetadata(alias="conversationId")] = pydantic.Field(
+        alias="conversationId"
+    )
     blocks: typing.List[str]
     warnings: typing.List[str]
     inserted_audit_log: InsertedAuditLog

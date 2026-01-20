@@ -11,7 +11,9 @@ from .document_metadata_patch import DocumentMetadataPatch
 
 class DocumentMetadataPatchRequest(UniversalBaseModel):
     sources: typing.List[DocumentMetadataPatch]
-    upload_as_user_email: typing_extensions.Annotated[str, FieldMetadata(alias="uploadAsUserEmail")]
+    upload_as_user_email: typing_extensions.Annotated[str, FieldMetadata(alias="uploadAsUserEmail")] = pydantic.Field(
+        alias="uploadAsUserEmail"
+    )
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
