@@ -495,11 +495,14 @@ class CopilotsClient:
         import uuid
 
         from credal import CredalApi
-        from credal.copilots import AiEndpointConfiguration, Configuration
+        from credal.copilots import AiEndpointConfiguration, Configuration, Prompt
 
         client = CredalApi(
             api_key="YOUR_API_KEY",
         )
+
+        # Simplest usage – pass the prompt as a plain string (backward-compatible).
+        # The SDK wraps it into a Prompt object automatically.
         client.copilots.update_configuration(
             copilot_id=uuid.UUID(
                 "82e4b12a-6990-45d4-8ebd-85c00e030c24",
@@ -511,6 +514,19 @@ class CopilotsClient:
                 ai_endpoint_configuration=AiEndpointConfiguration(
                     base_url="https://api.openai.com/v1/",
                     api_key="<YOUR_API_KEY_HERE>",
+                ),
+            ),
+        )
+
+        # Explicit Prompt object – gives full control over prompt settings.
+        client.copilots.update_configuration(
+            copilot_id=uuid.UUID(
+                "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+            ),
+            configuration=Configuration(
+                prompt=Prompt(
+                    text="You are a polite, helpful assistant.",
+                    organization_prompt_addition_enabled=True,
                 ),
             ),
         )
@@ -1156,7 +1172,7 @@ class AsyncCopilotsClient:
         import uuid
 
         from credal import AsyncCredalApi
-        from credal.copilots import AiEndpointConfiguration, Configuration
+        from credal.copilots import AiEndpointConfiguration, Configuration, Prompt
 
         client = AsyncCredalApi(
             api_key="YOUR_API_KEY",
@@ -1164,6 +1180,7 @@ class AsyncCopilotsClient:
 
 
         async def main() -> None:
+            # Simplest usage – pass the prompt as a plain string.
             await client.copilots.update_configuration(
                 copilot_id=uuid.UUID(
                     "82e4b12a-6990-45d4-8ebd-85c00e030c24",
@@ -1175,6 +1192,19 @@ class AsyncCopilotsClient:
                     ai_endpoint_configuration=AiEndpointConfiguration(
                         base_url="https://api.openai.com/v1/",
                         api_key="<YOUR_API_KEY_HERE>",
+                    ),
+                ),
+            )
+
+            # Explicit Prompt object for full control.
+            await client.copilots.update_configuration(
+                copilot_id=uuid.UUID(
+                    "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+                ),
+                configuration=Configuration(
+                    prompt=Prompt(
+                        text="You are a polite, helpful assistant.",
+                        organization_prompt_addition_enabled=True,
                     ),
                 ),
             )

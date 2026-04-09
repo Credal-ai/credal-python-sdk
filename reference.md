@@ -719,11 +719,14 @@ Update the configuration for a agent
 import uuid
 
 from credal import CredalApi
-from credal.copilots import AiEndpointConfiguration, Configuration
+from credal.copilots import AiEndpointConfiguration, Configuration, Prompt
 
 client = CredalApi(
     api_key="YOUR_API_KEY",
 )
+
+# Pass prompt as a plain string (backward-compatible).
+# The SDK wraps it into a Prompt object automatically.
 client.copilots.update_configuration(
     copilot_id=uuid.UUID(
         "82e4b12a-6990-45d4-8ebd-85c00e030c24",
@@ -735,6 +738,19 @@ client.copilots.update_configuration(
         ai_endpoint_configuration=AiEndpointConfiguration(
             base_url="https://api.openai.com/v1/",
             api_key="<YOUR_API_KEY_HERE>",
+        ),
+    ),
+)
+
+# Or use an explicit Prompt object for full control.
+client.copilots.update_configuration(
+    copilot_id=uuid.UUID(
+        "82e4b12a-6990-45d4-8ebd-85c00e030c24",
+    ),
+    configuration=Configuration(
+        prompt=Prompt(
+            text="You are a polite, helpful assistant.",
+            organization_prompt_addition_enabled=True,
         ),
     ),
 )

@@ -7,6 +7,7 @@ import typing_extensions
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...core.serialization import FieldMetadata
 from .ai_endpoint_configuration import AiEndpointConfiguration
+from .prompt import Prompt
 
 
 class Configuration(UniversalBaseModel):
@@ -15,7 +16,7 @@ class Configuration(UniversalBaseModel):
     ] = pydantic.Field(alias="aiEndpointConfiguration", default=None)
     name: typing.Optional[str] = None
     description: typing.Optional[str] = None
-    prompt: typing.Optional[str] = None
+    prompt: typing.Optional[typing.Union[str, Prompt]] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

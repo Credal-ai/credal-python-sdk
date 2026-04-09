@@ -14,6 +14,7 @@ from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.http_sse._api import EventSource
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
+from ..core.jsonable_encoder import jsonable_encoder
 from ..core.serialization import convert_and_respect_annotation_metadata
 from .types.configuration import Configuration
 from .types.create_conversation_response import CreateConversationResponse
@@ -27,6 +28,17 @@ from .types.streaming_chunk import StreamingChunk
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
+
+
+def _serialize_configuration(configuration: Configuration) -> typing.Any:
+    """Serialize a Configuration for the wire.
+
+    If the caller supplied a :class:`Prompt` object the nested dict is
+    flattened to ``{"text": ..., "organizationPromptAdditionEnabled": ...}``.
+    A plain string prompt is passed through unchanged — which is the
+    documented API contract.
+    """
+    return jsonable_encoder(configuration)
 
 
 class RawCopilotsClient:
@@ -464,9 +476,7 @@ class RawCopilotsClient:
             method="POST",
             json={
                 "copilotId": copilot_id,
-                "configuration": convert_and_respect_annotation_metadata(
-                    object_=configuration, annotation=Configuration, direction="write"
-                ),
+                "configuration": _serialize_configuration(configuration),
             },
             request_options=request_options,
             omit=OMIT,
@@ -1031,9 +1041,7 @@ class AsyncRawCopilotsClient:
             method="POST",
             json={
                 "copilotId": copilot_id,
-                "configuration": convert_and_respect_annotation_metadata(
-                    object_=configuration, annotation=Configuration, direction="write"
-                ),
+                "configuration": _serialize_configuration(configuration),
             },
             request_options=request_options,
             omit=OMIT,

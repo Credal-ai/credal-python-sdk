@@ -32,6 +32,7 @@ if typing.TYPE_CHECKING:
     from .message_feedback import MessageFeedback
     from .message_reply import MessageReply
     from .number_field_schema import NumberFieldSchema
+    from .prompt import Prompt
     from .referenced_source import ReferencedSource
     from .response_chunk import ResponseChunk
     from .send_agent_message_response import SendAgentMessageResponse
@@ -82,6 +83,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "MessageFeedback": ".message_feedback",
     "MessageReply": ".message_reply",
     "NumberFieldSchema": ".number_field_schema",
+    "Prompt": ".prompt",
     "ReferencedSource": ".referenced_source",
     "ResponseChunk": ".response_chunk",
     "SendAgentMessageResponse": ".send_agent_message_response",
@@ -152,6 +154,7 @@ __all__ = [
     "MessageFeedback",
     "MessageReply",
     "NumberFieldSchema",
+    "Prompt",
     "ReferencedSource",
     "ResponseChunk",
     "SendAgentMessageResponse",
